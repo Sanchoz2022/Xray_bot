@@ -31,8 +31,8 @@ A Telegram bot that provides VPN access through Xray with VLESS and Reality prot
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/xray-vpn-bot.git
-   cd xray-vpn-bot
+   git clone https://github.com/Sanchoz2022/Xray_bot.git
+   cd Xray_bot
    ```
 
 2. **Run the setup script**
