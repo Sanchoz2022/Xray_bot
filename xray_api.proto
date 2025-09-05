@@ -1,0 +1,102 @@
+syntax = "proto3";
+
+package xray.app.proxy.vless;
+option go_package = "github.com/xtls/xray-core/proxy/vless";
+option java_package = "com.xray.proxy.vless";
+option java_multiple_files = true;
+
+// User represents a user account in the proxy service.
+message User {
+  // Level of the user. Determines the user's access level.
+  uint32 level = 1;
+  // Email address of the user.
+  string email = 2;
+  // Account associated with the user.
+  Account account = 3;
+}
+
+// Account represents a user's account information.
+message Account {
+  // Type of the account (e.g., "vless").
+  string type = 1;
+  // Account settings in JSON format.
+  string settings = 2;
+}
+
+// AddUserRequest is the request to add a new user.
+message AddUserRequest {
+  // The user to add.
+  User user = 1;
+}
+
+// AddUserResponse is the response to adding a user.
+message AddUserResponse {
+  // Indicates whether the user was added successfully.
+  bool success = 1;
+  // Optional error message if the operation failed.
+  string error = 2;
+}
+
+// RemoveUserRequest is the request to remove a user.
+message RemoveUserRequest {
+  // Email of the user to remove.
+  string email = 1;
+}
+
+// RemoveUserResponse is the response to removing a user.
+message RemoveUserResponse {
+  // Indicates whether the user was removed successfully.
+  bool success = 1;
+  // Optional error message if the operation failed.
+  string error = 2;
+}
+
+// GetUserStatsRequest is the request to get user statistics.
+message GetUserStatsRequest {
+  // Name of the user to get statistics for.
+  string name = 1;
+  // Whether to reset the statistics after retrieval.
+  bool reset = 2;
+}
+
+// GetUserStatsResponse contains user statistics.
+message GetUserStatsResponse {
+  // Number of bytes uploaded by the user.
+  uint64 upload = 1;
+  // Number of bytes downloaded by the user.
+  uint64 download = 2;
+}
+
+// GetStatsRequest is the request to get system statistics.
+message GetStatsRequest {
+  // Name of the statistic to retrieve.
+  string name = 1;
+  // Whether to reset the statistics after retrieval.
+  bool reset = 2;
+}
+
+// Stat represents a single statistic.
+message Stat {
+  // Name of the statistic.
+  string name = 1;
+  // Value of the statistic.
+  int64 value = 2;
+}
+
+// GetStatsResponse contains system statistics.
+message GetStatsResponse {
+  // List of statistics.
+  repeated Stat stat = 1;
+}
+
+// HandlerService handles user and system operations.
+service HandlerService {
+  // AddUser adds a new user.
+  rpc AddUser(AddUserRequest) returns (AddUserResponse) {}
+  // RemoveUser removes a user.
+  rpc RemoveUser(RemoveUserRequest) returns (RemoveUserResponse) {}
+  // GetUserStats gets statistics for a user.
+  rpc GetUserStats(GetUserStatsRequest) returns (GetUserStatsResponse) {}
+  // GetStats gets system statistics.
+  rpc GetStats(GetStatsRequest) returns (GetStatsResponse) {}
+}

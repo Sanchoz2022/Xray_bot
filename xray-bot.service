@@ -1,0 +1,15 @@
+[Unit]
+Description=Xray VPN Bot
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/path/to/your/bot/directory
+Environment="PATH=/path/to/your/bot/directory/venv/bin"
+ExecStart=/path/to/your/bot/directory/venv/bin/python bot.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
