@@ -12,11 +12,7 @@ from typing import Optional, Dict, List, Tuple
 import logging
 from datetime import datetime, timedelta
 
-from config import (
-    XRAY_CONFIG_DIR, XRAY_CONFIG_FILE, XRAY_SERVICE,
-    XRAY_REALITY_PRIVKEY, XRAY_REALITY_PUBKEY, XRAY_REALITY_SHORT_IDS,
-    generate_xray_config
-)
+from config import settings, generate_xray_config
 
 # Import generated gRPC code
 import xray_api_pb2 as pb
@@ -196,7 +192,7 @@ class XrayManager:
         """
         try:
             result = subprocess.run(
-                ["systemctl", "restart", "xray"],
+                ["systemctl", "restart", settings.XRAY_SERVICE],
                 capture_output=True,
                 text=True
             )
@@ -251,7 +247,7 @@ class XrayManager:
             
             # Check if Xray is running
             result = subprocess.run(
-                ["systemctl", "is-active", "xray"],
+                ["systemctl", "is-active", settings.XRAY_SERVICE],
                 capture_output=True,
                 text=True
             )
@@ -320,10 +316,10 @@ class ServerManager:
             import os
             
             # Create config directory if it doesn't exist
-            os.makedirs("/usr/local/etc/xray", exist_ok=True)
+            os.makedirs(settings.XRAY_CONFIG_DIR, exist_ok=True)
             
             # Write config file
-            config_path = "/usr/local/etc/xray/config.json"
+            config_path = settings.XRAY_CONFIG_FILE
             with open(config_path, 'w') as f:
                 json.dump(config, f, indent=2)
             
@@ -374,7 +370,7 @@ class ServerManager:
         """
         try:
             result = subprocess.run(
-                ["journalctl", "-u", "xray", "-n", str(lines), "--no-pager"],
+                ["journalctl", "-u", settings.XRAY_SERVICE, "-n", str(lines), "--no-pager"],
                 capture_output=True,
                 text=True
             )
@@ -405,26 +401,25 @@ class ServerManager:
             bool: True if user was removed successfully, False otherwise.
         """
         return self.xray.remove_user(email)
-        return self.xray_client.get_traffic_stats(email)
     
     def get_system_stats(self) -> Dict[str, Any]:
         """Get system statistics from Xray."""
-        if not self.connected and not self.xray_client.connect():
-            return {}
-            
-        return self.xray_client.get_system_stats()
+        return self.xray.get_system_stats() if hasattr(self.xray, 'get_system_stats') else {}
     
     def get_reality_config(self, email: str, user_id: str) -> Dict[str, Any]:
         """Generate a Reality configuration for a user."""
-        if not self.connected and not self.xray_client.connect():
-            return {}
-            
-        return self.xray_client.generate_reality_config(user_id, email)
+        return {
+            'id': user_id,
+            'email': email,
+            'private_key': settings.XRAY_REALITY_PRIVKEY,
+            'public_key': settings.XRAY_REALITY_PUBKEY,
+            'short_ids': settings.XRAY_REALITY_SHORT_IDS
+        }
     
     def __del__(self):
         """Clean up resources."""
-        if hasattr(self, 'xray_client') and self.xray_client:
-            self.xray_client.close()
+        if hasattr(self, 'xray') and self.xray:
+            self.xray.close()
 
 # Create a global server manager instance
 server_manager = ServerManager()
