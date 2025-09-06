@@ -81,7 +81,7 @@ class XrayManager:
             
             # Use xray api command to add user
             result = subprocess.run([
-                "xray", "api", "add", "user",
+                "/usr/local/bin/xray", "api", "add", "user",
                 "--server", "127.0.0.1:50051",
                 "--inbound", "inbound-443",
                 "--email", email,
@@ -112,7 +112,7 @@ class XrayManager:
         try:
             # Use xray command line API to remove user
             result = subprocess.run([
-                "xray", "api", "remove", "user",
+                "/usr/local/bin/xray", "api", "remove", "user",
                 "--server", "127.0.0.1:50051", 
                 "--inbound", "inbound-443",
                 "--email", email
@@ -142,7 +142,7 @@ class XrayManager:
         try:
             # Use xray command line API to get stats
             result = subprocess.run([
-                "xray", "api", "statsquery",
+                "/usr/local/bin/xray", "api", "statsquery",
                 "--server", "127.0.0.1:50051",
                 "--pattern", f"user>>>{email}>>>traffic>>>",
                 "--reset" if reset else ""

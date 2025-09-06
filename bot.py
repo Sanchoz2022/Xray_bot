@@ -31,8 +31,9 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Initialize bot and dispatcher
-bot = Bot(token=settings.BOT_TOKEN)
+# Initialize bot and dispatcher with timeout settings
+from aiohttp import ClientTimeout
+bot = Bot(token=settings.BOT_TOKEN, timeout=ClientTimeout(total=30, connect=10))
 dp = Dispatcher()
 
 # Scheduler for background tasks
@@ -550,16 +551,29 @@ async def setup_bot():
             
             # Setup scheduler
             setup_scheduler()
-            scheduler.start()
-            logger.info("Scheduler started")
+            if not scheduler.running:
+                scheduler.start()
+                logger.info("Scheduler started")
+            else:
+                logger.info("Scheduler already running")
             
             # Test connection to Telegram API
             logger.info("Testing Telegram API connection...")
             try:
-                me = await bot.get_me()
+                # Try with longer timeout for initial connection
+                me = await asyncio.wait_for(bot.get_me(), timeout=20)
                 logger.info(f"Successfully connected to Telegram API. Bot: @{me.username}")
+            except asyncio.TimeoutError:
+                logger.error("Telegram API connection timed out")
+                if attempt < max_retries - 1:
+                    logger.info(f"Retrying in {retry_delay} seconds...")
+                    await asyncio.sleep(retry_delay)
+                    continue
+                else:
+                    raise
             except Exception as api_error:
                 logger.error(f"Failed to connect to Telegram API: {api_error}")
+                logger.error(f"Error type: {type(api_error).__name__}")
                 if attempt < max_retries - 1:
                     logger.info(f"Retrying in {retry_delay} seconds...")
                     await asyncio.sleep(retry_delay)
