@@ -40,7 +40,12 @@ echo "- xray_api_pb2_grpc.py"
 
 # Fix imports in generated files
 for file in xray_api_pb2*.py; do
-    sed -i 's/^import /from . import /' "$file"
+    if [ -f "$file" ]; then
+        # Fix relative imports to absolute imports
+        sed -i 's/from \. import grpc/import grpc/' "$file"
+        sed -i 's/from \. import xray_api_pb2/import xray_api_pb2/' "$file"
+        echo "Fixed imports in $file"
+    fi
 done
 
 echo -e "${GREEN}Successfully generated gRPC code!${NC}"
