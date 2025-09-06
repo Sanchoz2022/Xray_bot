@@ -13,11 +13,11 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from sqlalchemy import select, update, delete, func
+from sqlalchemy.orm import selectinload
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from config import (
-    BOT_TOKEN, CHANNEL_USERNAME, ADMIN_IDS, 
-    SERVER_IP, XRAY_REALITY_PUBKEY, XRAY_REALITY_SHORT_IDS
-)
+from config import settings
 from db import db, User, UserKey, Subscription, get_db_session
 from server_manager import server_manager, ServerManager
 
@@ -32,7 +32,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Initialize bot and dispatcher
-bot = Bot(token=BOT_TOKEN)
+bot = Bot(token=settings.BOT_TOKEN)
 dp = Dispatcher()
 
 # Scheduler for background tasks
@@ -44,28 +44,54 @@ class UserState(StatesGroup):
     waiting_for_email = State()
 
 # Helper functions
-async def check_subscription(user_id: int) -> bool:
-    """Check if user is subscribed to the channel."""
+async def check_subscription(user_id: int, channel_username: str) -> bool:
+    """Check if user is subscribed to the channel.
+    
+    Args:
+        user_id: Telegram user ID
+        channel_username: Channel username with @
+        
+    Returns:
+        bool: True if user is subscribed, False otherwise
+    """
     try:
-        member = await bot.get_chat_member(CHANNEL_USERNAME, user_id)
+        if not channel_username:
+            logger.warning("No channel username provided for subscription check")
+            return True  # If no channel is set, consider user subscribed
+            
+        # Remove @ if present
+        channel_username = channel_username.lstrip('@')
+        
+        member = await bot.get_chat_member(
+            chat_id=channel_username,
+            user_id=user_id
+        )
         return member.status in ['member', 'administrator', 'creator']
     except Exception as e:
-        logger.error(f"Error checking subscription for {user_id}: {e}")
-        return False
+        logger.error(f"Error checking subscription for user {user_id} in channel {channel_username}: {e}")
+        return False  # On error, assume not subscribed to prevent unauthorized access
 
-def generate_reality_config(uuid_str: str, email: str = "") -> Dict[str, str]:
-    """Generate Reality configuration for the user."""
-    if not XRAY_REALITY_PUBKEY or not XRAY_REALITY_SHORT_IDS:
-        logger.error("Reality keys not configured")
-        return {}
+def generate_reality_config(uuid_str: str, email: str = "", server_ip: str = "", public_key: str = "", short_id: str = "") -> Dict[str, str]:
+    """Generate Reality configuration for the user.
     
-    # Use the first short ID for now
-    short_id = XRAY_REALITY_SHORT_IDS[0]
+    Args:
+        uuid_str: User's UUID
+        email: User's email (optional)
+        server_ip: Server IP address
+        public_key: Xray public key
+        short_id: Short ID for Reality
+        
+    Returns:
+        Dict with configuration details
+    """
+    if not public_key or not short_id or not server_ip:
+        logger.error("Missing required parameters for Reality config")
+        return {}
     
     # Generate the VLESS URL with Reality transport
     vless_url = (
-        f"vless://{uuid_str}@{SERVER_IP}:443?type=tcp&encryption=none&"
-        f"security=reality&sni=www.google.com&fp=chrome&pbk={XRAY_REALITY_PUBKEY}&"
+        f"vless://{uuid_str}@{server_ip}:443?type=tcp&encryption=none&"
+        f"security=reality&sni=www.google.com&fp=chrome&pbk={public_key}&"
         f"sid={short_id}&flow=xtls-rprx-vision#Xray-Reality-{email}"
     )
     
@@ -78,21 +104,15 @@ def generate_reality_config(uuid_str: str, email: str = "") -> Dict[str, str]:
         'config': {
             'v': '2',
             'ps': f'Xray Reality - {email}',
-            'add': SERVER_IP,
+            'add': server_ip,
             'port': '443',
             'id': uuid_str,
-            'aid': '0',
-            'net': 'tcp',
-            'type': 'none',
-            'host': '',
-            'path': '',
-            'tls': 'reality',
+            'type': 'tcp',
+            'security': 'reality',
             'sni': 'www.google.com',
-            'alpn': '',
             'fp': 'chrome',
-            'pbk': XRAY_REALITY_PUBKEY,
+            'pbk': public_key,
             'sid': short_id,
-            'spx': '',
             'flow': 'xtls-rprx-vision'
         }
     }
@@ -189,7 +209,13 @@ async def check_subscription_callback(callback: CallbackQuery):
                 session.commit()
             
             # Generate Reality config
-            config = generate_reality_config(key.uuid, f"user_{user.id}")
+            config = generate_reality_config(
+                key.uuid,
+                user.email,
+                settings.SERVER_IP,
+                settings.XRAY_REALITY_PUBKEY,
+                settings.XRAY_REALITY_SHORT_IDS[0] if settings.XRAY_REALITY_SHORT_IDS else ""
+            )
             
             if not config:
                 await callback.answer("❌ Ошибка при генерации конфигурации. Пожалуйста, попробуйте позже.", show_alert=True)
@@ -209,7 +235,7 @@ async def check_subscription_callback(callback: CallbackQuery):
                 "2. Нажмите на кнопку ниже, чтобы скопировать конфиг\n"
                 "3. Импортируйте конфиг в приложение\n"
                 "4. Активируйте соединение"
-            ).format(SERVER_IP, key.uuid)
+            ).format(settings.SERVER_IP, key.uuid)
             
             # Create keyboard
             keyboard = InlineKeyboardBuilder()
@@ -243,28 +269,60 @@ async def check_subscription_callback(callback: CallbackQuery):
 @dp.callback_query(F.data.startswith("copy_config_"))
 async def copy_config_callback(callback: CallbackQuery):
     """Handle copy config callback."""
-    key_id = callback.data.replace("copy_config_", "")
-    key_data = db.get_active_key(callback.from_user.id)
-    
-    if key_data and key_data['key_id'] == key_id:
-        vless_url = generate_vless_url(
-            uuid=key_data['uuid'],
-            domain=SERVER_IP  # Replace with your domain
-        )
+    try:
+        key_id = int(callback.data.replace("copy_config_", ""))
+        user_id = callback.from_user.id
         
-        # Copy to clipboard and show confirmation
-        await callback.answer("✅ Конфиг скопирован в буфер обмена", show_alert=True)
-        
-        # Send instructions
-        await callback.message.answer(
-            '📱 Инструкция по настройке:\n\n'
-            '1. Скачайте приложение Xray для вашего устройства\n'
-            '2. Откройте приложение и нажмите "Добавить конфигурацию"\n'
-            '3. Вставьте скопированный URL и сохраните\n'
-            '4. Активируйте соединение'
-        )
-    else:
-        await callback.answer("❌ Ключ не найден или устарел", show_alert=True)
+        async with async_session_maker() as session:
+            # Get user's active subscription
+            subscription = await get_active_subscription(session, user_id)
+            if not subscription:
+                await callback.answer("❌ У вас нет активной подписки", show_alert=True)
+                return
+                
+            # Get user data
+            user = await get_user(session, user_id)
+            if not user:
+                await callback.answer("❌ Пользователь не найден", show_alert=True)
+                return
+            
+            # Generate config
+            config = generate_reality_config(
+                str(uuid.uuid4()),  # Generate new UUID for security
+                user.email or "",
+                settings.SERVER_IP,
+                settings.XRAY_REALITY_PUBKEY,
+                settings.XRAY_REALITY_SHORT_IDS[0] if settings.XRAY_REALITY_SHORT_IDS else ""
+            )
+            
+            if not config:
+                await callback.answer("❌ Ошибка генерации конфигурации", show_alert=True)
+                return
+                
+            # Copy to clipboard and show confirmation
+            await callback.answer("✅ Конфиг скопирован в буфер обмена", show_alert=True)
+            
+            # Send instructions
+            await callback.message.answer(
+                '📱 *Инструкция по настройке:*\n\n'
+                '1. Скачайте приложение Xray для вашего устройства\n'
+                '2. Откройте приложение и нажмите "Добавить конфигурацию"\n'
+                '3. Вставьте скопированный URL и сохраните\n'
+                '4. Активируйте соединение\n\n'
+                '⚠️ *Внимание:* Не передавайте этот конфиг третьим лицам!',
+                parse_mode="Markdown"
+            )
+            
+            # Send the config as a message
+            config_text = f'```\n{config["vless_url"]}\n```'
+            await callback.message.answer(
+                config_text,
+                parse_mode="Markdown"
+            )
+            
+    except Exception as e:
+        logger.error(f"Error in copy_config_callback: {e}", exc_info=True)
+        await callback.answer("❌ Произошла ошибка. Пожалуйста, попробуйте позже.", show_alert=True)
 
 @dp.message(Command("help"))
 async def cmd_help(message: Message):
@@ -284,24 +342,35 @@ async def cmd_help(message: Message):
 async def cmd_status(message: Message):
     """Handle /status command."""
     user_id = message.from_user.id
-    key_data = db.get_active_key(user_id)
-    is_subscribed = await check_subscription(user_id)
+    
+    # Get user data from database
+    async with async_session_maker() as session:
+        user = await get_user(session, user_id)
+        if not user:
+            await message.answer("❌ Пользователь не найден. Пожалуйста, начните с команды /start")
+            return
+            
+        subscription = await get_active_subscription(session, user_id)
+        is_subscribed = await check_subscription(user_id, settings.CHANNEL_USERNAME)
     
     if not is_subscribed:
         text = "❌ Ваша подписка не активна. Пожалуйста, подпишитесь на канал и попробуйте снова."
-    elif not key_data:
-        text = "❌ У вас нет активного ключа. Пожалуйста, нажмите /start для генерации нового ключа."
+    elif not subscription:
+        text = "❌ У вас нет активной подписки. Пожалуйста, нажмите /start для активации."
     else:
-        expires_at = datetime.fromisoformat(key_data['expires_at']).strftime("%d.%m.%Y %H:%M")
-        data_used = key_data['used_bytes'] / (1024 ** 3)  # Convert to GB
-        data_limit = key_data['data_limit_bytes'] / (1024 ** 3)  # Convert to GB
+        expires_at = subscription.end_date.strftime("%d.%m.%Y %H:%M")
+        data_used = subscription.data_used / (1024 ** 3)  # Convert to GB
+        data_limit = subscription.data_limit / (1024 ** 3)  # Convert to GB
+        data_remaining = subscription.data_remaining / (1024 ** 3)  # Convert to GB
         
         text = (
             "📊 *Статус вашей подписки*\n\n"
-            f"🔑 Статус: `{'Активна' if is_subscribed else 'Не активна'}`\n"
+            f"👤 Пользователь: `{user.full_name or user.telegram_id}`\n"
             f"📅 Истекает: `{expires_at}`\n"
             f"📊 Трафик: `{data_used:.2f} GB / {data_limit:.2f} GB`\n"
-            f"📡 IP-адрес: `{SERVER_IP}`"
+            f"🔄 Осталось: `{data_remaining:.2f} GB`\n"
+            f"📡 IP-адрес: `{settings.SERVER_IP}`\n"
+            f"🔑 Статус: `{'Активна' if subscription.is_active and not subscription.is_expired else 'Не активна'}`"
         )
     
     await message.answer(text, parse_mode="Markdown")
@@ -312,7 +381,7 @@ async def cmd_admin(message: Message):
     """Handle /admin command."""
     user_id = message.from_user.id
     
-    if user_id not in ADMIN_IDS:
+    if user_id not in settings.ADMIN_IDS:
         await message.answer("❌ У вас нет прав администратора.")
         return
     
@@ -328,7 +397,7 @@ async def cmd_admin(message: Message):
 @dp.callback_query(F.data == "admin_stats")
 async def admin_stats_callback(callback: CallbackQuery):
     """Handle admin stats callback."""
-    if callback.from_user.id not in ADMIN_IDS:
+    if callback.from_user.id not in settings.ADMIN_IDS:
         await callback.answer("❌ У вас нет прав администратора.", show_alert=True)
         return
     
@@ -345,46 +414,53 @@ async def admin_stats_callback(callback: CallbackQuery):
     
     await callback.message.edit_text(text, parse_mode="Markdown")
 
-# Background tasks
 async def check_subscriptions():
     """Check user subscriptions and deactivate expired ones."""
     logger.info("Running subscription check...")
     
-    # Get all active subscriptions
-    active_users = db.get_active_subscriptions()
-    
-    for user in active_users:
-        try:
-            is_subscribed = await check_subscription(user['user_id'])
-            
-            if not is_subscribed:
-                # User unsubscribed, deactivate their key
-                db.revoke_key(user['user_id'])
-                
-                # Notify user
-                try:
-                    await bot.send_message(
-                        chat_id=user['user_id'],
-                        text=("❌ Ваш ключ доступа был деактивирован, так как вы отписались от канала.\n"
-                             "Для повторной активации подпишитесь на канал и нажмите /start")
-                    )
-                except Exception as e:
-                    logger.error(f"Failed to notify user {user['user_id']}: {e}")
-                    
-        except Exception as e:
-            logger.error(f"Error processing user {user.get('user_id')}: {e}")
-
-async def check_xray_status():
-    """Check Xray service status and restart if necessary."""
     try:
-        status = server_manager.get_xray_status()
-        
-        if not status['is_running']:
-            logger.warning("Xray service is not running. Attempting to restart...")
-            server_manager.restart_xray()
+        async with async_session_maker() as session:
+            # Get all active subscriptions
+            result = await session.execute(
+                select(Subscription, User)
+                .join(User, Subscription.user_id == User.id)
+                .where(Subscription.is_active == True)
+            )
+            
+            for subscription, user in result.all():
+                try:
+                    is_subscribed = await check_subscription(user.telegram_id, settings.CHANNEL_USERNAME)
+                    
+                    if not is_subscribed:
+                        # User unsubscribed, deactivate their subscription
+                        subscription.is_active = False
+                        session.add(subscription)
+                        
+                        # Notify user
+                        try:
+                            await bot.send_message(
+                                chat_id=user.telegram_id,
+                                text=("❌ Ваша подписка была деактивирована, так как вы отписались от канала.\n"
+                                      "Пожалуйста, подпишитесь снова и нажмите /start для активации подписки.")
+                            )
+                        except Exception as e:
+                            logger.error(f"Error sending unsubscription notice to user {user.telegram_id}: {e}")
+                            
+                except Exception as e:
+                    logger.error(f"Error processing subscription for user {user.telegram_id}: {e}")
+                    
+            # Commit all changes
+            await session.commit()
+            
+            # Restart Xray to apply changes if needed
+            if hasattr(server_manager, 'restart_xray'):
+                try:
+                    await server_manager.restart_xray()
+                except Exception as e:
+                    logger.error(f"Error restarting Xray: {e}")
             
     except Exception as e:
-        logger.error(f"Error checking Xray status: {e}")
+        logger.error(f"Error in check_subscriptions: {e}", exc_info=True)
 
 # Scheduler setup
 def setup_scheduler():
@@ -411,17 +487,31 @@ def setup_scheduler():
     scheduler.start()
 
 # Startup and shutdown
-def setup_bot():
+async def setup_bot():
     """Setup the bot."""
-    # Create database tables
-    db.setup()
-    
-    # Setup scheduler
-    setup_scheduler()
-    
-    # Check if Xray is installed and running
-    if not server_manager.is_xray_installed():
-        logger.warning("Xray is not installed. Please install it manually or run the setup script.")
+    try:
+        # Initialize database
+        async with async_session_maker() as session:
+            await init_db()
+            logger.info("Database initialized")
+        
+        # Setup scheduler
+        setup_scheduler()
+        scheduler.start()
+        logger.info("Scheduler started")
+        
+        # Register handlers
+        dp.include_routers(
+            # Add your routers here
+        )
+        
+        # Start the bot
+        logger.info("Starting bot...")
+        await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types())
+        
+    except Exception as e:
+        logger.error(f"Error setting up bot: {e}", exc_info=True)
+        raise
 
 async def main():
     """Main function to start the bot."""
