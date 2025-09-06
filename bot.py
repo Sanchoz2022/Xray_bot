@@ -87,7 +87,7 @@ async def check_subscription(user_id: int, channel_username: str) -> bool:
         channel_username = channel_username.lstrip('@')
         
         member = await bot.get_chat_member(
-            chat_id=channel_username,
+            chat_id=f"@{channel_username}",
             user_id=user_id
         )
         return member.status in ['member', 'administrator', 'creator']
@@ -183,7 +183,7 @@ async def cmd_start(message: Message):
     
     # Create keyboard
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="📢 Подписаться на канал", url=f"https://t.me/{CHANNEL_USERNAME.lstrip('@')}")],
+        [InlineKeyboardButton(text="📢 Подписаться на канал", url=f"https://t.me/{settings.CHANNEL_USERNAME.lstrip('@')}")],
         [InlineKeyboardButton(text="✅ Проверить подписку", callback_data="check_subscription")],
         [InlineKeyboardButton(text="📊 Статистика", callback_data="user_stats")]
     ])
