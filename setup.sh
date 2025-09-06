@@ -658,8 +658,11 @@ chmod 644 /usr/local/etc/xray/config.json
 
 # Create log directory with proper permissions
 mkdir -p /var/log/xray
-chown nobody:nogroup /var/log/xray
+chown root:root /var/log/xray
 chmod 755 /var/log/xray
+touch /var/log/xray/access.log /var/log/xray/error.log
+chown root:root /var/log/xray/access.log /var/log/xray/error.log
+chmod 644 /var/log/xray/access.log /var/log/xray/error.log
 
 # Enable and start Xray service
 echo -e "${GREEN}Starting Xray service...${NC}"
