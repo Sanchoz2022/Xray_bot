@@ -454,8 +454,12 @@ if ! grep -q "XRAY_REALITY_PRIVKEY=" .env || grep -q "XRAY_REALITY_PRIVKEY=$" .e
     echo "$REALITY_KEYS"
     
     # Parse keys - new xray format uses PrivateKey and Password
-    PRIVATE_KEY=$(echo "$REALITY_KEYS" | grep "PrivateKey:" | awk '{print $2}' | tr -d '\r\n')
-    PUBLIC_KEY=$(echo "$REALITY_KEYS" | grep "Password:" | awk '{print $2}' | tr -d '\r\n')
+    PRIVATE_KEY=$(echo "$REALITY_KEYS" | grep "PrivateKey:" | awk '{print $2}' | tr -d '\r\n' | tr -d ' ')
+    PUBLIC_KEY=$(echo "$REALITY_KEYS" | grep "Password:" | awk '{print $2}' | tr -d '\r\n' | tr -d ' ')
+    
+    # Debug: show what we found
+    echo "Debug - PrivateKey line: $(echo "$REALITY_KEYS" | grep "PrivateKey:")"
+    echo "Debug - Password line: $(echo "$REALITY_KEYS" | grep "Password:")"
     
     echo -e "${YELLOW}Parsed private key: '$PRIVATE_KEY'${NC}"
     echo -e "${YELLOW}Parsed public key: '$PUBLIC_KEY'${NC}"
@@ -647,8 +651,9 @@ else
     exit 1
 fi
 
-# Set proper permissions
-chown -R nobody:nogroup /usr/local/etc/xray
+# Set proper permissions for Xray config
+chown -R root:root /usr/local/etc/xray
+chmod 755 /usr/local/etc/xray
 chmod 644 /usr/local/etc/xray/config.json
 
 # Create log directory with proper permissions
