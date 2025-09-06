@@ -18,7 +18,7 @@ from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from config import settings
-from db import db, User, UserKey, Subscription, get_db_session
+from db import db, User, UserKey, Subscription, get_db_session, async_session_maker
 from server_manager import server_manager, ServerManager
 
 # Initialize server manager
@@ -42,6 +42,30 @@ scheduler = AsyncIOScheduler()
 class UserState(StatesGroup):
     waiting_for_domain = State()
     waiting_for_email = State()
+
+# Database helper functions
+async def get_user(session: AsyncSession, user_id: int) -> User:
+    """Get user by telegram_id."""
+    result = await session.execute(
+        select(User).where(User.telegram_id == user_id)
+    )
+    return result.scalar_one_or_none()
+
+async def get_active_subscription(session: AsyncSession, user_id: int) -> Subscription:
+    """Get active subscription for user."""
+    result = await session.execute(
+        select(Subscription)
+        .join(User, Subscription.user_id == User.id)
+        .where(User.telegram_id == user_id)
+        .where(Subscription.is_active == True)
+    )
+    return result.scalar_one_or_none()
+
+async def init_db():
+    """Initialize database tables."""
+    from db import Base, engine
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
 
 # Helper functions
 async def check_subscription(user_id: int, channel_username: str) -> bool:
