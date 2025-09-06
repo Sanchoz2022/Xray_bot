@@ -199,19 +199,13 @@ async def update_subscription_status(
     # Relationships
     user = relationship("User", back_populates="keys")
 
-class Subscription(Base):
-    """Subscription model for channel subscriptions."""
-    __tablename__ = 'subscriptions'
-    
-    user_id = Column(BigInteger, ForeignKey('users.user_id', ondelete='CASCADE'), primary_key=True)
-    is_active = Column(Boolean, default=False)
-    last_check = Column(DateTime, default=datetime.utcnow)
-    
-    # Relationships
-    user = relationship("User", back_populates="subscription")
+# The Subscription model is already defined above
+# Remove this duplicate definition
 
 # Create tables
-Base.metadata.create_all(bind=engine)
+async def create_tables():
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
 
 # Database operations
 class Database:

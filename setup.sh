@@ -230,32 +230,66 @@ EOL
     fi
 }
 
-# Function to set up Python environment
+# Function to set up Python environment and database
 setup_python_env() {
     print_header "Setting up Python environment"
     
-    # Install Python and pip if not installed
+    # Check if Python 3.8+ is installed
     if ! command_exists python3; then
-        echo -e "${YELLOW}Installing Python 3...${NC}"
+        echo -e "${GREEN}Installing Python 3...${NC}"
         apt update
         apt install -y python3 python3-pip python3-venv
     fi
     
+    PYTHON_VERSION=$(python3 -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
+    if (( $(echo "$PYTHON_VERSION < 3.8" | bc -l) )); then
+        echo -e "${YELLOW}Python 3.8 or higher is recommended. Found Python $PYTHON_VERSION${NC}"
+    else
+        echo -e "${GREEN}Python $PYTHON_VERSION is installed.${NC}"
+    fi
+    
+    # Install system dependencies
+    echo -e "${GREEN}Installing system dependencies...${NC}"
+    apt update
+    apt install -y python3-pip python3-venv python3-dev build-essential libssl-dev libffi-dev
+    
     # Create and activate virtual environment
     if [ ! -d "venv" ]; then
-        echo -e "${GREEN}Creating Python virtual environment...${NC}"
+        echo -e "${GREEN}Creating virtual environment...${NC}"
         python3 -m venv venv
     fi
     
-    # Activate virtual environment
+    echo -e "${GREEN}Activating virtual environment and installing Python dependencies...${NC}"
     source venv/bin/activate
     
-    # Upgrade pip
-    echo -e "${GREEN}Upgrading pip...${NC}"
-    pip install --upgrade pip
+    # Upgrade pip and install wheel
+    pip install --upgrade pip wheel setuptools
     
-    # Install Python dependencies
-    echo -e "${GREEN}Installing Python dependencies...${NC}"
+    # Install requirements
+    if [ -f "requirements.txt" ]; then
+        pip install -r requirements.txt
+    else
+        echo -e "${YELLOW}requirements.txt not found. Installing default dependencies...${NC}"
+        pip install aiogram==2.25.1 sqlalchemy[asyncio] aiosqlite python-dotenv python-dateutil
+    fi
+    
+    # Initialize database
+    echo -e "${GREEN}Initializing database...${NC}"
+    python3 -c "
+import asyncio
+from db import create_tables, init_db
+
+async def setup_db():
+    await create_tables()
+    await init_db()
+
+asyncio.run(setup_db())
+"
+    
+    # Set proper permissions
+    chmod 666 xray_bot.db 2>/dev/null || true
+    
+    echo -e "${GREEN}Python environment and database setup complete!${NC}"
     pip install -r requirements.txt
     
     # Install gRPC tools
