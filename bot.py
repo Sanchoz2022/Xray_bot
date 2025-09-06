@@ -536,10 +536,8 @@ async def setup_bot():
         scheduler.start()
         logger.info("Scheduler started")
         
-        # Register handlers
-        dp.include_routers(
-            # Add your routers here
-        )
+        # Handlers are already registered via decorators
+        # No need to include additional routers
         
         # Start the bot
         logger.info("Starting bot...")
