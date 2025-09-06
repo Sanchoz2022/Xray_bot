@@ -26,11 +26,19 @@ class Settings(BaseSettings):
         
     @validator('XRAY_REALITY_SHORT_IDS', pre=True)
     def parse_short_ids(cls, v):
+        if v is None:
+            return []
         if isinstance(v, str):
-            # Remove any quotes and split by comma, then strip whitespace
+            # If it's already a JSON array string, parse it
+            if v.startswith('[') and v.endswith(']'):
+                try:
+                    return json.loads(v)
+                except json.JSONDecodeError:
+                    pass
+            # Otherwise treat as comma-separated string
             v = v.strip('"\'')
             return [id.strip() for id in v.split(',') if id.strip()]
-        return v or []
+        return v
         
     CHANNEL_USERNAME: str = os.getenv('CHANNEL_USERNAME', '')
     
