@@ -421,59 +421,205 @@ chmod 600 .env
 if ! command -v xray &> /dev/null; then
     echo -e "\n${GREEN}Installing Xray...${NC}"
     bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install
-    
-    # Create Xray config directory
-    mkdir -p /usr/local/etc/xray
-    
-    # Create empty config file
-    cat > /usr/local/etc/xray/config.json <<EOL
-{
-  "log": {
-    "loglevel": "warning"
-  },
-  "inbounds": [
-    {
-      "port": 443,
-      "protocol": "vless",
-      "settings": {
-        "clients": [],
-        "decryption": "none"
-      },
-      "streamSettings": {
-        "network": "ws",
-        "security": "tls",
-        "tlsSettings": {
-          "certificates": [
-            {
-              "certificateFile": "/etc/letsencrypt/live/yourdomain.com/fullchain.pem",
-              "keyFile": "/etc/letsencrypt/live/yourdomain.com/privkey.pem"
-            }
-          ]
-        },
-        "wsSettings": {
-          "path": "/ray"
-        }
-      }
-    }
-  ],
-  "outbounds": [
-    {
-      "protocol": "freedom"
-    }
-  ]
-}
-EOL
-    
-    # Set permissions
-    chown -R nobody:nogroup /usr/local/etc/xray
-    
-    # Enable and start Xray
-    systemctl enable xray
-    systemctl start xray
-    
-    echo -e "${GREEN}Xray installed and started.${NC}"
+    echo -e "${GREEN}Xray installed successfully.${NC}"
 else
     echo -e "${YELLOW}Xray is already installed.${NC}"
+fi
+
+# Generate Reality keys if not exist in .env
+echo -e "\n${GREEN}Configuring VLESS Reality...${NC}"
+
+# Check if Reality keys exist in .env
+if ! grep -q "XRAY_REALITY_PRIVKEY=" .env || grep -q "XRAY_REALITY_PRIVKEY=$" .env; then
+    echo -e "${YELLOW}Generating Reality keys...${NC}"
+    
+    # Generate Reality keys
+    REALITY_KEYS=$(xray x25519)
+    PRIVATE_KEY=$(echo "$REALITY_KEYS" | grep "Private key:" | awk '{print $3}')
+    PUBLIC_KEY=$(echo "$REALITY_KEYS" | grep "Public key:" | awk '{print $3}')
+    
+    if [ -n "$PRIVATE_KEY" ] && [ -n "$PUBLIC_KEY" ]; then
+        # Update .env file with generated keys
+        sed -i "s/XRAY_REALITY_PRIVKEY=.*/XRAY_REALITY_PRIVKEY=$PRIVATE_KEY/" .env
+        sed -i "s/XRAY_REALITY_PUBKEY=.*/XRAY_REALITY_PUBKEY=$PUBLIC_KEY/" .env
+        echo -e "${GREEN}Reality keys generated and saved to .env${NC}"
+    else
+        echo -e "${RED}Failed to generate Reality keys${NC}"
+        exit 1
+    fi
+else
+    echo -e "${GREEN}Reality keys already configured in .env${NC}"
+fi
+
+# Get current configuration values from .env
+SERVER_IP=$(grep "SERVER_IP=" .env | cut -d'=' -f2 | head -1)
+REALITY_DEST=$(grep "XRAY_REALITY_DEST=" .env | cut -d'=' -f2 | head -1)
+PRIVATE_KEY=$(grep "XRAY_REALITY_PRIVKEY=" .env | cut -d'=' -f2 | head -1)
+SHORT_IDS=$(grep "XRAY_REALITY_SHORT_IDS=" .env | cut -d'=' -f2 | head -1)
+
+# Set defaults if empty
+[ -z "$SERVER_IP" ] && SERVER_IP="0.0.0.0"
+[ -z "$REALITY_DEST" ] && REALITY_DEST="www.google.com:443"
+[ -z "$SHORT_IDS" ] && SHORT_IDS="00000000"
+
+# Create Xray config directory
+mkdir -p /usr/local/etc/xray
+
+echo -e "${GREEN}Creating Xray VLESS Reality configuration...${NC}"
+
+# Create complete VLESS Reality configuration
+cat > /usr/local/etc/xray/config.json <<EOL
+{
+    "log": {
+        "loglevel": "warning",
+        "access": "/var/log/xray/access.log",
+        "error": "/var/log/xray/error.log"
+    },
+    "api": {
+        "tag": "api",
+        "services": ["HandlerService", "LoggerService", "StatsService"]
+    },
+    "stats": {},
+    "policy": {
+        "levels": {
+            "0": {
+                "statsUserUplink": true,
+                "statsUserDownlink": true
+            }
+        },
+        "system": {
+            "statsInboundUplink": true,
+            "statsInboundDownlink": true,
+            "statsOutboundUplink": true,
+            "statsOutboundDownlink": true
+        }
+    },
+    "inbounds": [
+        {
+            "port": 443,
+            "protocol": "vless",
+            "settings": {
+                "clients": [],
+                "decryption": "none",
+                "fallbacks": [
+                    {
+                        "dest": "$REALITY_DEST"
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "security": "reality",
+                "realitySettings": {
+                    "show": false,
+                    "dest": "$REALITY_DEST",
+                    "xver": 0,
+                    "serverNames": [
+                        "www.google.com",
+                        "google.com"
+                    ],
+                    "privateKey": "$PRIVATE_KEY",
+                    "minClientVer": "",
+                    "maxClientVer": "",
+                    "maxTimeDiff": 0,
+                    "shortIds": [
+                        "$SHORT_IDS"
+                    ]
+                }
+            },
+            "sniffing": {
+                "enabled": true,
+                "destOverride": [
+                    "http",
+                    "tls"
+                ]
+            },
+            "tag": "inbound-443"
+        },
+        {
+            "port": 50051,
+            "listen": "127.0.0.1",
+            "protocol": "dokodemo-door",
+            "settings": {
+                "address": "127.0.0.1"
+            },
+            "tag": "api"
+        }
+    ],
+    "outbounds": [
+        {
+            "protocol": "freedom",
+            "settings": {
+                "domainStrategy": "UseIPv4"
+            },
+            "tag": "direct"
+        },
+        {
+            "protocol": "blackhole",
+            "settings": {
+                "response": {
+                    "type": "http"
+                }
+            },
+            "tag": "blocked"
+        }
+    ],
+    "routing": {
+        "domainStrategy": "IPIfNonMatch",
+        "rules": [
+            {
+                "type": "field",
+                "inboundTag": [
+                    "api"
+                ],
+                "outboundTag": "api"
+            },
+            {
+                "type": "field",
+                "protocol": [
+                    "bittorrent"
+                ],
+                "outboundTag": "blocked"
+            }
+        ]
+    }
+}
+EOL
+
+# Validate Xray configuration
+echo -e "${GREEN}Validating Xray configuration...${NC}"
+if xray -test -config /usr/local/etc/xray/config.json; then
+    echo -e "${GREEN}Xray configuration is valid.${NC}"
+else
+    echo -e "${RED}Xray configuration validation failed!${NC}"
+    exit 1
+fi
+
+# Set proper permissions
+chown -R nobody:nogroup /usr/local/etc/xray
+chmod 644 /usr/local/etc/xray/config.json
+
+# Create log directory with proper permissions
+mkdir -p /var/log/xray
+chown nobody:nogroup /var/log/xray
+chmod 755 /var/log/xray
+
+# Enable and start Xray service
+echo -e "${GREEN}Starting Xray service...${NC}"
+systemctl enable xray
+systemctl daemon-reload
+systemctl restart xray
+
+# Wait for service to start
+sleep 3
+
+# Verify Xray is running
+if systemctl is-active --quiet xray; then
+    echo -e "${GREEN}Xray service is running successfully.${NC}"
+else
+    echo -e "${RED}Failed to start Xray service. Checking logs...${NC}"
+    journalctl -u xray --no-pager -l --since="1 minute ago"
+    exit 1
 fi
 
 # Check and configure Xray gRPC API
