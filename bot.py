@@ -172,7 +172,7 @@ async def cmd_start(message: Message):
             await session.commit()
     
     # Check subscription
-    is_subscribed = await check_subscription(user.id)
+    is_subscribed = await check_subscription(user.id, settings.CHANNEL_USERNAME)
     
     # Create welcome message
     text = (
@@ -194,7 +194,7 @@ async def cmd_start(message: Message):
 async def check_subscription_callback(callback: CallbackQuery):
     """Handle subscription check callback."""
     user = callback.from_user
-    is_subscribed = await check_subscription(user.id)
+    is_subscribed = await check_subscription(user.id, settings.CHANNEL_USERNAME)
     
     if not is_subscribed:
         await callback.answer("❌ Вы не подписаны на канал. Пожалуйста, подпишитесь и попробуйте снова.", show_alert=True)
