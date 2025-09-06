@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # Xray_bot
 =======
 # Xray VPN Bot with Reality Protocol
