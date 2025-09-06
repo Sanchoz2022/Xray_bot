@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import List, Optional
 from dotenv import load_dotenv
 from pydantic import Field, validator
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # Load environment variables from .env file
 load_dotenv()
@@ -14,8 +14,7 @@ class Settings(BaseSettings):
     BOT_TOKEN: str = os.getenv('BOT_TOKEN', '')
     ADMIN_IDS: List[int] = Field(
         default_factory=list,
-        description="Comma-separated list of admin user IDs",
-        json_schema_extra={"env": "ADMIN_IDS"}
+        description="Comma-separated list of admin user IDs"
     )
     
     @validator('ADMIN_IDS', pre=True)
@@ -84,8 +83,7 @@ class Settings(BaseSettings):
     XRAY_REALITY_PUBKEY: str = os.getenv('XRAY_REALITY_PUBKEY', '')
     XRAY_REALITY_SHORT_IDS: List[str] = Field(
         default_factory=lambda: ['00000000'],
-        description="Comma-separated list of short IDs for Reality protocol. Can be a JSON array or comma-separated string.",
-        json_schema_extra={"env": "XRAY_REALITY_SHORT_IDS"}
+        description="Comma-separated list of short IDs for Reality protocol. Can be a JSON array or comma-separated string."
     )
     
     @validator('XRAY_REALITY_SHORT_IDS', pre=True)
@@ -170,9 +168,13 @@ class Settings(BaseSettings):
     LOG_DIR: Path = BASE_DIR / 'logs'
     LOG_FILE: Path = LOG_DIR / 'bot.log'
     
-    class Config:
-        env_file = '.env'
-        env_file_encoding = 'utf-8'
+    model_config = SettingsConfigDict(
+        env_file='.env',
+        env_file_encoding='utf-8',
+        # Disable automatic JSON parsing for environment variables
+        env_parse_none_str='',
+        case_sensitive=False
+    )
 
 # Create settings instance
 settings = Settings()
