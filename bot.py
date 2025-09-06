@@ -535,37 +535,54 @@ def setup_scheduler():
 
 # Startup and shutdown
 async def setup_bot():
-    """Setup the bot."""
-    try:
-        # Initialize database
-        async with async_session_maker() as session:
-            await init_db()
-            logger.info("Database initialized")
-        
-        # Setup scheduler
-        setup_scheduler()
-        scheduler.start()
-        logger.info("Scheduler started")
-        
-        # Handlers are already registered via decorators
-        # No need to include additional routers
-        
-        # Start the bot
-        logger.info("Starting bot...")
-        await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types())
-        
-    except Exception as e:
-        logger.error(f"Error setting up bot: {e}", exc_info=True)
-        raise
-
-async def main():
-    """Main function to start the bot."""
-    # Setup the bot
-    asyncio.run(setup_bot())
+    """Setup and start the bot."""
+    max_retries = 5
+    retry_delay = 10
     
-    # Start polling
-    logger.info("Starting bot...")
-    await dp.start_polling(bot)
+    for attempt in range(max_retries):
+        try:
+            logger.info(f"Setting up bot... (attempt {attempt + 1}/{max_retries})")
+            
+            # Initialize database
+            async with async_session_maker() as session:
+                await init_db()
+                logger.info("Database initialized")
+            
+            # Setup scheduler
+            setup_scheduler()
+            scheduler.start()
+            logger.info("Scheduler started")
+            
+            # Test connection to Telegram API
+            logger.info("Testing Telegram API connection...")
+            try:
+                me = await bot.get_me()
+                logger.info(f"Successfully connected to Telegram API. Bot: @{me.username}")
+            except Exception as api_error:
+                logger.error(f"Failed to connect to Telegram API: {api_error}")
+                if attempt < max_retries - 1:
+                    logger.info(f"Retrying in {retry_delay} seconds...")
+                    await asyncio.sleep(retry_delay)
+                    continue
+                else:
+                    raise
+            
+            # Handlers are already registered via decorators
+            # No need to include additional routers
+            
+            # Start the bot
+            logger.info("Starting bot polling...")
+            await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types())
+            break
+            
+        except Exception as e:
+            logger.error(f"Error setting up bot (attempt {attempt + 1}): {e}", exc_info=True)
+            if attempt < max_retries - 1:
+                logger.info(f"Retrying in {retry_delay} seconds...")
+                await asyncio.sleep(retry_delay)
+            else:
+                logger.error("Max retries reached. Bot startup failed.")
+                raise
 
 if __name__ == "__main__":
     asyncio.run(setup_bot())
