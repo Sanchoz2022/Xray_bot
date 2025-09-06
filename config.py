@@ -27,20 +27,38 @@ class Settings(BaseSettings):
     @validator('XRAY_REALITY_SHORT_IDS', pre=True)
     def parse_short_ids(cls, v):
         if v is None:
-            return []
+            return ['00000000']  # Default short ID if none provided
+            
+        # If it's already a list, return as is
+        if isinstance(v, list):
+            return v if v else ['00000000']
+            
         if isinstance(v, str):
-            # If it's already a JSON array string, parse it
+            # Remove any surrounding quotes
+            v = v.strip('"\'')
+            
+            # If empty string, return default
+            if not v:
+                return ['00000000']
+                
+            # If it's a JSON array string, try to parse it
             if v.startswith('[') and v.endswith(']'):
                 try:
-                    return json.loads(v)
+                    result = json.loads(v)
+                    if isinstance(result, list):
+                        return result if result else ['00000000']
                 except json.JSONDecodeError:
                     pass
-            # Otherwise treat as comma-separated string
-            v = v.strip('"\'')
-            if not v:  # If string is empty after stripping
-                return []
-            return [id.strip() for id in v.split(',') if id.strip()]
-        return v or []
+                    
+            # If it's a single value, wrap it in a list
+            if not any(c in v for c in '[],'):
+                return [v] if v.strip() else ['00000000']
+                
+            # Handle comma-separated values
+            return [id.strip() for id in v.split(',') if id.strip()] or ['00000000']
+            
+        # If we get here, return default
+        return ['00000000']
         
     CHANNEL_USERNAME: str = os.getenv('CHANNEL_USERNAME', '')
     

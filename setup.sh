@@ -88,12 +88,22 @@ configure_xray() {
         XRAY_REALITY_PRIVKEY=$(echo "$KEYS" | grep 'Private key:' | awk '{print $3}')
         XRAY_REALITY_PUBKEY=$(echo "$KEYS" | grep 'Public key:' | awk '{print $3}')
         
-        # Update .env file with new keys
+        # Set default short ID if not set
+        if [ -z "$XRAY_REALITY_SHORT_IDS" ]; then
+            XRAY_REALITY_SHORT_IDS='["00000000"]'  # Default short ID
+        fi
+        
+        # Update .env file with new keys and settings
         if [ -f ".env" ]; then
+            # Remove existing settings if they exist
             sed -i "/^XRAY_REALITY_PRIVKEY=/d" .env
             sed -i "/^XRAY_REALITY_PUBKEY=/d" .env
+            sed -i "/^XRAY_REALITY_SHORT_IDS=/d" .env
+            
+            # Add new settings
             echo "XRAY_REALITY_PRIVKEY=$XRAY_REALITY_PRIVKEY" >> .env
             echo "XRAY_REALITY_PUBKEY=$XRAY_REALITY_PUBKEY" >> .env
+            echo "XRAY_REALITY_SHORT_IDS='$XRAY_REALITY_SHORT_IDS'" >> .env
         fi
         
         echo -e "${GREEN}Generated Reality keys:${NC}"
