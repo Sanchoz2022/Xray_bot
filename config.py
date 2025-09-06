@@ -42,8 +42,8 @@ class Settings(BaseSettings):
     XRAY_API_TAG: str = 'api'
     
     # Xray Reality settings
-    XRAY_REALITY_PRIVKEY: str = os.getenv('XRAY_REALITY_PRIVKEY', '')
-    XRAY_REALITY_PUBKEY: str = os.getenv('XRAY_REALITY_PUBKEY', '')
+    XRAY_REALITY_PRIVKEY: Optional[str] = os.getenv('XRAY_REALITY_PRIVKEY', '')
+    XRAY_REALITY_PUBKEY: Optional[str] = os.getenv('XRAY_REALITY_PUBKEY', '')
     
     # Parse XRAY_REALITY_SHORT_IDS directly from environment
     @property
@@ -93,6 +93,8 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file='.env',
         env_file_encoding='utf-8',
+        # Allow extra fields to prevent validation errors
+        extra='allow',
         # Disable automatic JSON parsing for environment variables
         env_parse_none_str='',
         case_sensitive=False
