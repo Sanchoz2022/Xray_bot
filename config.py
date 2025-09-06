@@ -107,7 +107,7 @@ os.makedirs(settings.LOG_DIR, exist_ok=True)
 XRAY_REALITY_XVER = 0
 
 # Generate Reality keys if not set
-if not XRAY_REALITY_PRIVKEY or not XRAY_REALITY_PUBKEY:
+if not settings.XRAY_REALITY_PRIVKEY or not settings.XRAY_REALITY_PUBKEY:
     import subprocess
     try:
         result = subprocess.run(
@@ -118,27 +118,17 @@ if not XRAY_REALITY_PRIVKEY or not XRAY_REALITY_PUBKEY:
         if result.returncode == 0:
             for line in result.stdout.split('\n'):
                 if 'Private key' in line:
-                    XRAY_REALITY_PRIVKEY = line.split(':')[1].strip()
+                    private_key = line.split(':')[1].strip()
+                    settings.XRAY_REALITY_PRIVKEY = private_key
                 elif 'Public key' in line:
-                    XRAY_REALITY_PUBKEY = line.split(':')[1].strip()
+                    public_key = line.split(':')[1].strip()
+                    settings.XRAY_REALITY_PUBKEY = public_key
             
             # Save to .env file if not exists
             env_file = Path(__file__).parent / '.env'
             if not env_file.exists():
                 with open(env_file, 'w') as f:
-                    f.write(f'XRAY_REALITY_PRIVKEY={XRAY_REALITY_PRIVKEY}\n')
-                    f.write(f'XRAY_REALITY_PUBKEY={XRAY_REALITY_PUBKEY}\n')
+                    f.write(f'XRAY_REALITY_PRIVKEY={settings.XRAY_REALITY_PRIVKEY}\n')
+                    f.write(f'XRAY_REALITY_PUBKEY={settings.XRAY_REALITY_PUBKEY}\n')
     except Exception as e:
         print(f"Warning: Could not generate Xray Reality keys: {e}")
-
-# Database configuration
-DB_URL = os.getenv('DATABASE_URL', f'sqlite:///{Path(__file__).parent}/xray_bot.db')
-
-# Paths
-BASE_DIR = Path(__file__).parent
-LOG_DIR = BASE_DIR / 'logs'
-LOG_FILE = LOG_DIR / 'bot.log'
-XRAY_LOGFILE = '/var/log/xray/access.log'
-
-# Create necessary directories
-os.makedirs(LOG_DIR, exist_ok=True)
