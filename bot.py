@@ -156,8 +156,12 @@ async def cmd_start(message: Message):
     user = message.from_user
     
     # Add user to database
-    with get_db_session() as session:
-        db_user = session.query(User).filter(User.telegram_id == user.id).first()
+    async with async_session_maker() as session:
+        user_result = await session.execute(
+            select(User).where(User.telegram_id == user.id)
+        )
+        db_user = user_result.scalar_one_or_none()
+        
         if not db_user:
             db_user = User(
                 telegram_id=user.id,
@@ -165,7 +169,7 @@ async def cmd_start(message: Message):
                 full_name=f"{user.first_name or ''} {user.last_name or ''}".strip()
             )
             session.add(db_user)
-            session.commit()
+            await session.commit()
     
     # Check subscription
     is_subscribed = await check_subscription(user.id)
@@ -197,25 +201,32 @@ async def check_subscription_callback(callback: CallbackQuery):
         return
     
     try:
-        with get_db_session() as session:
+        async with async_session_maker() as session:
             # Update subscription status
-            db_user = session.query(User).filter(User.telegram_id == user.id).first()
+            user_result = await session.execute(
+                select(User).where(User.telegram_id == user.id)
+            )
+            db_user = user_result.scalar_one_or_none()
+            
             if not db_user:
                 await callback.answer("❌ Пользователь не найден. Пожалуйста, начните с /start", show_alert=True)
                 return
                 
             # Get or create user key
-            key = session.query(UserKey).filter(
-                UserKey.user_id == db_user.id,
-                UserKey.is_active == True
-            ).first()
+            key_result = await session.execute(
+                select(UserKey).where(
+                    UserKey.user_id == db_user.id,
+                    UserKey.is_active == True
+                )
+            )
+            key = key_result.scalar_one_or_none()
             
             if not key:
                 # Generate new UUID for the user
                 user_uuid = str(uuid.uuid4())
                 
                 # Add user to Xray via gRPC
-                if not server_manager.add_user(email=f"user_{user.id}@xray.com", user_id=user_uuid):
+                if not server_manager.add_vless_user(email=f"user_{user.id}@xray.com", uuid_str=user_uuid):
                     await callback.answer("❌ Ошибка при настройке VPN. Пожалуйста, попробуйте позже.", show_alert=True)
                     return
                 
@@ -228,7 +239,7 @@ async def check_subscription_callback(callback: CallbackQuery):
                     expires_at=datetime.utcnow() + timedelta(days=30)  # 30 days validity
                 )
                 session.add(key)
-                session.commit()
+                await session.commit()
             
             # Generate Reality config
             config = generate_reality_config(
