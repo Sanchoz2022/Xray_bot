@@ -196,15 +196,6 @@ async def update_subscription_status(
 
 # Create a global database instance for backward compatibility
     
-    id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(BigInteger, ForeignKey('users.user_id', ondelete='CASCADE'), nullable=False)
-    uuid = Column(String(36), unique=True, index=True, nullable=False)
-    is_active = Column(Boolean, default=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    expires_at = Column(DateTime, nullable=True)
-    data_limit_bytes = Column(BigInteger, default=1073741824)  # 1GB default
-    used_bytes = Column(BigInteger, default=0)
-    
     # Relationships
     user = relationship("User", back_populates="keys")
 
