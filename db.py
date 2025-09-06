@@ -1,8 +1,8 @@
 import logging
 from typing import Optional, List, Dict, Any, AsyncGenerator
 from datetime import datetime, timedelta
-from sqlalchemy import select, update, delete, func, Column, Integer, String, DateTime, Boolean, ForeignKey, Text
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
+from sqlalchemy import select, update, delete, func, Column, Integer, String, DateTime, Boolean, ForeignKey, Text, BigInteger
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 from sqlalchemy.orm import sessionmaker, selectinload, declarative_base, relationship, Session
 from sqlalchemy.pool import NullPool
 
@@ -20,58 +20,71 @@ class User(Base):
     __tablename__ = 'users'
     
     id = Column(Integer, primary_key=True, index=True)
-    telegram_id = Column(Integer, unique=True, index=True, nullable=False)
-    username = Column(String, nullable=True)
-    full_name = Column(String, nullable=True)
+    telegram_id = Column(BigInteger, unique=True, index=True, nullable=False)
+    username = Column(String(255), nullable=True)
+    full_name = Column(String(255), nullable=True)
     is_admin = Column(Boolean, default=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     
     # Relationships
-    subscriptions = relationship("Subscription", back_populates="user")
+    keys = relationship("UserKey", back_populates="user", cascade="all, delete-orphan")
+    subscription = relationship("Subscription", back_populates="user", uselist=False, cascade="all, delete-orphan")
     
     def __repr__(self):
         return f"<User {self.telegram_id} ({self.username or self.full_name})>"
 
-class Subscription(Base):
-    __tablename__ = 'subscriptions'
+class UserKey(Base):
+    __tablename__ = 'user_keys'
     
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
-    start_date = Column(DateTime(timezone=True), server_default=func.now())
-    end_date = Column(DateTime(timezone=True), nullable=False)
-    data_limit = Column(Integer, nullable=False)  # in bytes
-    data_used = Column(Integer, default=0)  # in bytes
+    user_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    uuid = Column(String(36), unique=True, index=True, nullable=False)
     is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    expires_at = Column(DateTime(timezone=True), nullable=True)
+    data_limit_bytes = Column(BigInteger, default=1073741824)  # 1GB default
+    used_bytes = Column(BigInteger, default=0)
     
     # Relationships
-    user = relationship("User", back_populates="subscriptions")
+    user = relationship("User", back_populates="keys")
     
     @property
     def data_remaining(self) -> int:
-        return max(0, self.data_limit - self.data_used)
+        return max(0, self.data_limit_bytes - self.used_bytes)
     
     @property
     def is_expired(self) -> bool:
-        return datetime.now() > self.end_date
+        return self.expires_at and datetime.now() > self.expires_at
     
     @property
     def has_data(self) -> bool:
         return self.data_remaining > 0
 
+class Subscription(Base):
+    __tablename__ = 'subscriptions'
+    
+    user_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'), primary_key=True)
+    is_active = Column(Boolean, default=False)
+    last_check = Column(DateTime(timezone=True), server_default=func.now())
+    
+    # Relationships
+    user = relationship("User", back_populates="subscription")
+
 # Database URL
-DATABASE_URL = settings.DATABASE_URL
+DATABASE_URL = settings.DATABASE_URL if hasattr(settings, 'DATABASE_URL') else "sqlite+aiosqlite:///xray_bot.db"
 
 # Create async engine
 engine = create_async_engine(
     DATABASE_URL,
-    echo=settings.SQLALCHEMY_ECHO,
-    pool_size=settings.SQLALCHEMY_POOL_SIZE,
-    max_overflow=settings.SQLALCHEMY_MAX_OVERFLOW,
-    pool_pre_ping=True
+    echo=True,
+    future=True,
+    pool_pre_ping=True,
+    pool_size=10,
+    max_overflow=20
 )
 
 # Create async session factory
-async_session_maker = sessionmaker(
+async_session_maker = async_sessionmaker(
     bind=engine,
     class_=AsyncSession,
     expire_on_commit=False,
@@ -137,89 +150,51 @@ async def get_or_create_user(
         user = await create_user(session, telegram_id, username, full_name)
     return user
 
-# Subscription operations
-async def create_subscription(
+# Key operations
+async def create_key(
     session: AsyncSession,
     user_id: int,
-    days: int,
-    data_limit_gb: float
-) -> Subscription:
-    """Create new subscription"""
-    now = datetime.now()
-    subscription = Subscription(
+    uuid_str: str,
+    days_valid: int = 30,
+    data_limit_gb: int = 1
+) -> UserKey:
+    """Create new user key"""
+    key = UserKey(
         user_id=user_id,
-        start_date=now,
-        end_date=now + timedelta(days=days),
-        data_limit=int(data_limit_gb * 1024 * 1024 * 1024),  # Convert GB to bytes
-        data_used=0,
-        is_active=True
+        uuid=uuid_str,
+        expires_at=datetime.now() + timedelta(days=days_valid),
+        data_limit_bytes=data_limit_gb * 1024 * 1024 * 1024
     )
-    session.add(subscription)
+    session.add(key)
     await session.commit()
-    await session.refresh(subscription)
-    return subscription
+    await session.refresh(key)
+    return key
 
-async def get_active_subscription(
-    session: AsyncSession,
-    user_id: int
-) -> Optional[Subscription]:
-    """Get user's active subscription"""
+async def get_active_key(session: AsyncSession, user_id: int) -> Optional[UserKey]:
+    """Get user's active key"""
     result = await session.execute(
-        select(Subscription)
-        .where(Subscription.user_id == user_id)
-        .where(Subscription.is_active == True)
-        .order_by(Subscription.end_date.desc())
+        select(UserKey)
+        .where(UserKey.user_id == user_id)
+        .where(UserKey.is_active == True)
+        .order_by(UserKey.created_at.desc())
     )
     return result.scalars().first()
 
-async def update_subscription_data_usage(
+# Subscription operations
+async def update_subscription_status(
     session: AsyncSession,
-    subscription_id: int,
-    bytes_used: int
+    user_id: int,
+    is_active: bool
 ) -> None:
-    """Update subscription data usage"""
+    """Update user's subscription status"""
     await session.execute(
         update(Subscription)
-        .where(Subscription.id == subscription_id)
-        .values(data_used=Subscription.data_used + bytes_used)
+        .where(Subscription.user_id == user_id)
+        .values(is_active=is_active, last_check=func.now())
     )
     await session.commit()
 
-async def deactivate_expired_subscriptions(session: AsyncSession) -> None:
-    """Deactivate expired subscriptions"""
-    now = datetime.now()
-    await session.execute(
-        update(Subscription)
-        .where(Subscription.end_date < now)
-        .values(is_active=False)
-    )
-    await session.commit()
-# Create a scoped session factory
-SessionLocal = scoped_session(
-    sessionmaker(autocommit=False, autoflush=False, bind=engine)
-)
-
-Base = declarative_base()
-
-# Database models
-class User(Base):
-    """User model representing a Telegram user."""
-    __tablename__ = 'users'
-    
-    user_id = Column(BigInteger, primary_key=True, index=True)
-    username = Column(String(255), nullable=True)
-    first_name = Column(String(255), nullable=True)
-    last_name = Column(String(255), nullable=True)
-    join_date = Column(DateTime, default=datetime.utcnow)
-    is_admin = Column(Boolean, default=False)
-    
-    # Relationships
-    keys = relationship("UserKey", back_populates="user", cascade="all, delete-orphan")
-    subscription = relationship("Subscription", back_populates="user", uselist=False, cascade="all, delete-orphan")
-
-class UserKey(Base):
-    """User key model for Xray VLESS configurations."""
-    __tablename__ = 'user_keys'
+# Create a global database instance for backward compatibility
     
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(BigInteger, ForeignKey('users.user_id', ondelete='CASCADE'), nullable=False)
@@ -545,5 +520,71 @@ class Database:
         finally:
             db.close()
 
-# Create a global database instance
+# Database setup
+DATABASE_URL = "sqlite+aiosqlite:///xray_bot.db"
+
+# Create async engine
+engine = create_async_engine(
+    DATABASE_URL,
+    echo=True,
+    future=True
+)
+
+# Create async session factory
+async_session_maker = async_sessionmaker(
+    bind=engine,
+    class_=AsyncSession,
+    expire_on_commit=False
+)
+
+# Create scoped session for legacy code
+SessionLocal = sessionmaker(
+    autocommit=False,
+    autoflush=False,
+    bind=engine,
+    class_=AsyncSession
+)
+
+# Dependency to get DB session
+async def get_db() -> AsyncSession:
+    async with async_session_maker() as session:
+        try:
+            yield session
+            await session.commit()
+        except Exception:
+            await session.rollback()
+            raise
+
+# Initialize database
+async def init_db():
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+
+# Create a global database instance for backward compatibility
+class Database:
+    async def execute(self, query, **kwargs):
+        async with SessionLocal() as session:
+            try:
+                result = await session.execute(query, **kwargs)
+                await session.commit()
+                return result
+            except Exception as e:
+                await session.rollback()
+                raise e
+            
+    async def add(self, instance):
+        async with SessionLocal() as session:
+            try:
+                session.add(instance)
+                await session.commit()
+                await session.refresh(instance)
+                return instance
+            except Exception as e:
+                await session.rollback()
+                raise e
+                
+    async def close(self):
+        await engine.dispose()
+
+# Initialize database instance
 db = Database()
