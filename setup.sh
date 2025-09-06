@@ -90,7 +90,7 @@ configure_xray() {
         
         # Set default short ID if not set
         if [ -z "$XRAY_REALITY_SHORT_IDS" ]; then
-            XRAY_REALITY_SHORT_IDS='["00000000"]'  # Default short ID
+            XRAY_REALITY_SHORT_IDS="00000000"  # Default short ID
         fi
         
         # Update .env file with new keys and settings
@@ -103,7 +103,7 @@ configure_xray() {
             # Add new settings
             echo "XRAY_REALITY_PRIVKEY=$XRAY_REALITY_PRIVKEY" >> .env
             echo "XRAY_REALITY_PUBKEY=$XRAY_REALITY_PUBKEY" >> .env
-            echo "XRAY_REALITY_SHORT_IDS='$XRAY_REALITY_SHORT_IDS'" >> .env
+            echo "XRAY_REALITY_SHORT_IDS=$XRAY_REALITY_SHORT_IDS" >> .env
         fi
         
         echo -e "${GREEN}Generated Reality keys:${NC}"
@@ -118,7 +118,7 @@ configure_xray() {
         # Update .env file with short ID
         if [ -f ".env" ]; then
             sed -i "/^XRAY_REALITY_SHORT_IDS=/d" .env
-            echo "XRAY_REALITY_SHORT_IDS=\"$XRAY_REALITY_SHORT_IDS\"" >> .env
+            echo "XRAY_REALITY_SHORT_IDS=$XRAY_REALITY_SHORT_IDS" >> .env
         fi
         
         echo -e "${GREEN}Generated short ID: $XRAY_REALITY_SHORT_IDS${NC}"
