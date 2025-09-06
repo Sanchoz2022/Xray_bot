@@ -484,6 +484,23 @@ async def check_subscriptions():
     except Exception as e:
         logger.error(f"Error in check_subscriptions: {e}", exc_info=True)
 
+async def check_xray_status():
+    """Check Xray service status and restart if needed."""
+    try:
+        status = server_manager.get_xray_status()
+        
+        if not status.get('running', False):
+            logger.warning("Xray service is not running, attempting to restart...")
+            if server_manager.restart_xray():
+                logger.info("Xray service restarted successfully")
+            else:
+                logger.error("Failed to restart Xray service")
+        else:
+            logger.debug("Xray service is running normally")
+            
+    except Exception as e:
+        logger.error(f"Error checking Xray status: {e}", exc_info=True)
+
 # Scheduler setup
 def setup_scheduler():
     """Setup background tasks."""
@@ -504,9 +521,6 @@ def setup_scheduler():
         id='check_xray_status',
         replace_existing=True
     )
-    
-    # Start the scheduler
-    scheduler.start()
 
 # Startup and shutdown
 async def setup_bot():
