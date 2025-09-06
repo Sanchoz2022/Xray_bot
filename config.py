@@ -24,6 +24,14 @@ class Settings(BaseSettings):
             return [int(id.strip()) for id in v.split(',') if id.strip().isdigit()]
         return v or []
         
+    @validator('XRAY_REALITY_SHORT_IDS', pre=True)
+    def parse_short_ids(cls, v):
+        if isinstance(v, str):
+            # Remove any quotes and split by comma, then strip whitespace
+            v = v.strip('"\'')
+            return [id.strip() for id in v.split(',') if id.strip()]
+        return v or []
+        
     CHANNEL_USERNAME: str = os.getenv('CHANNEL_USERNAME', '')
     
     # Server configuration
