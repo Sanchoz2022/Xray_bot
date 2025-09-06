@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 from typing import List, Optional
 from dotenv import load_dotenv
+from pydantic import Field, validator
 from pydantic_settings import BaseSettings
 
 # Load environment variables from .env file
@@ -11,7 +12,18 @@ load_dotenv()
 class Settings(BaseSettings):
     # Bot configuration
     BOT_TOKEN: str = os.getenv('BOT_TOKEN', '')
-    ADMIN_IDS: List[int] = [int(id) for id in os.getenv('ADMIN_IDS', '').split(',') if id]
+    ADMIN_IDS: List[int] = Field(
+        default_factory=list,
+        description="Comma-separated list of admin user IDs",
+        json_schema_extra={"env": "ADMIN_IDS"}
+    )
+    
+    @validator('ADMIN_IDS', pre=True)
+    def parse_admin_ids(cls, v):
+        if isinstance(v, str):
+            return [int(id.strip()) for id in v.split(',') if id.strip().isdigit()]
+        return v or []
+        
     CHANNEL_USERNAME: str = os.getenv('CHANNEL_USERNAME', '')
     
     # Server configuration
