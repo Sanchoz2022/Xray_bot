@@ -453,9 +453,9 @@ if ! grep -q "XRAY_REALITY_PRIVKEY=" .env || grep -q "XRAY_REALITY_PRIVKEY=$" .e
     echo -e "${YELLOW}Raw output from xray x25519:${NC}"
     echo "$REALITY_KEYS"
     
-    # Parse keys with better error handling
-    PRIVATE_KEY=$(echo "$REALITY_KEYS" | grep -i "private key:" | awk '{print $3}' | tr -d '\r\n')
-    PUBLIC_KEY=$(echo "$REALITY_KEYS" | grep -i "public key:" | awk '{print $3}' | tr -d '\r\n')
+    # Parse keys - new xray format uses PrivateKey and Password
+    PRIVATE_KEY=$(echo "$REALITY_KEYS" | grep "PrivateKey:" | awk '{print $2}' | tr -d '\r\n')
+    PUBLIC_KEY=$(echo "$REALITY_KEYS" | grep "Password:" | awk '{print $2}' | tr -d '\r\n')
     
     echo -e "${YELLOW}Parsed private key: '$PRIVATE_KEY'${NC}"
     echo -e "${YELLOW}Parsed public key: '$PUBLIC_KEY'${NC}"
@@ -472,20 +472,31 @@ if ! grep -q "XRAY_REALITY_PRIVKEY=" .env || grep -q "XRAY_REALITY_PRIVKEY=$" .e
         grep "XRAY_REALITY_PUBKEY=" .env
     else
         echo -e "${RED}Failed to parse Reality keys from xray output${NC}"
-        echo -e "${RED}Expected format: 'Private key: <key>' and 'Public key: <key>'${NC}"
+        echo -e "${RED}Expected format: 'PrivateKey: <key>' and 'Password: <key>'${NC}"
         
-        # Try alternative parsing
-        echo -e "${YELLOW}Trying alternative parsing...${NC}"
-        PRIVATE_KEY=$(echo "$REALITY_KEYS" | grep -oE '[A-Za-z0-9+/]{43}=' | head -1)
-        PUBLIC_KEY=$(echo "$REALITY_KEYS" | grep -oE '[A-Za-z0-9+/]{43}=' | tail -1)
+        # Try legacy format parsing
+        echo -e "${YELLOW}Trying legacy format parsing...${NC}"
+        PRIVATE_KEY=$(echo "$REALITY_KEYS" | grep -i "private key:" | awk '{print $3}' | tr -d '\r\n')
+        PUBLIC_KEY=$(echo "$REALITY_KEYS" | grep -i "public key:" | awk '{print $3}' | tr -d '\r\n')
         
-        if [ -n "$PRIVATE_KEY" ] && [ -n "$PUBLIC_KEY" ] && [ "$PRIVATE_KEY" != "$PUBLIC_KEY" ]; then
+        if [ -n "$PRIVATE_KEY" ] && [ -n "$PUBLIC_KEY" ]; then
             sed -i "s/XRAY_REALITY_PRIVKEY=.*/XRAY_REALITY_PRIVKEY=$PRIVATE_KEY/" .env
             sed -i "s/XRAY_REALITY_PUBKEY=.*/XRAY_REALITY_PUBKEY=$PUBLIC_KEY/" .env
-            echo -e "${GREEN}Reality keys parsed with alternative method and saved to .env${NC}"
+            echo -e "${GREEN}Reality keys parsed with legacy format and saved to .env${NC}"
         else
-            echo -e "${RED}Alternative parsing also failed. Manual key generation required.${NC}"
-            exit 1
+            # Try regex parsing as last resort
+            echo -e "${YELLOW}Trying regex parsing...${NC}"
+            PRIVATE_KEY=$(echo "$REALITY_KEYS" | grep -oE '[A-Za-z0-9_-]{43}' | head -1)
+            PUBLIC_KEY=$(echo "$REALITY_KEYS" | grep -oE '[A-Za-z0-9_-]{43}' | tail -1)
+            
+            if [ -n "$PRIVATE_KEY" ] && [ -n "$PUBLIC_KEY" ] && [ "$PRIVATE_KEY" != "$PUBLIC_KEY" ]; then
+                sed -i "s/XRAY_REALITY_PRIVKEY=.*/XRAY_REALITY_PRIVKEY=$PRIVATE_KEY/" .env
+                sed -i "s/XRAY_REALITY_PUBKEY=.*/XRAY_REALITY_PUBKEY=$PUBLIC_KEY/" .env
+                echo -e "${GREEN}Reality keys parsed with regex method and saved to .env${NC}"
+            else
+                echo -e "${RED}All parsing methods failed. Manual key generation required.${NC}"
+                exit 1
+            fi
         fi
     fi
 else
