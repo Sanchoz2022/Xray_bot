@@ -476,6 +476,63 @@ else
     echo -e "${YELLOW}Xray is already installed.${NC}"
 fi
 
+# Check and configure Xray gRPC API
+echo -e "\n${GREEN}Configuring Xray gRPC API...${NC}"
+
+# Create log directory
+mkdir -p /var/log/xray
+chown nobody:nogroup /var/log/xray
+
+# Check if Xray service is running
+if ! systemctl is-active --quiet xray; then
+    echo -e "${YELLOW}Starting Xray service...${NC}"
+    systemctl start xray
+    sleep 2
+fi
+
+# Wait for Xray to start
+sleep 3
+
+# Check if gRPC port is listening
+if ! netstat -tlnp 2>/dev/null | grep -q ":50051"; then
+    echo -e "${YELLOW}gRPC API port 50051 not found. Restarting Xray...${NC}"
+    systemctl restart xray
+    sleep 5
+    
+    # Check again
+    if ! netstat -tlnp 2>/dev/null | grep -q ":50051"; then
+        echo -e "${RED}Warning: gRPC API port 50051 is not listening.${NC}"
+        echo -e "${YELLOW}This may cause issues with user management.${NC}"
+    else
+        echo -e "${GREEN}gRPC API is running on port 50051.${NC}"
+    fi
+else
+    echo -e "${GREEN}gRPC API is running on port 50051.${NC}"
+fi
+
+# Test gRPC connectivity
+echo -e "\n${GREEN}Testing gRPC connectivity...${NC}"
+if command -v python3 &> /dev/null; then
+    python3 -c "
+import socket
+import sys
+try:
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.settimeout(5)
+    result = sock.connect_ex(('127.0.0.1', 50051))
+    sock.close()
+    if result == 0:
+        print('✓ gRPC port 50051 is accessible')
+        sys.exit(0)
+    else:
+        print('✗ Cannot connect to gRPC port 50051')
+        sys.exit(1)
+except Exception as e:
+    print(f'✗ gRPC connectivity test failed: {e}')
+    sys.exit(1)
+" && echo -e "${GREEN}gRPC connectivity test passed.${NC}" || echo -e "${RED}gRPC connectivity test failed.${NC}"
+fi
+
 # Enable UFW if not enabled
 if ! ufw status | grep -q "Status: active"; then
     echo -e "\n${GREEN}Configuring firewall...${NC}"
@@ -486,10 +543,71 @@ if ! ufw status | grep -q "Status: active"; then
     echo -e "${GREEN}Firewall configured.${NC}"
 fi
 
+# Final system verification
+echo -e "\n${GREEN}Running final system verification...${NC}"
+
+# Check bot service
+if systemctl is-enabled --quiet xray-bot; then
+    echo -e "✓ ${GREEN}Bot service is enabled${NC}"
+else
+    echo -e "✗ ${RED}Bot service is not enabled${NC}"
+fi
+
+# Check Xray service
+if systemctl is-active --quiet xray; then
+    echo -e "✓ ${GREEN}Xray service is running${NC}"
+else
+    echo -e "✗ ${RED}Xray service is not running${NC}"
+fi
+
+# Check database file
+if [ -f "xray_bot.db" ] || [ -f "bot.db" ]; then
+    echo -e "✓ ${GREEN}Database file exists${NC}"
+else
+    echo -e "✓ ${YELLOW}Database will be created on first run${NC}"
+fi
+
+# Check .env file
+if [ -f ".env" ]; then
+    echo -e "✓ ${GREEN}.env file exists${NC}"
+    
+    # Check critical environment variables
+    if grep -q "BOT_TOKEN=" .env && ! grep -q "BOT_TOKEN=$" .env; then
+        echo -e "✓ ${GREEN}BOT_TOKEN is configured${NC}"
+    else
+        echo -e "✗ ${RED}BOT_TOKEN needs to be configured${NC}"
+    fi
+    
+    if grep -q "ADMIN_IDS=" .env && ! grep -q "ADMIN_IDS=$" .env; then
+        echo -e "✓ ${GREEN}ADMIN_IDS is configured${NC}"
+    else
+        echo -e "✗ ${RED}ADMIN_IDS needs to be configured${NC}"
+    fi
+else
+    echo -e "✗ ${RED}.env file not found${NC}"
+fi
+
 echo -e "\n${GREEN}Setup completed successfully!${NC}"
-echo -e "${YELLOW}Please complete the following steps:${NC}"
-echo "1. Edit the .env file with your configuration"
-echo "2. Start the bot with: systemctl start xray-bot"
-echo "3. Check logs with: journalctl -u xray-bot -f"
-echo -e "\n${GREEN}For SSL certificate setup, run:${NC}"
+echo -e "${YELLOW}Next steps:${NC}"
+
+# Conditional instructions based on verification
+if ! grep -q "BOT_TOKEN=" .env || grep -q "BOT_TOKEN=$" .env; then
+    echo "1. ${RED}REQUIRED:${NC} Edit .env file and set your BOT_TOKEN"
+fi
+
+if ! grep -q "ADMIN_IDS=" .env || grep -q "ADMIN_IDS=$" .env; then
+    echo "2. ${RED}REQUIRED:${NC} Edit .env file and set your ADMIN_IDS"
+fi
+
+echo "3. Start the bot: ${GREEN}systemctl start xray-bot${NC}"
+echo "4. Check status: ${GREEN}systemctl status xray-bot${NC}"
+echo "5. View logs: ${GREEN}journalctl -u xray-bot -f${NC}"
+
+echo -e "\n${GREEN}Useful commands:${NC}"
+echo "• Restart bot: systemctl restart xray-bot"
+echo "• Restart Xray: systemctl restart xray"
+echo "• Check gRPC: netstat -tlnp | grep 50051"
+echo "• Update code: git pull && systemctl restart xray-bot"
+
+echo -e "\n${GREEN}For SSL certificate setup:${NC}"
 echo "certbot certonly --nginx -d yourdomain.com"
