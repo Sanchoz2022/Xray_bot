@@ -37,8 +37,10 @@ class Settings(BaseSettings):
                     pass
             # Otherwise treat as comma-separated string
             v = v.strip('"\'')
+            if not v:  # If string is empty after stripping
+                return []
             return [id.strip() for id in v.split(',') if id.strip()]
-        return v
+        return v or []
         
     CHANNEL_USERNAME: str = os.getenv('CHANNEL_USERNAME', '')
     
@@ -60,23 +62,23 @@ class Settings(BaseSettings):
     XRAY_REALITY_PUBKEY: str = os.getenv('XRAY_REALITY_PUBKEY', '')
     XRAY_REALITY_SHORT_IDS: List[str] = Field(
         default_factory=list,
-        description="Comma-separated list of short IDs for Reality protocol",
+        description="Comma-separated list of short IDs for Reality protocol. Can be a JSON array or comma-separated string.",
         json_schema_extra={"env": "XRAY_REALITY_SHORT_IDS"}
     )
     
-    @validator('XRAY_REALITY_SHORT_IDS', pre=True)
-    def parse_short_ids(cls, v):
-        if isinstance(v, str):
-            # Remove quotes if present and split by comma
-            v = v.strip('"\'')
-            return [id.strip() for id in v.split(',') if id.strip()]
-        return v or ['0123456789abcdef']  # Default value if empty
-        
     XRAY_REALITY_DEST: str = os.getenv('XRAY_REALITY_DEST', 'www.google.com:443')
     XRAY_REALITY_XVER: int = 0
     
     # Database configuration
     DB_URL: str = os.getenv('DATABASE_URL', 'sqlite:///xray_bot.db')
+    
+    # gRPC API Settings
+    GRPC_API_HOST: str = os.getenv('GRPC_API_HOST', '127.0.0.1')
+    GRPC_API_PORT: int = int(os.getenv('GRPC_API_PORT', '50051'))
+    
+    # Subscription Settings
+    DEFAULT_SUBSCRIPTION_DAYS: int = int(os.getenv('DEFAULT_SUBSCRIPTION_DAYS', '30'))
+    DEFAULT_DATA_LIMIT_GB: int = int(os.getenv('DEFAULT_DATA_LIMIT_GB', '100'))
     
     # Paths
     BASE_DIR: Path = Path(__file__).parent
