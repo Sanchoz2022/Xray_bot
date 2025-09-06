@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package xray.app.proxy.vless;
-option go_package = "github.com/xtls/xray-core/proxy/vless";
-option java_package = "com.xray.proxy.vless";
+package xray.app.proxyman.command;
+option go_package = "github.com/xtls/xray-core/app/proxyman/command";
+option java_package = "com.xray.app.proxyman.command";
 option java_multiple_files = true;
 
 // User represents a user account in the proxy service.
@@ -91,12 +91,55 @@ message GetStatsResponse {
 
 // HandlerService handles user and system operations.
 service HandlerService {
-  // AddUser adds a new user.
-  rpc AddUser(AddUserRequest) returns (AddUserResponse) {}
-  // RemoveUser removes a user.
-  rpc RemoveUser(RemoveUserRequest) returns (RemoveUserResponse) {}
-  // GetUserStats gets statistics for a user.
-  rpc GetUserStats(GetUserStatsRequest) returns (GetUserStatsResponse) {}
+  // AddInbound adds a new inbound handler.
+  rpc AddInbound(AddInboundRequest) returns (AddInboundResponse) {}
+  // RemoveInbound removes an inbound handler.
+  rpc RemoveInbound(RemoveInboundRequest) returns (RemoveInboundResponse) {}
+  // AlterInbound alters an inbound handler.
+  rpc AlterInbound(AlterInboundRequest) returns (AlterInboundResponse) {}
+}
+
+// StatsService handles statistics operations.
+service StatsService {
   // GetStats gets system statistics.
   rpc GetStats(GetStatsRequest) returns (GetStatsResponse) {}
+  // QueryStats queries statistics.
+  rpc QueryStats(QueryStatsRequest) returns (QueryStatsResponse) {}
+}
+
+// Additional messages for inbound operations
+message AddInboundRequest {
+  Inbound inbound = 1;
+}
+
+message AddInboundResponse {
+}
+
+message RemoveInboundRequest {
+  string tag = 1;
+}
+
+message RemoveInboundResponse {
+}
+
+message AlterInboundRequest {
+  string tag = 1;
+  Inbound operation = 2;
+}
+
+message AlterInboundResponse {
+}
+
+message Inbound {
+  string tag = 1;
+  repeated User user = 2;
+}
+
+message QueryStatsRequest {
+  string pattern = 1;
+  bool reset = 2;
+}
+
+message QueryStatsResponse {
+  repeated Stat stat = 1;
 }

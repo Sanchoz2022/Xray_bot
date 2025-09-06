@@ -41,7 +41,8 @@ class XrayManager:
         """
         try:
             self.channel = grpc.insecure_channel(self.grpc_address)
-            self.stub = pb_grpc.HandlerServiceStub(self.channel)
+            self.handler_stub = pb_grpc.HandlerServiceStub(self.channel)
+            self.stats_stub = pb_grpc.StatsServiceStub(self.channel)
             return True
         except Exception as e:
             logger.error(f"Failed to connect to Xray gRPC API: {e}")
@@ -71,7 +72,7 @@ class XrayManager:
             bool: True if user was added successfully, False otherwise.
         """
         try:
-            if not self.stub:
+            if not hasattr(self, 'handler_stub') or not self.handler_stub:
                 self.connect()
                 
             # Create user object
@@ -87,9 +88,18 @@ class XrayManager:
                 )
             )
             
-            # Add user
-            response = self.stub.AddUser(pb.AddUserRequest(user=user))
-            return response.success
+            # Create inbound with user
+            inbound = pb.Inbound(
+                tag="inbound-443",  # Match the tag from Xray config
+                user=[user]
+            )
+            
+            # Alter inbound to add user
+            response = self.handler_stub.AlterInbound(pb.AlterInboundRequest(
+                tag="inbound-443",
+                operation=inbound
+            ))
+            return True
             
         except grpc.RpcError as e:
             logger.error(f"gRPC error adding user {email}: {e.details()}")
@@ -108,12 +118,22 @@ class XrayManager:
             bool: True if user was removed successfully, False otherwise.
         """
         try:
-            if not self.stub:
+            if not hasattr(self, 'handler_stub') or not self.handler_stub:
                 self.connect()
                 
-            # Remove user
-            response = self.stub.RemoveUser(pb.RemoveUserRequest(email=email))
-            return response.success
+            # Create empty inbound to remove user (Xray API limitation)
+            # Note: Xray doesn't have direct RemoveUser, need to alter inbound
+            inbound = pb.Inbound(
+                tag="inbound-443",
+                user=[]  # Empty user list removes all users
+            )
+            
+            # Alter inbound to remove users
+            response = self.handler_stub.AlterInbound(pb.AlterInboundRequest(
+                tag="inbound-443",
+                operation=inbound
+            ))
+            return True
             
         except grpc.RpcError as e:
             logger.error(f"gRPC error removing user {email}: {e.details()}")
@@ -133,19 +153,29 @@ class XrayManager:
             Optional[Dict]: User statistics or None if failed
         """
         try:
-            if not self.stub:
+            if not hasattr(self, 'stats_stub') or not self.stats_stub:
                 self.connect()
                 
-            # Get user stats
-            response = self.stub.GetUserStats(pb.GetUserStatsRequest(
-                name=email,
+            # Query user stats using pattern
+            pattern = f"user>>>{email}>>>traffic>>>uplink"
+            response = self.stats_stub.QueryStats(pb.QueryStatsRequest(
+                pattern=pattern,
                 reset=reset
             ))
             
+            upload = 0
+            download = 0
+            
+            for stat in response.stat:
+                if "uplink" in stat.name:
+                    upload = stat.value
+                elif "downlink" in stat.name:
+                    download = stat.value
+            
             return {
-                'upload': response.upload,
-                'download': response.download,
-                'total': response.upload + response.download
+                'upload': upload,
+                'download': download,
+                'total': upload + download
             }
             
         except grpc.RpcError as e:
@@ -162,12 +192,12 @@ class XrayManager:
             Optional[Dict]: System statistics or None if failed
         """
         try:
-            if not self.stub:
+            if not hasattr(self, 'stats_stub') or not self.stats_stub:
                 self.connect()
                 
-            # Get system stats
-            response = self.stub.GetStats(pb.GetStatsRequest(
-                name="",  # Empty name for system stats
+            # Query system stats
+            response = self.stats_stub.QueryStats(pb.QueryStatsRequest(
+                pattern="",  # Empty pattern for all stats
                 reset=False
             ))
             

@@ -10,6 +10,12 @@ NC='\033[0m' # No Color
 
 echo -e "${YELLOW}Generating gRPC code...${NC}"
 
+# Activate virtual environment if it exists
+if [ -f "venv/bin/activate" ]; then
+    source venv/bin/activate
+    echo "Activated virtual environment"
+fi
+
 # Install required tools if not installed
 if ! command -v protoc &> /dev/null; then
     echo -e "${YELLOW}Installing protobuf compiler...${NC}"
@@ -17,12 +23,20 @@ if ! command -v protoc &> /dev/null; then
     apt install -y protobuf-compiler
 fi
 
-# Install Python gRPC tools
+# Install required Python packages in venv
 pip install grpcio-tools
 
-# Generate Python gRPC code
-echo -e "${GREEN}Generating Python gRPC code...${NC}"
-python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. xray_api.proto
+# Generate Python gRPC code from proto file
+python -m grpc_tools.protoc \
+    --python_out=. \
+    --grpc_python_out=. \
+    --proto_path=. \
+    xray_api.proto
+
+echo "gRPC code generated successfully!"
+echo "Generated files:"
+echo "- xray_api_pb2.py"
+echo "- xray_api_pb2_grpc.py"
 
 # Fix imports in generated files
 for file in xray_api_pb2*.py; do
