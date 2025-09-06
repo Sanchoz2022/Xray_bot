@@ -13,10 +13,7 @@ import logging
 from datetime import datetime, timedelta
 
 from config import settings, generate_xray_config
-
-# Import generated gRPC code
-import xray_api_pb2 as pb
-import xray_api_pb2_grpc as pb_grpc
+from xray_grpc import get_xray_client
 
 logger = logging.getLogger(__name__)
 
@@ -30,8 +27,7 @@ class XrayManager:
             grpc_address: Address of the Xray gRPC API (default: 127.0.0.1:50051)
         """
         self.grpc_address = grpc_address
-        self.channel = None
-        self.stub = None
+        self.xray_client = get_xray_client()
     
     def connect(self) -> bool:
         """Establish connection to Xray gRPC API.
@@ -39,19 +35,11 @@ class XrayManager:
         Returns:
             bool: True if connection was successful, False otherwise.
         """
-        try:
-            self.channel = grpc.insecure_channel(self.grpc_address)
-            self.handler_stub = pb_grpc.HandlerServiceStub(self.channel)
-            self.stats_stub = pb_grpc.StatsServiceStub(self.channel)
-            return True
-        except Exception as e:
-            logger.error(f"Failed to connect to Xray gRPC API: {e}")
-            return False
+        return self.xray_client.connect()
     
     def close(self):
         """Close the gRPC channel."""
-        if self.channel:
-            self.channel.close()
+        self.xray_client.close()
     
     def __enter__(self):
         self.connect()
@@ -61,7 +49,7 @@ class XrayManager:
         self.close()
     
     def add_user(self, email: str, uuid_str: str, level: int = 0) -> bool:
-        """Add a new user to Xray using xray command line API.
+        """Add a new user to Xray using gRPC API.
         
         Args:
             email: User's email (used as identifier)
@@ -71,37 +59,10 @@ class XrayManager:
         Returns:
             bool: True if user was added successfully, False otherwise.
         """
-        try:
-            # Use xray command line API instead of gRPC for user management
-            user_config = {
-                "email": email,
-                "id": uuid_str,
-                "flow": "xtls-rprx-vision"
-            }
-            
-            # Use xray api command to add user
-            result = subprocess.run([
-                "/usr/local/bin/xray", "api", "add", "user",
-                "--server", "127.0.0.1:50051",
-                "--inbound", "inbound-443",
-                "--email", email,
-                "--uuid", uuid_str,
-                "--flow", "xtls-rprx-vision"
-            ], capture_output=True, text=True)
-            
-            if result.returncode == 0:
-                logger.info(f"Successfully added user {email} via xray CLI")
-                return True
-            else:
-                logger.error(f"Failed to add user {email}: {result.stderr}")
-                return False
-            
-        except Exception as e:
-            logger.error(f"Error adding user {email}: {e}")
-            return False
+        return self.xray_client.add_user(email, uuid_str, level)
     
     def remove_user(self, email: str) -> bool:
-        """Remove a user from Xray using xray command line API.
+        """Remove a user from Xray using gRPC API.
         
         Args:
             email: User's email to remove
@@ -109,28 +70,10 @@ class XrayManager:
         Returns:
             bool: True if user was removed successfully, False otherwise.
         """
-        try:
-            # Use xray command line API to remove user
-            result = subprocess.run([
-                "/usr/local/bin/xray", "api", "remove", "user",
-                "--server", "127.0.0.1:50051", 
-                "--inbound", "inbound-443",
-                "--email", email
-            ], capture_output=True, text=True)
-            
-            if result.returncode == 0:
-                logger.info(f"Successfully removed user {email} via xray CLI")
-                return True
-            else:
-                logger.error(f"Failed to remove user {email}: {result.stderr}")
-                return False
-            
-        except Exception as e:
-            logger.error(f"Error removing user {email}: {e}")
-            return False
+        return self.xray_client.remove_user(email)
     
     def get_user_stats(self, email: str, reset: bool = False) -> Optional[Dict]:
-        """Get user statistics using xray command line API.
+        """Get user statistics using gRPC API.
         
         Args:
             email: User's email
@@ -140,39 +83,15 @@ class XrayManager:
             Optional[Dict]: User statistics or None if failed
         """
         try:
-            # Use xray command line API to get stats
-            result = subprocess.run([
-                "/usr/local/bin/xray", "api", "statsquery",
-                "--server", "127.0.0.1:50051",
-                "--pattern", f"user>>>{email}>>>traffic>>>",
-                "--reset" if reset else ""
-            ], capture_output=True, text=True)
-            
-            if result.returncode == 0:
-                # Parse the output to extract upload/download stats
-                lines = result.stdout.strip().split('\n')
-                upload = 0
-                download = 0
-                
-                for line in lines:
-                    if "uplink" in line:
-                        parts = line.split()
-                        if len(parts) >= 2:
-                            upload = int(parts[-1])
-                    elif "downlink" in line:
-                        parts = line.split()
-                        if len(parts) >= 2:
-                            download = int(parts[-1])
-                
+            stats = self.xray_client.get_traffic_stats(email, reset)
+            if email in stats:
+                user_stats = stats[email]
                 return {
-                    'upload': upload,
-                    'download': download,
-                    'total': upload + download
+                    'upload': user_stats.get('upload', 0),
+                    'download': user_stats.get('download', 0),
+                    'total': user_stats.get('upload', 0) + user_stats.get('download', 0)
                 }
-            else:
-                logger.error(f"Failed to get stats for {email}: {result.stderr}")
-                return None
-            
+            return None
         except Exception as e:
             logger.error(f"Error getting stats for {email}: {e}")
             return None
@@ -183,28 +102,7 @@ class XrayManager:
         Returns:
             Optional[Dict]: System statistics or None if failed
         """
-        try:
-            if not hasattr(self, 'stats_stub') or not self.stats_stub:
-                self.connect()
-                
-            # Query system stats
-            response = self.stats_stub.QueryStats(pb.QueryStatsRequest(
-                pattern="",  # Empty pattern for all stats
-                reset=False
-            ))
-            
-            stats = {}
-            for stat in response.stat:
-                stats[stat.name] = stat.value
-                
-            return stats
-            
-        except grpc.RpcError as e:
-            logger.error(f"gRPC error getting system stats: {e.details()}")
-            return None
-        except Exception as e:
-            logger.error(f"Error getting system stats: {e}")
-            return None
+        return self.xray_client.get_system_stats()
     
     def restart_xray(self) -> bool:
         """Restart Xray service.

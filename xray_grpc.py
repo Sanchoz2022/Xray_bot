@@ -6,14 +6,11 @@ import json
 import uuid
 
 # Import generated protobuf files
-from app.xray_api.app.stats.command import command_pb2 as stats_command
-from app.xray_api.app.stats.command import command_pb2_grpc as stats_service
-from app.xray_api.app.proxyman.command import command_pb2 as proxyman_command
-from app.xray_api.app.proxyman.command import command_pb2_grpc as proxyman_service
-from app.xray_api.common.protocol import user_pb2 as user_protocol
+import xray_api_pb2 as pb
+import xray_api_pb2_grpc as pb_grpc
 from google.protobuf import empty_pb2
 
-from config import XRAY_API_HOST, XRAY_API_PORT, XRAY_API_TAG, XRAY_REALITY_SHORT_IDS
+from config import settings
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -32,9 +29,9 @@ class XrayClient:
             return True
             
         try:
-            self.channel = grpc.insecure_channel(f"{XRAY_API_HOST}:{XRAY_API_PORT}")
-            self.stats_stub = stats_service.StatsServiceStub(self.channel)
-            self.handler_stub = proxyman_service.HandlerServiceStub(self.channel)
+            self.channel = grpc.insecure_channel("127.0.0.1:50051")
+            self.stats_stub = pb_grpc.StatsServiceStub(self.channel)
+            self.handler_stub = pb_grpc.HandlerServiceStub(self.channel)
             
             # Test connection
             self.channel.subscribe(
@@ -68,26 +65,25 @@ class XrayClient:
             
         try:
             # Create user
-            user = user_protocol.User(
+            account = pb.Account(
+                type="vless",
+                settings=json.dumps({
+                    "id": uuid_str,
+                    "flow": "xtls-rprx-vision"
+                })
+            )
+            
+            user = pb.User(
                 level=level,
                 email=email,
-                account=user_protocol.Account(
-                    type="vless",
-                    settings=json.dumps({
-                        "id": uuid_str,
-                        "flow": "xtls-rprx-vision"
-                    })
-                )
+                account=account
             )
             
             # Add user to Xray
-            request = proxyman_command.AddUserOperation(
+            request = pb.AddUserRequest(
                 user=user
             )
-            self.handler_stub.AlterInbound(proxyman_command.AlterInboundRequest(
-                tag=XRAY_API_TAG,
-                operation=request
-            ))
+            self.handler_stub.AddUser(request)
             
             logger.info(f"Added user {email} with UUID {uuid_str}")
             return True
@@ -103,9 +99,10 @@ class XrayClient:
             
         try:
             # Remove user from Xray
-            self.handler_stub.RemoveUser(proxyman_command.RemoveUserRequest(
+            request = pb.RemoveUserRequest(
                 email=email
-            ))
+            )
+            self.handler_stub.RemoveUser(request)
             
             logger.info(f"Removed user {email}")
             return True
@@ -122,32 +119,25 @@ class XrayClient:
         try:
             stats = {}
             
-            # Get upload traffic
-            upload_pattern = f"user>>>{email}>>>traffic>>>uplink" if email else "user>>>traffic>>>uplink"
-            upload_request = stats_command.GetStatsRequest(
-                name=upload_pattern,
+            # Get user stats using QueryStats
+            pattern = f"user>>>{email}>>>traffic>>>" if email else "user>>>traffic>>>"
+            request = pb.QueryStatsRequest(
+                pattern=pattern,
                 reset=reset
             )
-            upload_response = self.stats_stub.GetStats(upload_request)
-            
-            # Get download traffic
-            download_pattern = f"user>>>{email}>>>traffic>>>downlink" if email else "user>>>traffic>>>downlink"
-            download_request = stats_command.GetStatsRequest(
-                name=download_pattern,
-                reset=reset
-            )
-            download_response = self.stats_stub.GetStats(download_request)
+            response = self.stats_stub.QueryStats(request)
             
             # Process responses
-            for stat in upload_response.stat:
-                user = stat.name.split('>>>')[1]  # Extract username from pattern
-                stats[user] = stats.get(user, {})
-                stats[user]['upload'] = stat.value
-                
-            for stat in download_response.stat:
-                user = stat.name.split('>>>')[1]  # Extract username from pattern
-                stats[user] = stats.get(user, {})
-                stats[user]['download'] = stat.value
+            for stat in response.stat:
+                if ">>>" in stat.name:
+                    parts = stat.name.split('>>>')
+                    if len(parts) >= 2:
+                        user = parts[1]  # Extract username from pattern
+                        stats[user] = stats.get(user, {})
+                        if "uplink" in stat.name:
+                            stats[user]['upload'] = stat.value
+                        elif "downlink" in stat.name:
+                            stats[user]['download'] = stat.value
             
             return stats
             
@@ -163,19 +153,15 @@ class XrayClient:
         try:
             stats = {}
             
-            # Get system stats
-            sys_stats = self.stats_stub.GetSysStats(empty_pb2.Empty())
+            # Get system stats using QueryStats
+            request = pb.QueryStatsRequest(
+                pattern="",  # Empty pattern for all stats
+                reset=False
+            )
+            response = self.stats_stub.QueryStats(request)
             
-            stats['num_goroutine'] = sys_stats.NumGoroutine
-            stats['num_connection'] = sys_stats.NumGC
-            stats['alloc'] = sys_stats.Alloc
-            stats['total_alloc'] = sys_stats.TotalAlloc
-            stats['sys'] = sys_stats.Sys
-            stats['mallocs'] = sys_stats.Mallocs
-            stats['frees'] = sys_stats.Frees
-            stats['live_objects'] = sys_stats.Mallocs - sys_stats.Frees
-            stats['pause_total_ns'] = sys_stats.PauseTotalNs
-            stats['uptime'] = sys_stats.Uptime
+            for stat in response.stat:
+                stats[stat.name] = stat.value
             
             return stats
             
@@ -185,22 +171,22 @@ class XrayClient:
     
     def get_reality_short_ids(self) -> List[str]:
         """Get the list of valid Reality short IDs."""
-        return XRAY_REALITY_SHORT_IDS
+        return settings.XRAY_REALITY_SHORT_IDS
     
     def generate_reality_config(self, uuid_str: str, email: str) -> Dict[str, Any]:
         """Generate a Reality configuration for a user."""
-        if not XRAY_REALITY_SHORT_IDS:
+        if not settings.XRAY_REALITY_SHORT_IDS:
             logger.error("No Reality short IDs configured")
             return {}
             
         # Use the first short ID for now (could implement round-robin or other logic)
-        short_id = XRAY_REALITY_SHORT_IDS[0]
+        short_id = settings.XRAY_REALITY_SHORT_IDS[0]
         
         config = {
             "v": "2",
             "ps": f"Xray Reality - {email}",
-            "add": SERVER_IP,
-            "port": XRAY_PORT,
+            "add": settings.SERVER_IP,
+            "port": settings.XRAY_PORT,
             "id": uuid_str,
             "scy": "chacha20-poly1305",
             "net": "tcp",
@@ -208,10 +194,10 @@ class XrayClient:
             "host": "",
             "path": "",
             "tls": "reality",
-            "sni": XRAY_REALITY_DEST.split(':')[0],
+            "sni": settings.XRAY_REALITY_DEST.split(':')[0] if settings.XRAY_REALITY_DEST else "www.google.com",
             "alpn": "",
             "fp": "chrome",
-            "pbk": XRAY_REALITY_PUBKEY,
+            "pbk": settings.XRAY_REALITY_PUBKEY,
             "sid": short_id,
             "spx": "",
             "flow": "xtls-rprx-vision"

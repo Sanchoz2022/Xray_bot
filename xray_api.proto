@@ -97,6 +97,10 @@ service HandlerService {
   rpc RemoveInbound(RemoveInboundRequest) returns (RemoveInboundResponse) {}
   // AlterInbound alters an inbound handler.
   rpc AlterInbound(AlterInboundRequest) returns (AlterInboundResponse) {}
+  // AddUser adds a new user.
+  rpc AddUser(AddUserRequest) returns (AddUserResponse) {}
+  // RemoveUser removes a user.
+  rpc RemoveUser(RemoveUserRequest) returns (RemoveUserResponse) {}
 }
 
 // StatsService handles statistics operations.
@@ -105,6 +109,8 @@ service StatsService {
   rpc GetStats(GetStatsRequest) returns (GetStatsResponse) {}
   // QueryStats queries statistics.
   rpc QueryStats(QueryStatsRequest) returns (QueryStatsResponse) {}
+  // GetUserStats gets user statistics.
+  rpc GetUserStats(GetUserStatsRequest) returns (GetUserStatsResponse) {}
 }
 
 // Additional messages for inbound operations
