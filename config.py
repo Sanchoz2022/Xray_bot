@@ -42,7 +42,20 @@ class Settings(BaseSettings):
     # Xray Reality settings
     XRAY_REALITY_PRIVKEY: str = os.getenv('XRAY_REALITY_PRIVKEY', '')
     XRAY_REALITY_PUBKEY: str = os.getenv('XRAY_REALITY_PUBKEY', '')
-    XRAY_REALITY_SHORT_IDS: List[str] = os.getenv('XRAY_REALITY_SHORT_IDS', '0123456789abcdef').split(',')
+    XRAY_REALITY_SHORT_IDS: List[str] = Field(
+        default_factory=list,
+        description="Comma-separated list of short IDs for Reality protocol",
+        json_schema_extra={"env": "XRAY_REALITY_SHORT_IDS"}
+    )
+    
+    @validator('XRAY_REALITY_SHORT_IDS', pre=True)
+    def parse_short_ids(cls, v):
+        if isinstance(v, str):
+            # Remove quotes if present and split by comma
+            v = v.strip('"\'')
+            return [id.strip() for id in v.split(',') if id.strip()]
+        return v or ['0123456789abcdef']  # Default value if empty
+        
     XRAY_REALITY_DEST: str = os.getenv('XRAY_REALITY_DEST', 'www.google.com:443')
     XRAY_REALITY_XVER: int = 0
     
