@@ -7,10 +7,11 @@ from pathlib import Path
 import grpc
 import time
 import uuid
-import json
+import base64
 from typing import Optional, Dict, List, Tuple
 import logging
 from datetime import datetime, timedelta
+from urllib.parse import quote
 
 from config import settings, generate_xray_config
 from xray_grpc import get_xray_client
@@ -309,7 +310,23 @@ class ServerManager:
         Returns:
             bool: True if user was added successfully, False otherwise.
         """
-        return self.xray.add_user(email, uuid_str)
+        try:
+            # Ensure connection is established
+            if not self.xray.connect():
+                logger.error("Failed to connect to Xray gRPC API")
+                return False
+            
+            result = self.xray.add_user(email, uuid_str)
+            if result:
+                logger.info(f"Successfully added VLESS user {email} with UUID {uuid_str}")
+            else:
+                logger.error(f"Failed to add VLESS user {email}")
+            
+            return result
+            
+        except Exception as e:
+            logger.error(f"Error adding VLESS user {email}: {e}")
+            return False
     
     def remove_vless_user(self, email: str) -> bool:
         """Remove a VLESS user.
@@ -320,21 +337,88 @@ class ServerManager:
         Returns:
             bool: True if user was removed successfully, False otherwise.
         """
-        return self.xray.remove_user(email)
+        try:
+            # Ensure connection is established
+            if not self.xray.connect():
+                logger.error("Failed to connect to Xray gRPC API")
+                return False
+            
+            result = self.xray.remove_user(email)
+            if result:
+                logger.info(f"Successfully removed VLESS user {email}")
+            else:
+                logger.error(f"Failed to remove VLESS user {email}")
+            
+            return result
+            
+        except Exception as e:
+            logger.error(f"Error removing VLESS user {email}: {e}")
+            return False
     
     def get_system_stats(self) -> Dict[str, Any]:
         """Get system statistics from Xray."""
         return self.xray.get_system_stats() if hasattr(self.xray, 'get_system_stats') else {}
     
     def get_reality_config(self, email: str, user_id: str) -> Dict[str, Any]:
-        """Generate a Reality configuration for a user."""
-        return {
-            'id': user_id,
-            'email': email,
-            'private_key': settings.XRAY_REALITY_PRIVKEY,
-            'public_key': settings.XRAY_REALITY_PUBKEY,
-            'short_ids': settings.XRAY_REALITY_SHORT_IDS
-        }
+        """Generate a complete VLESS Reality configuration for a user."""
+        try:
+            if not settings.XRAY_REALITY_SHORT_IDS:
+                logger.error("No Reality short IDs configured")
+                return {}
+            
+            # Use the first short ID
+            short_id = settings.XRAY_REALITY_SHORT_IDS[0]
+            
+            # Generate complete VLESS Reality config
+            config = {
+                "v": "2",
+                "ps": f"Xray Reality - {email}",
+                "add": getattr(settings, 'SERVER_IP', '127.0.0.1'),
+                "port": getattr(settings, 'XRAY_PORT', 443),
+                "id": user_id,
+                "aid": "0",
+                "scy": "auto",
+                "net": "tcp",
+                "type": "none",
+                "host": "",
+                "path": "",
+                "tls": "reality",
+                "sni": getattr(settings, 'XRAY_REALITY_DEST', 'www.google.com').split(':')[0],
+                "alpn": "",
+                "fp": "chrome",
+                "pbk": settings.XRAY_REALITY_PUBKEY,
+                "sid": short_id,
+                "spx": "",
+                "flow": "xtls-rprx-vision"
+            }
+            
+            return config
+            
+        except Exception as e:
+            logger.error(f"Error generating Reality config: {e}")
+            return {}
+    
+    def generate_vless_url(self, email: str, user_id: str) -> str:
+        """Generate a complete VLESS Reality URL for the user."""
+        try:
+            config = self.get_reality_config(email, user_id)
+            if not config:
+                return ""
+            
+            # Build VLESS URL
+            vless_url = (
+                f"vless://{config['id']}@{config['add']}:{config['port']}"
+                f"?encryption=none&flow={config['flow']}&security={config['tls']}"
+                f"&sni={config['sni']}&fp={config['fp']}&pbk={config['pbk']}"
+                f"&sid={config['sid']}&type={config['net']}"
+                f"#{config['ps']}"
+            )
+            
+            return vless_url
+            
+        except Exception as e:
+            logger.error(f"Error generating VLESS URL: {e}")
+            return ""
     
     def __del__(self):
         """Clean up resources."""

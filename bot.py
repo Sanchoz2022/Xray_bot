@@ -242,53 +242,62 @@ async def check_subscription_callback(callback: CallbackQuery):
                 session.add(key)
                 await session.commit()
             
-            # Generate Reality config
-            config = generate_reality_config(
-                key.uuid,
-                user.email,
-                settings.SERVER_IP,
-                settings.XRAY_REALITY_PUBKEY,
-                settings.XRAY_REALITY_SHORT_IDS[0] if settings.XRAY_REALITY_SHORT_IDS else ""
-            )
+            # Generate VLESS Reality URL
+            vless_url = server_manager.generate_vless_url(f"user_{user.id}@xray.com", key.uuid)
             
-            if not config:
+            if not vless_url:
                 await callback.answer("❌ Ошибка при генерации конфигурации. Пожалуйста, попробуйте позже.", show_alert=True)
                 return
             
             # Create response message
             text = (
-                "🎉 *Ваш Xray Reality конфиг готов!*\n\n"
-                "🔑 *Сервер:* `reality`\n"
+                "🎉 *Ваш VLESS Reality конфиг готов!*\n\n"
+                "🔑 *Протокол:* `VLESS`\n"
                 "🌐 *Адрес:* `{0}`\n"
                 "🔌 *Порт:* `443`\n"
-                "🆔 *ID пользователя:* `{1}`\n"
+                "🆔 *UUID:* `{1}`\n"
                 "🔒 *Шифрование:* `none`\n"
-                "🚀 *Транспорт:* `reality`\n\n"
+                "🚀 *Транспорт:* `TCP + Reality`\n"
+                "🌊 *Flow:* `xtls-rprx-vision`\n\n"
                 "📱 *Как использовать:*\n"
-                "1. Скачайте приложение Xray для вашего устройства\n"
-                "2. Нажмите на кнопку ниже, чтобы скопировать конфиг\n"
-                "3. Импортируйте конфиг в приложение\n"
-                "4. Активируйте соединение"
-            ).format(settings.SERVER_IP, key.uuid)
+                "1. Скачайте v2rayNG (Android) или v2rayN (Windows)\n"
+                "2. Нажмите кнопку ниже для копирования VLESS URL\n"
+                "3. Импортируйте URL в приложение\n"
+                "4. Подключитесь к серверу\n\n"
+                "⚡ *Статус:* Активен до {2}"
+            ).format(
+                getattr(settings, 'SERVER_IP', '127.0.0.1'), 
+                key.uuid,
+                key.expires_at.strftime('%d.%m.%Y') if key.expires_at else 'Не ограничено'
+            )
             
             # Create keyboard
             keyboard = InlineKeyboardBuilder()
             keyboard.row(
                 InlineKeyboardButton(
-                    text="📋 Скопировать конфиг",
-                    callback_data=f"copy_config_{key.id}"
+                    text="📋 Скопировать VLESS URL",
+                    callback_data=f"copy_vless_{key.id}"
                 )
             )
             keyboard.row(
                 InlineKeyboardButton(
                     text="📊 Статистика",
-                    callback_data="user_stats"
+                    callback_data=f"stats_{key.id}"
                 ),
                 InlineKeyboardButton(
-                    text="❓ Помощь",
-                    callback_data="help"
+                    text="🔄 Обновить ключ",
+                    callback_data=f"renew_{key.id}"
                 )
             )
+            keyboard.row(
+                InlineKeyboardButton(
+                    text="🔙 Назад",
+                    callback_data="main_menu"
+                )
+            )
+            
+            # Store VLESS URL for copying
+            setattr(key, '_vless_url', vless_url)
             
             await callback.message.edit_text(
                 text,
@@ -300,9 +309,189 @@ async def check_subscription_callback(callback: CallbackQuery):
         logger.error(f"Error in subscription callback: {e}", exc_info=True)
         await callback.answer("❌ Произошла ошибка. Пожалуйста, попробуйте позже.", show_alert=True)
 
+@dp.callback_query(F.data.startswith("copy_vless_"))
+async def copy_vless_callback(callback: CallbackQuery):
+    """Handle copy VLESS URL callback."""
+    try:
+        key_id = int(callback.data.split("_")[-1])
+        
+        async with async_session_maker() as session:
+            # Get the user key
+            key_result = await session.execute(
+                select(UserKey).where(
+                    UserKey.id == key_id,
+                    UserKey.is_active == True
+                )
+            )
+            key = key_result.scalar_one_or_none()
+            
+            if not key:
+                await callback.answer("❌ Ключ не найден или неактивен.", show_alert=True)
+                return
+            
+            # Get user info
+            user_result = await session.execute(
+                select(User).where(User.id == key.user_id)
+            )
+            user = user_result.scalar_one_or_none()
+            
+            if not user:
+                await callback.answer("❌ Пользователь не найден.", show_alert=True)
+                return
+            
+            # Generate VLESS URL
+            vless_url = server_manager.generate_vless_url(f"user_{user.id}@xray.com", key.uuid)
+            
+            if not vless_url:
+                await callback.answer("❌ Ошибка при генерации VLESS URL.", show_alert=True)
+                return
+            
+            # Send VLESS URL as a message that can be copied
+            await callback.message.reply(
+                f"📋 **VLESS URL для копирования:**\n\n`{vless_url}`\n\n"
+                "💡 *Нажмите на URL выше, чтобы скопировать его*",
+                parse_mode="Markdown"
+            )
+            
+            await callback.answer("✅ VLESS URL отправлен!")
+            
+    except Exception as e:
+        logger.error(f"Error in copy VLESS callback: {e}", exc_info=True)
+        await callback.answer("❌ Произошла ошибка при копировании.", show_alert=True)
+
+@dp.callback_query(F.data.startswith("stats_"))
+async def stats_callback(callback: CallbackQuery):
+    """Handle stats callback."""
+    try:
+        key_id = int(callback.data.split("_")[-1])
+        
+        async with async_session_maker() as session:
+            # Get the user key
+            key_result = await session.execute(
+                select(UserKey).where(
+                    UserKey.id == key_id,
+                    UserKey.is_active == True
+                )
+            )
+            key = key_result.scalar_one_or_none()
+            
+            if not key:
+                await callback.answer("❌ Ключ не найден или неактивен.", show_alert=True)
+                return
+            
+            # Get user info
+            user_result = await session.execute(
+                select(User).where(User.id == key.user_id)
+            )
+            user = user_result.scalar_one_or_none()
+            
+            if not user:
+                await callback.answer("❌ Пользователь не найден.", show_alert=True)
+                return
+            
+            # Get stats from Xray
+            stats = server_manager.xray.get_user_stats(f"user_{user.id}@xray.com")
+            
+            if stats:
+                upload_gb = stats.get('upload', 0) / (1024**3)
+                download_gb = stats.get('download', 0) / (1024**3)
+                total_gb = stats.get('total', 0) / (1024**3)
+                
+                stats_text = (
+                    f"📊 **Статистика использования**\n\n"
+                    f"📤 **Отправлено:** {upload_gb:.2f} GB\n"
+                    f"📥 **Получено:** {download_gb:.2f} GB\n"
+                    f"📊 **Всего:** {total_gb:.2f} GB\n\n"
+                    f"⏰ **Активен до:** {key.expires_at.strftime('%d.%m.%Y %H:%M') if key.expires_at else 'Не ограничено'}\n"
+                    f"🆔 **UUID:** `{key.uuid}`"
+                )
+            else:
+                stats_text = (
+                    "📊 **Статистика использования**\n\n"
+                    "❌ Не удалось получить статистику.\n"
+                    "Возможно, соединение с сервером еще не было установлено.\n\n"
+                    f"⏰ **Активен до:** {key.expires_at.strftime('%d.%m.%Y %H:%M') if key.expires_at else 'Не ограничено'}\n"
+                    f"🆔 **UUID:** `{key.uuid}`"
+                )
+            
+            await callback.message.reply(stats_text, parse_mode="Markdown")
+            await callback.answer("📊 Статистика обновлена!")
+            
+    except Exception as e:
+        logger.error(f"Error in stats callback: {e}", exc_info=True)
+        await callback.answer("❌ Произошла ошибка при получении статистики.", show_alert=True)
+
+@dp.callback_query(F.data.startswith("renew_"))
+async def renew_callback(callback: CallbackQuery):
+    """Handle renew key callback."""
+    try:
+        key_id = int(callback.data.split("_")[-1])
+        
+        async with async_session_maker() as session:
+            # Get the user key
+            key_result = await session.execute(
+                select(UserKey).where(
+                    UserKey.id == key_id,
+                    UserKey.is_active == True
+                )
+            )
+            key = key_result.scalar_one_or_none()
+            
+            if not key:
+                await callback.answer("❌ Ключ не найден или неактивен.", show_alert=True)
+                return
+            
+            # Get user info
+            user_result = await session.execute(
+                select(User).where(User.id == key.user_id)
+            )
+            user = user_result.scalar_one_or_none()
+            
+            if not user:
+                await callback.answer("❌ Пользователь не найден.", show_alert=True)
+                return
+            
+            # Remove old user from Xray
+            server_manager.remove_vless_user(f"user_{user.id}@xray.com")
+            
+            # Generate new UUID
+            new_uuid = str(uuid.uuid4())
+            
+            # Add new user to Xray
+            if not server_manager.add_vless_user(f"user_{user.id}@xray.com", new_uuid):
+                await callback.answer("❌ Ошибка при обновлении ключа.", show_alert=True)
+                return
+            
+            # Update key in database
+            key.uuid = new_uuid
+            key.created_at = datetime.utcnow()
+            key.expires_at = datetime.utcnow() + timedelta(days=30)
+            key.used_bytes = 0
+            
+            await session.commit()
+            
+            # Generate new VLESS URL
+            vless_url = server_manager.generate_vless_url(f"user_{user.id}@xray.com", new_uuid)
+            
+            renewal_text = (
+                "🔄 **Ключ успешно обновлен!**\n\n"
+                f"🆔 **Новый UUID:** `{new_uuid}`\n"
+                f"⏰ **Активен до:** {key.expires_at.strftime('%d.%m.%Y %H:%M')}\n\n"
+                "📋 **Новый VLESS URL:**\n\n"
+                f"`{vless_url}`\n\n"
+                "💡 *Нажмите на URL выше, чтобы скопировать его*"
+            )
+            
+            await callback.message.reply(renewal_text, parse_mode="Markdown")
+            await callback.answer("✅ Ключ обновлен!")
+            
+    except Exception as e:
+        logger.error(f"Error in renew callback: {e}", exc_info=True)
+        await callback.answer("❌ Произошла ошибка при обновлении ключа.", show_alert=True)
+
 @dp.callback_query(F.data.startswith("copy_config_"))
 async def copy_config_callback(callback: CallbackQuery):
-    """Handle copy config callback."""
+    """Handle copy config callback (legacy)."""
     try:
         key_id = int(callback.data.replace("copy_config_", ""))
         user_id = callback.from_user.id
