@@ -651,17 +651,40 @@ else
     exit 1
 fi
 
+# Create Xray service file with proper user
+cat > /etc/systemd/system/xray.service << 'EOF'
+[Unit]
+Description=Xray Service
+Documentation=https://github.com/xtls/xray-core
+After=network.target nss-lookup.target
+
+[Service]
+User=nobody
+Group=nogroup
+CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
+AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
+NoNewPrivileges=true
+ExecStart=/usr/local/bin/xray run -config /usr/local/etc/xray/config.json
+Restart=on-failure
+RestartPreventExitStatus=23
+LimitNPROC=10000
+LimitNOFILE=1000000
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
 # Set proper permissions for Xray config
-chown -R root:root /usr/local/etc/xray
+chown -R nobody:nogroup /usr/local/etc/xray
 chmod 755 /usr/local/etc/xray
 chmod 644 /usr/local/etc/xray/config.json
 
 # Create log directory with proper permissions
 mkdir -p /var/log/xray
-chown root:root /var/log/xray
+chown nobody:nogroup /var/log/xray
 chmod 755 /var/log/xray
 touch /var/log/xray/access.log /var/log/xray/error.log
-chown root:root /var/log/xray/access.log /var/log/xray/error.log
+chown nobody:nogroup /var/log/xray/access.log /var/log/xray/error.log
 chmod 644 /var/log/xray/access.log /var/log/xray/error.log
 
 # Enable and start Xray service
