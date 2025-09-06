@@ -488,7 +488,7 @@ async def check_subscriptions():
             # Restart Xray to apply changes if needed
             if hasattr(server_manager, 'restart_xray'):
                 try:
-                    await server_manager.restart_xray()
+                    server_manager.restart_xray()
                 except Exception as e:
                     logger.error(f"Error restarting Xray: {e}")
             

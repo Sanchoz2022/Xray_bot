@@ -192,7 +192,7 @@ class XrayManager:
         """
         try:
             result = subprocess.run(
-                ["systemctl", "restart", settings.XRAY_SERVICE],
+                ["/usr/bin/systemctl", "restart", settings.XRAY_SERVICE],
                 capture_output=True,
                 text=True
             )
@@ -247,7 +247,7 @@ class XrayManager:
             
             # Check if Xray is running
             result = subprocess.run(
-                ["systemctl", "is-active", settings.XRAY_SERVICE],
+                ["/usr/bin/systemctl", "is-active", settings.XRAY_SERVICE],
                 capture_output=True,
                 text=True
             )
@@ -370,7 +370,7 @@ class ServerManager:
         """
         try:
             result = subprocess.run(
-                ["journalctl", "-u", settings.XRAY_SERVICE, "-n", str(lines), "--no-pager"],
+                ["/usr/bin/journalctl", "-u", settings.XRAY_SERVICE, "-n", str(lines), "--no-pager"],
                 capture_output=True,
                 text=True
             )
