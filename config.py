@@ -20,9 +20,49 @@ class Settings(BaseSettings):
     
     @validator('ADMIN_IDS', pre=True)
     def parse_admin_ids(cls, v):
+        if v is None or v == '':
+            return []
+            
+        # If it's already a list, return as is
+        if isinstance(v, list):
+            return [int(x) if isinstance(x, str) and x.isdigit() else x for x in v if x]
+            
         if isinstance(v, str):
-            return [int(id.strip()) for id in v.split(',') if id.strip().isdigit()]
-        return v or []
+            # Remove any surrounding quotes and whitespace
+            v = v.strip().strip('"\'')
+            
+            # If empty string, return empty list
+            if not v:
+                return []
+                
+            # If it's a JSON array string, try to parse it
+            if v.startswith('[') and v.endswith(']'):
+                try:
+                    import json
+                    result = json.loads(v)
+                    if isinstance(result, list):
+                        return [int(x) for x in result if str(x).isdigit()]
+                except json.JSONDecodeError:
+                    # If JSON parsing fails, try to extract values manually
+                    try:
+                        # Remove brackets and split by comma
+                        clean_v = v.strip('[]').strip()
+                        if clean_v:
+                            # Split by comma and clean each value
+                            values = [val.strip().strip('"\'') for val in clean_v.split(',')]
+                            return [int(val) for val in values if val.isdigit()]
+                        else:
+                            return []
+                    except Exception:
+                        return []
+                        
+            # Handle comma-separated values
+            try:
+                return [int(id.strip()) for id in v.split(',') if id.strip().isdigit()]
+            except Exception:
+                return []
+                
+        return []
         
     CHANNEL_USERNAME: str = os.getenv('CHANNEL_USERNAME', '')
     
