@@ -111,25 +111,42 @@ XRAY_REALITY_XVER = 0
 if not settings.XRAY_REALITY_PRIVKEY or not settings.XRAY_REALITY_PUBKEY:
     import subprocess
     try:
-        result = subprocess.run(
-            ['xray', 'x25519'],
-            capture_output=True,
-            text=True
-        )
-        if result.returncode == 0:
-            for line in result.stdout.split('\n'):
-                if 'Private key' in line:
-                    private_key = line.split(':')[1].strip()
-                    settings.XRAY_REALITY_PRIVKEY = private_key
-                elif 'Public key' in line:
-                    public_key = line.split(':')[1].strip()
-                    settings.XRAY_REALITY_PUBKEY = public_key
-            
-            # Save to .env file if not exists
-            env_file = Path(__file__).parent / '.env'
-            if not env_file.exists():
-                with open(env_file, 'w') as f:
-                    f.write(f'XRAY_REALITY_PRIVKEY={settings.XRAY_REALITY_PRIVKEY}\n')
-                    f.write(f'XRAY_REALITY_PUBKEY={settings.XRAY_REALITY_PUBKEY}\n')
+        # Try different possible xray binary locations
+        xray_paths = ['/usr/local/bin/xray', '/usr/bin/xray', 'xray']
+        xray_cmd = None
+        
+        for path in xray_paths:
+            try:
+                result = subprocess.run([path, '--version'], capture_output=True, text=True, timeout=5)
+                if result.returncode == 0:
+                    xray_cmd = path
+                    break
+            except (subprocess.TimeoutExpired, FileNotFoundError):
+                continue
+        
+        if xray_cmd:
+            result = subprocess.run(
+                [xray_cmd, 'x25519'],
+                capture_output=True,
+                text=True,
+                timeout=10
+            )
+            if result.returncode == 0:
+                for line in result.stdout.split('\n'):
+                    if 'Private key' in line:
+                        private_key = line.split(':')[1].strip()
+                        settings.XRAY_REALITY_PRIVKEY = private_key
+                    elif 'Public key' in line:
+                        public_key = line.split(':')[1].strip()
+                        settings.XRAY_REALITY_PUBKEY = public_key
+                
+                # Save to .env file if not exists
+                env_file = Path(__file__).parent / '.env'
+                if not env_file.exists():
+                    with open(env_file, 'w') as f:
+                        f.write(f'XRAY_REALITY_PRIVKEY={settings.XRAY_REALITY_PRIVKEY}\n')
+                        f.write(f'XRAY_REALITY_PUBKEY={settings.XRAY_REALITY_PUBKEY}\n')
+        else:
+            print("Warning: Xray binary not found in common locations")
     except Exception as e:
         print(f"Warning: Could not generate Xray Reality keys: {e}")

@@ -573,3 +573,19 @@ class Database:
 
 # Initialize database instance
 db = Database()
+
+# Session factory for synchronous operations (for compatibility with bot.py)
+def get_db_session():
+    """
+    Create a synchronous database session for legacy code compatibility.
+    Note: This is for backward compatibility. New code should use async sessions.
+    """
+    from sqlalchemy import create_engine
+    from sqlalchemy.orm import sessionmaker
+    
+    # Create synchronous engine from async URL
+    sync_url = settings.DATABASE_URL.replace('sqlite+aiosqlite://', 'sqlite:///')
+    sync_engine = create_engine(sync_url, echo=settings.SQLALCHEMY_ECHO)
+    SyncSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=sync_engine)
+    
+    return SyncSessionLocal()
