@@ -107,6 +107,116 @@ settings = Settings()
 os.makedirs(settings.LOG_DIR, exist_ok=True)
 XRAY_REALITY_XVER = 0
 
+def generate_xray_config(users: list = None) -> dict:
+    """Generate Xray configuration with VLESS Reality protocol.
+    
+    Args:
+        users: List of user configurations. If None, creates empty config.
+        
+    Returns:
+        dict: Complete Xray configuration
+    """
+    if users is None:
+        users = []
+    
+    config = {
+        "log": {
+            "access": "/var/log/xray/access.log",
+            "error": "/var/log/xray/error.log",
+            "loglevel": "warning"
+        },
+        "api": {
+            "tag": "api",
+            "services": [
+                "HandlerService",
+                "LoggerService",
+                "StatsService"
+            ]
+        },
+        "stats": {},
+        "policy": {
+            "levels": {
+                "0": {
+                    "statsUserUplink": True,
+                    "statsUserDownlink": True
+                }
+            },
+            "system": {
+                "statsInboundUplink": True,
+                "statsInboundDownlink": True,
+                "statsOutboundUplink": True,
+                "statsOutboundDownlink": True
+            }
+        },
+        "inbounds": [
+            {
+                "tag": "api",
+                "listen": settings.XRAY_API_HOST,
+                "port": settings.XRAY_API_PORT,
+                "protocol": "dokodemo-door",
+                "settings": {
+                    "address": settings.XRAY_API_HOST
+                }
+            },
+            {
+                "tag": "vless-reality",
+                "listen": "0.0.0.0",
+                "port": settings.XRAY_PORT,
+                "protocol": "vless",
+                "settings": {
+                    "clients": users,
+                    "decryption": "none"
+                },
+                "streamSettings": {
+                    "network": "tcp",
+                    "security": "reality",
+                    "realitySettings": {
+                        "show": False,
+                        "dest": f"{settings.XRAY_REALITY_DEST}:{settings.XRAY_REALITY_PORT}",
+                        "xver": XRAY_REALITY_XVER,
+                        "serverNames": [settings.XRAY_REALITY_SERVER_NAME],
+                        "privateKey": settings.XRAY_REALITY_PRIVKEY,
+                        "shortIds": settings.XRAY_REALITY_SHORT_IDS
+                    },
+                    "tcpSettings": {
+                        "header": {
+                            "type": "none"
+                        }
+                    }
+                },
+                "sniffing": {
+                    "enabled": True,
+                    "destOverride": ["http", "tls"]
+                }
+            }
+        ],
+        "outbounds": [
+            {
+                "tag": "direct",
+                "protocol": "freedom"
+            },
+            {
+                "tag": "block",
+                "protocol": "blackhole"
+            }
+        ],
+        "routing": {
+            "rules": [
+                {
+                    "type": "field",
+                    "inboundTag": ["api"],
+                    "outboundTag": "api"
+                },
+                {
+                    "type": "field",
+                    "outboundTag": "direct"
+                }
+            ]
+        }
+    }
+    
+    return config
+
 # Generate Reality keys if not set
 if not settings.XRAY_REALITY_PRIVKEY or not settings.XRAY_REALITY_PUBKEY:
     import subprocess
