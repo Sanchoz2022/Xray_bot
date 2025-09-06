@@ -133,14 +133,12 @@ async def cmd_start(message: Message):
     
     # Add user to database
     with get_db_session() as session:
-        db_user = session.query(User).filter(User.user_id == user.id).first()
+        db_user = session.query(User).filter(User.telegram_id == user.id).first()
         if not db_user:
             db_user = User(
-                user_id=user.id,
+                telegram_id=user.id,
                 username=user.username,
-                first_name=user.first_name,
-                last_name=user.last_name,
-                join_date=datetime.utcnow()
+                full_name=f"{user.first_name or ''} {user.last_name or ''}".strip()
             )
             session.add(db_user)
             session.commit()
@@ -177,14 +175,14 @@ async def check_subscription_callback(callback: CallbackQuery):
     try:
         with get_db_session() as session:
             # Update subscription status
-            db_user = session.query(User).filter(User.user_id == user.id).first()
+            db_user = session.query(User).filter(User.telegram_id == user.id).first()
             if not db_user:
                 await callback.answer("❌ Пользователь не найден. Пожалуйста, начните с /start", show_alert=True)
                 return
                 
             # Get or create user key
             key = session.query(UserKey).filter(
-                UserKey.user_id == user.id,
+                UserKey.user_id == db_user.id,
                 UserKey.is_active == True
             ).first()
             
@@ -199,7 +197,7 @@ async def check_subscription_callback(callback: CallbackQuery):
                 
                 # Create new key in database
                 key = UserKey(
-                    user_id=user.id,
+                    user_id=db_user.id,
                     uuid=user_uuid,
                     is_active=True,
                     created_at=datetime.utcnow(),
@@ -516,11 +514,11 @@ async def setup_bot():
 async def main():
     """Main function to start the bot."""
     # Setup the bot
-    setup_bot()
+    asyncio.run(setup_bot())
     
     # Start polling
     logger.info("Starting bot...")
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    asyncio.run(setup_bot())
