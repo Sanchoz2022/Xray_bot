@@ -61,7 +61,7 @@ class XrayManager:
         self.close()
     
     def add_user(self, email: str, uuid_str: str, level: int = 0) -> bool:
-        """Add a new user to Xray.
+        """Add a new user to Xray using xray command line API.
         
         Args:
             email: User's email (used as identifier)
@@ -72,44 +72,36 @@ class XrayManager:
             bool: True if user was added successfully, False otherwise.
         """
         try:
-            if not hasattr(self, 'handler_stub') or not self.handler_stub:
-                self.connect()
-                
-            # Create user object
-            user = pb.User(
-                level=level,
-                email=email,
-                account=pb.Account(
-                    type="vless",
-                    settings=json.dumps({
-                        "id": uuid_str,
-                        "flow": "xtls-rprx-vision"
-                    })
-                )
-            )
+            # Use xray command line API instead of gRPC for user management
+            user_config = {
+                "email": email,
+                "id": uuid_str,
+                "flow": "xtls-rprx-vision"
+            }
             
-            # Create inbound with user
-            inbound = pb.Inbound(
-                tag="inbound-443",  # Match the tag from Xray config
-                user=[user]
-            )
+            # Use xray api command to add user
+            result = subprocess.run([
+                "xray", "api", "add", "user",
+                "--server", "127.0.0.1:50051",
+                "--inbound", "inbound-443",
+                "--email", email,
+                "--uuid", uuid_str,
+                "--flow", "xtls-rprx-vision"
+            ], capture_output=True, text=True)
             
-            # Alter inbound to add user
-            response = self.handler_stub.AlterInbound(pb.AlterInboundRequest(
-                tag="inbound-443",
-                operation=inbound
-            ))
-            return True
+            if result.returncode == 0:
+                logger.info(f"Successfully added user {email} via xray CLI")
+                return True
+            else:
+                logger.error(f"Failed to add user {email}: {result.stderr}")
+                return False
             
-        except grpc.RpcError as e:
-            logger.error(f"gRPC error adding user {email}: {e.details()}")
-            return False
         except Exception as e:
             logger.error(f"Error adding user {email}: {e}")
             return False
     
     def remove_user(self, email: str) -> bool:
-        """Remove a user from Xray.
+        """Remove a user from Xray using xray command line API.
         
         Args:
             email: User's email to remove
@@ -118,32 +110,27 @@ class XrayManager:
             bool: True if user was removed successfully, False otherwise.
         """
         try:
-            if not hasattr(self, 'handler_stub') or not self.handler_stub:
-                self.connect()
-                
-            # Create empty inbound to remove user (Xray API limitation)
-            # Note: Xray doesn't have direct RemoveUser, need to alter inbound
-            inbound = pb.Inbound(
-                tag="inbound-443",
-                user=[]  # Empty user list removes all users
-            )
+            # Use xray command line API to remove user
+            result = subprocess.run([
+                "xray", "api", "remove", "user",
+                "--server", "127.0.0.1:50051", 
+                "--inbound", "inbound-443",
+                "--email", email
+            ], capture_output=True, text=True)
             
-            # Alter inbound to remove users
-            response = self.handler_stub.AlterInbound(pb.AlterInboundRequest(
-                tag="inbound-443",
-                operation=inbound
-            ))
-            return True
+            if result.returncode == 0:
+                logger.info(f"Successfully removed user {email} via xray CLI")
+                return True
+            else:
+                logger.error(f"Failed to remove user {email}: {result.stderr}")
+                return False
             
-        except grpc.RpcError as e:
-            logger.error(f"gRPC error removing user {email}: {e.details()}")
-            return False
         except Exception as e:
             logger.error(f"Error removing user {email}: {e}")
             return False
     
     def get_user_stats(self, email: str, reset: bool = False) -> Optional[Dict]:
-        """Get user statistics.
+        """Get user statistics using xray command line API.
         
         Args:
             email: User's email
@@ -153,34 +140,39 @@ class XrayManager:
             Optional[Dict]: User statistics or None if failed
         """
         try:
-            if not hasattr(self, 'stats_stub') or not self.stats_stub:
-                self.connect()
+            # Use xray command line API to get stats
+            result = subprocess.run([
+                "xray", "api", "statsquery",
+                "--server", "127.0.0.1:50051",
+                "--pattern", f"user>>>{email}>>>traffic>>>",
+                "--reset" if reset else ""
+            ], capture_output=True, text=True)
+            
+            if result.returncode == 0:
+                # Parse the output to extract upload/download stats
+                lines = result.stdout.strip().split('\n')
+                upload = 0
+                download = 0
                 
-            # Query user stats using pattern
-            pattern = f"user>>>{email}>>>traffic>>>uplink"
-            response = self.stats_stub.QueryStats(pb.QueryStatsRequest(
-                pattern=pattern,
-                reset=reset
-            ))
+                for line in lines:
+                    if "uplink" in line:
+                        parts = line.split()
+                        if len(parts) >= 2:
+                            upload = int(parts[-1])
+                    elif "downlink" in line:
+                        parts = line.split()
+                        if len(parts) >= 2:
+                            download = int(parts[-1])
+                
+                return {
+                    'upload': upload,
+                    'download': download,
+                    'total': upload + download
+                }
+            else:
+                logger.error(f"Failed to get stats for {email}: {result.stderr}")
+                return None
             
-            upload = 0
-            download = 0
-            
-            for stat in response.stat:
-                if "uplink" in stat.name:
-                    upload = stat.value
-                elif "downlink" in stat.name:
-                    download = stat.value
-            
-            return {
-                'upload': upload,
-                'download': download,
-                'total': upload + download
-            }
-            
-        except grpc.RpcError as e:
-            logger.error(f"gRPC error getting stats for {email}: {e.details()}")
-            return None
         except Exception as e:
             logger.error(f"Error getting stats for {email}: {e}")
             return None
