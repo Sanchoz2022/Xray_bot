@@ -70,7 +70,17 @@ class Settings(BaseSettings):
     XRAY_REALITY_XVER: int = 0
     
     # Database configuration
-    DB_URL: str = os.getenv('DATABASE_URL', 'sqlite:///xray_bot.db')
+    DATABASE_URL: str = Field(
+        default='sqlite+aiosqlite:///./xray_bot.db',
+        alias='DATABASE_URL',
+        env='DATABASE_URL',
+        description='Database connection URL. For SQLite use: sqlite+aiosqlite:///./your_db.db',
+    )
+    
+    # SQLAlchemy settings
+    SQLALCHEMY_ECHO: bool = False
+    SQLALCHEMY_POOL_SIZE: int = 5
+    SQLALCHEMY_MAX_OVERFLOW: int = 10
     
     # gRPC API Settings
     GRPC_API_HOST: str = os.getenv('GRPC_API_HOST', '127.0.0.1')

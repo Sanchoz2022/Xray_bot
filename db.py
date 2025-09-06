@@ -1,32 +1,199 @@
 import logging
+from typing import Optional, List, Dict, Any, AsyncGenerator
 from datetime import datetime, timedelta
-from typing import Optional, List, Dict, Any, Type, TypeVar, Generic
-import uuid
-import json
-from pathlib import Path
-from sqlalchemy import create_engine, Column, Integer, String, Boolean, DateTime, ForeignKey, BigInteger, func
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, Session, relationship, scoped_session
-from sqlalchemy.pool import StaticPool
+from sqlalchemy import select, update, delete, func, Column, Integer, String, DateTime, Boolean, ForeignKey, Text
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
+from sqlalchemy.orm import sessionmaker, selectinload, declarative_base, relationship, Session
+from sqlalchemy.pool import NullPool
 
 from config import settings
-import logging
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Create SQLAlchemy engine and session
-if settings.DB_URL.startswith('sqlite'):
-    # For SQLite, we need to add check_same_thread=False
-    engine = create_engine(
-        settings.DB_URL,
-        connect_args={"check_same_thread": False},
-        poolclass=StaticPool
-    )
-else:
-    engine = create_engine(settings.DB_URL)
+# SQLAlchemy setup
+Base = declarative_base()
 
+# Database models
+class User(Base):
+    __tablename__ = 'users'
+    
+    id = Column(Integer, primary_key=True, index=True)
+    telegram_id = Column(Integer, unique=True, index=True, nullable=False)
+    username = Column(String, nullable=True)
+    full_name = Column(String, nullable=True)
+    is_admin = Column(Boolean, default=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    
+    # Relationships
+    subscriptions = relationship("Subscription", back_populates="user")
+    
+    def __repr__(self):
+        return f"<User {self.telegram_id} ({self.username or self.full_name})>"
+
+class Subscription(Base):
+    __tablename__ = 'subscriptions'
+    
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    start_date = Column(DateTime(timezone=True), server_default=func.now())
+    end_date = Column(DateTime(timezone=True), nullable=False)
+    data_limit = Column(Integer, nullable=False)  # in bytes
+    data_used = Column(Integer, default=0)  # in bytes
+    is_active = Column(Boolean, default=True)
+    
+    # Relationships
+    user = relationship("User", back_populates="subscriptions")
+    
+    @property
+    def data_remaining(self) -> int:
+        return max(0, self.data_limit - self.data_used)
+    
+    @property
+    def is_expired(self) -> bool:
+        return datetime.now() > self.end_date
+    
+    @property
+    def has_data(self) -> bool:
+        return self.data_remaining > 0
+
+# Database URL
+DATABASE_URL = settings.DATABASE_URL
+
+# Create async engine
+engine = create_async_engine(
+    DATABASE_URL,
+    echo=settings.SQLALCHEMY_ECHO,
+    pool_size=settings.SQLALCHEMY_POOL_SIZE,
+    max_overflow=settings.SQLALCHEMY_MAX_OVERFLOW,
+    pool_pre_ping=True
+)
+
+# Create async session factory
+async_session_maker = sessionmaker(
+    bind=engine,
+    class_=AsyncSession,
+    expire_on_commit=False,
+    autoflush=False
+)
+
+# Dependency to get DB session
+async def get_db() -> AsyncGenerator[AsyncSession, None]:
+    """Dependency for getting async DB session"""
+    async with async_session_maker() as session:
+        try:
+            yield session
+            await session.commit()
+        except Exception as e:
+            await session.rollback()
+            logger.error(f"Database error: {e}")
+            raise
+        finally:
+            await session.close()
+
+# Initialize database
+async def init_db():
+    """Initialize database tables"""
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+
+# User operations
+async def get_user(session: AsyncSession, telegram_id: int) -> Optional[User]:
+    """Get user by Telegram ID"""
+    result = await session.execute(
+        select(User).where(User.telegram_id == telegram_id)
+    )
+    return result.scalar_one_or_none()
+
+async def create_user(
+    session: AsyncSession,
+    telegram_id: int,
+    username: Optional[str] = None,
+    full_name: Optional[str] = None,
+    is_admin: bool = False
+) -> User:
+    """Create new user"""
+    user = User(
+        telegram_id=telegram_id,
+        username=username,
+        full_name=full_name,
+        is_admin=is_admin
+    )
+    session.add(user)
+    await session.commit()
+    await session.refresh(user)
+    return user
+
+async def get_or_create_user(
+    session: AsyncSession,
+    telegram_id: int,
+    username: Optional[str] = None,
+    full_name: Optional[str] = None
+) -> User:
+    """Get existing user or create new one"""
+    user = await get_user(session, telegram_id)
+    if user is None:
+        user = await create_user(session, telegram_id, username, full_name)
+    return user
+
+# Subscription operations
+async def create_subscription(
+    session: AsyncSession,
+    user_id: int,
+    days: int,
+    data_limit_gb: float
+) -> Subscription:
+    """Create new subscription"""
+    now = datetime.now()
+    subscription = Subscription(
+        user_id=user_id,
+        start_date=now,
+        end_date=now + timedelta(days=days),
+        data_limit=int(data_limit_gb * 1024 * 1024 * 1024),  # Convert GB to bytes
+        data_used=0,
+        is_active=True
+    )
+    session.add(subscription)
+    await session.commit()
+    await session.refresh(subscription)
+    return subscription
+
+async def get_active_subscription(
+    session: AsyncSession,
+    user_id: int
+) -> Optional[Subscription]:
+    """Get user's active subscription"""
+    result = await session.execute(
+        select(Subscription)
+        .where(Subscription.user_id == user_id)
+        .where(Subscription.is_active == True)
+        .order_by(Subscription.end_date.desc())
+    )
+    return result.scalars().first()
+
+async def update_subscription_data_usage(
+    session: AsyncSession,
+    subscription_id: int,
+    bytes_used: int
+) -> None:
+    """Update subscription data usage"""
+    await session.execute(
+        update(Subscription)
+        .where(Subscription.id == subscription_id)
+        .values(data_used=Subscription.data_used + bytes_used)
+    )
+    await session.commit()
+
+async def deactivate_expired_subscriptions(session: AsyncSession) -> None:
+    """Deactivate expired subscriptions"""
+    now = datetime.now()
+    await session.execute(
+        update(Subscription)
+        .where(Subscription.end_date < now)
+        .values(is_active=False)
+    )
+    await session.commit()
 # Create a scoped session factory
 SessionLocal = scoped_session(
     sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -377,8 +544,6 @@ class Database:
             return None
         finally:
             db.close()
-                logger.error(f"Error getting active users: {e}")
-                return []
 
 # Create a global database instance
 db = Database()
