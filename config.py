@@ -1,6 +1,7 @@
 import os
 import json
 from pathlib import Path
+from typing import List, Optional
 from dotenv import load_dotenv
 from pydantic_settings import BaseSettings
 
@@ -10,7 +11,7 @@ load_dotenv()
 class Settings(BaseSettings):
     # Bot configuration
     BOT_TOKEN: str = os.getenv('BOT_TOKEN', '')
-    ADMIN_IDS: list[int] = [int(id) for id in os.getenv('ADMIN_IDS', '').split(',') if id]
+    ADMIN_IDS: List[int] = [int(id) for id in os.getenv('ADMIN_IDS', '').split(',') if id]
     CHANNEL_USERNAME: str = os.getenv('CHANNEL_USERNAME', '')
     
     # Server configuration
@@ -29,7 +30,7 @@ class Settings(BaseSettings):
     # Xray Reality settings
     XRAY_REALITY_PRIVKEY: str = os.getenv('XRAY_REALITY_PRIVKEY', '')
     XRAY_REALITY_PUBKEY: str = os.getenv('XRAY_REALITY_PUBKEY', '')
-    XRAY_REALITY_SHORT_IDS: list[str] = os.getenv('XRAY_REALITY_SHORT_IDS', '0123456789abcdef').split(',')
+    XRAY_REALITY_SHORT_IDS: List[str] = os.getenv('XRAY_REALITY_SHORT_IDS', '0123456789abcdef').split(',')
     XRAY_REALITY_DEST: str = os.getenv('XRAY_REALITY_DEST', 'www.google.com:443')
     XRAY_REALITY_XVER: int = 0
     
