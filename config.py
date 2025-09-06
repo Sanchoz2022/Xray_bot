@@ -12,56 +12,19 @@ load_dotenv()
 class Settings(BaseSettings):
     # Bot configuration
     BOT_TOKEN: str = os.getenv('BOT_TOKEN', '')
-    ADMIN_IDS: List[int] = Field(
-        default_factory=list,
-        description="Comma-separated list of admin user IDs"
-    )
     
-    @validator('ADMIN_IDS', pre=True)
-    def parse_admin_ids(cls, v):
-        if v is None or v == '':
+    # Parse ADMIN_IDS directly from environment
+    @property
+    def ADMIN_IDS(self) -> List[int]:
+        admin_ids_str = os.getenv('ADMIN_IDS', '')
+        if not admin_ids_str:
             return []
-            
-        # If it's already a list, return as is
-        if isinstance(v, list):
-            return [int(x) if isinstance(x, str) and x.isdigit() else x for x in v if x]
-            
-        if isinstance(v, str):
-            # Remove any surrounding quotes and whitespace
-            v = v.strip().strip('"\'')
-            
-            # If empty string, return empty list
-            if not v:
-                return []
-                
-            # If it's a JSON array string, try to parse it
-            if v.startswith('[') and v.endswith(']'):
-                try:
-                    import json
-                    result = json.loads(v)
-                    if isinstance(result, list):
-                        return [int(x) for x in result if str(x).isdigit()]
-                except json.JSONDecodeError:
-                    # If JSON parsing fails, try to extract values manually
-                    try:
-                        # Remove brackets and split by comma
-                        clean_v = v.strip('[]').strip()
-                        if clean_v:
-                            # Split by comma and clean each value
-                            values = [val.strip().strip('"\'') for val in clean_v.split(',')]
-                            return [int(val) for val in values if val.isdigit()]
-                        else:
-                            return []
-                    except Exception:
-                        return []
-                        
-            # Handle comma-separated values
-            try:
-                return [int(id.strip()) for id in v.split(',') if id.strip().isdigit()]
-            except Exception:
-                return []
-                
-        return []
+        
+        # Handle comma-separated values
+        try:
+            return [int(id.strip()) for id in admin_ids_str.split(',') if id.strip().isdigit()]
+        except Exception:
+            return []
         
     CHANNEL_USERNAME: str = os.getenv('CHANNEL_USERNAME', '')
     
@@ -81,63 +44,22 @@ class Settings(BaseSettings):
     # Xray Reality settings
     XRAY_REALITY_PRIVKEY: str = os.getenv('XRAY_REALITY_PRIVKEY', '')
     XRAY_REALITY_PUBKEY: str = os.getenv('XRAY_REALITY_PUBKEY', '')
-    XRAY_REALITY_SHORT_IDS: List[str] = Field(
-        default_factory=lambda: ['00000000'],
-        description="Comma-separated list of short IDs for Reality protocol. Can be a JSON array or comma-separated string."
-    )
     
-    @validator('XRAY_REALITY_SHORT_IDS', pre=True)
-    def parse_short_ids(cls, v):
-        if v is None or v == '':
-            return ['00000000']  # Default short ID if none provided
-            
-        # If it's already a list, return as is
-        if isinstance(v, list):
-            return v if v else ['00000000']
-            
-        if isinstance(v, str):
-            # Remove any surrounding quotes and whitespace
-            v = v.strip().strip('"\'')
-            
-            # If empty string, return default
-            if not v:
-                return ['00000000']
-                
-            # If it's a JSON array string, try to parse it
-            if v.startswith('[') and v.endswith(']'):
-                try:
-                    result = json.loads(v)
-                    if isinstance(result, list):
-                        return result if result else ['00000000']
-                except json.JSONDecodeError as e:
-                    # If JSON parsing fails, try to extract values manually
-                    try:
-                        # Remove brackets and split by comma
-                        clean_v = v.strip('[]').strip()
-                        if clean_v:
-                            # Split by comma and clean each value
-                            values = [val.strip().strip('"\'') for val in clean_v.split(',')]
-                            values = [val for val in values if val]  # Remove empty values
-                            return values if values else ['00000000']
-                        else:
-                            return ['00000000']
-                    except Exception:
-                        # If all else fails, return default
-                        return ['00000000']
-                    
-            # If it's a single value, wrap it in a list
-            if not any(c in v for c in '[],'):
-                return [v] if v.strip() else ['00000000']
-                
-            # Handle comma-separated values
-            try:
-                values = [id.strip().strip('"\'') for id in v.split(',') if id.strip()]
-                return values if values else ['00000000']
-            except Exception:
-                return ['00000000']
-            
-        # If we get here, return default
-        return ['00000000']
+    # Parse XRAY_REALITY_SHORT_IDS directly from environment
+    @property
+    def XRAY_REALITY_SHORT_IDS(self) -> List[str]:
+        short_ids_str = os.getenv('XRAY_REALITY_SHORT_IDS', '00000000')
+        if not short_ids_str:
+            return ['00000000']
+        
+        # Handle single value or comma-separated values
+        try:
+            if ',' in short_ids_str:
+                return [id.strip() for id in short_ids_str.split(',') if id.strip()]
+            else:
+                return [short_ids_str.strip()]
+        except Exception:
+            return ['00000000']
     
     XRAY_REALITY_DEST: str = os.getenv('XRAY_REALITY_DEST', 'www.google.com:443')
     XRAY_REALITY_XVER: int = 0
