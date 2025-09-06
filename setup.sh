@@ -433,19 +433,60 @@ echo -e "\n${GREEN}Configuring VLESS Reality...${NC}"
 if ! grep -q "XRAY_REALITY_PRIVKEY=" .env || grep -q "XRAY_REALITY_PRIVKEY=$" .env; then
     echo -e "${YELLOW}Generating Reality keys...${NC}"
     
-    # Generate Reality keys
-    REALITY_KEYS=$(xray x25519)
-    PRIVATE_KEY=$(echo "$REALITY_KEYS" | grep "Private key:" | awk '{print $3}')
-    PUBLIC_KEY=$(echo "$REALITY_KEYS" | grep "Public key:" | awk '{print $3}')
+    # Check if xray command is available
+    if ! command -v xray &> /dev/null; then
+        echo -e "${RED}Error: xray command not found. Please install Xray first.${NC}"
+        exit 1
+    fi
+    
+    # Generate Reality keys with error handling
+    echo -e "${YELLOW}Running: xray x25519${NC}"
+    REALITY_KEYS=$(xray x25519 2>&1)
+    XRAY_EXIT_CODE=$?
+    
+    if [ $XRAY_EXIT_CODE -ne 0 ]; then
+        echo -e "${RED}Error: xray x25519 command failed with exit code $XRAY_EXIT_CODE${NC}"
+        echo -e "${RED}Output: $REALITY_KEYS${NC}"
+        exit 1
+    fi
+    
+    echo -e "${YELLOW}Raw output from xray x25519:${NC}"
+    echo "$REALITY_KEYS"
+    
+    # Parse keys with better error handling
+    PRIVATE_KEY=$(echo "$REALITY_KEYS" | grep -i "private key:" | awk '{print $3}' | tr -d '\r\n')
+    PUBLIC_KEY=$(echo "$REALITY_KEYS" | grep -i "public key:" | awk '{print $3}' | tr -d '\r\n')
+    
+    echo -e "${YELLOW}Parsed private key: '$PRIVATE_KEY'${NC}"
+    echo -e "${YELLOW}Parsed public key: '$PUBLIC_KEY'${NC}"
     
     if [ -n "$PRIVATE_KEY" ] && [ -n "$PUBLIC_KEY" ]; then
         # Update .env file with generated keys
         sed -i "s/XRAY_REALITY_PRIVKEY=.*/XRAY_REALITY_PRIVKEY=$PRIVATE_KEY/" .env
         sed -i "s/XRAY_REALITY_PUBKEY=.*/XRAY_REALITY_PUBKEY=$PUBLIC_KEY/" .env
         echo -e "${GREEN}Reality keys generated and saved to .env${NC}"
+        
+        # Verify keys were saved
+        echo -e "${YELLOW}Verifying keys in .env:${NC}"
+        grep "XRAY_REALITY_PRIVKEY=" .env
+        grep "XRAY_REALITY_PUBKEY=" .env
     else
-        echo -e "${RED}Failed to generate Reality keys${NC}"
-        exit 1
+        echo -e "${RED}Failed to parse Reality keys from xray output${NC}"
+        echo -e "${RED}Expected format: 'Private key: <key>' and 'Public key: <key>'${NC}"
+        
+        # Try alternative parsing
+        echo -e "${YELLOW}Trying alternative parsing...${NC}"
+        PRIVATE_KEY=$(echo "$REALITY_KEYS" | grep -oE '[A-Za-z0-9+/]{43}=' | head -1)
+        PUBLIC_KEY=$(echo "$REALITY_KEYS" | grep -oE '[A-Za-z0-9+/]{43}=' | tail -1)
+        
+        if [ -n "$PRIVATE_KEY" ] && [ -n "$PUBLIC_KEY" ] && [ "$PRIVATE_KEY" != "$PUBLIC_KEY" ]; then
+            sed -i "s/XRAY_REALITY_PRIVKEY=.*/XRAY_REALITY_PRIVKEY=$PRIVATE_KEY/" .env
+            sed -i "s/XRAY_REALITY_PUBKEY=.*/XRAY_REALITY_PUBKEY=$PUBLIC_KEY/" .env
+            echo -e "${GREEN}Reality keys parsed with alternative method and saved to .env${NC}"
+        else
+            echo -e "${RED}Alternative parsing also failed. Manual key generation required.${NC}"
+            exit 1
+        fi
     fi
 else
     echo -e "${GREEN}Reality keys already configured in .env${NC}"
