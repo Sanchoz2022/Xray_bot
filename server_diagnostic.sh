@@ -39,6 +39,14 @@ netstat -tlnp | grep :443 > /dev/null 2>&1
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}✓${NC} Port 443 is listening"
     netstat -tlnp | grep :443
+    
+    # Check if listening on correct IP
+    netstat -tlnp | grep "194.87.30.246:443" > /dev/null 2>&1
+    if [ $? -eq 0 ]; then
+        echo -e "${GREEN}✓${NC} Listening on correct IP (194.87.30.246:443)"
+    else
+        echo -e "${YELLOW}⚠${NC} Not listening on 194.87.30.246:443 - may cause connection issues"
+    fi
 else
     echo -e "${RED}✗${NC} Port 443 is not listening"
 fi
