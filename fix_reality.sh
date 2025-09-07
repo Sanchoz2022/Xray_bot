@@ -99,7 +99,7 @@ if [ -f "/usr/local/etc/xray/config.json" ]; then
                         "www.google.com",
                         "google.com"
                     ],
-                    "privateKey": "$(grep XRAY_REALITY_PRIVKEY= .env 2>/dev/null | cut -d= -f2 | tr -d '"' || echo 'PLACEHOLDER_PRIVATE_KEY')",
+                    "privateKey": "PLACEHOLDER_PRIVATE_KEY",
                     "minClientVer": "",
                     "maxClientVer": "",
                     "maxTimeDiff": 0,
@@ -177,10 +177,14 @@ EOL
     fi
     
     # Validate configuration
-    if xray -test -config /usr/local/etc/xray/config.json > /dev/null 2>&1; then
+    log_info "Validating configuration..."
+    VALIDATION_OUTPUT=$(xray -test -config /usr/local/etc/xray/config.json 2>&1)
+    if [ $? -eq 0 ]; then
         log_success "Xray configuration updated with IPv6 support and validated"
     else
-        log_error "Configuration validation failed, restoring backup"
+        log_error "Configuration validation failed:"
+        echo "$VALIDATION_OUTPUT"
+        log_info "Restoring backup..."
         mv /usr/local/etc/xray/config.json.backup /usr/local/etc/xray/config.json
         exit 1
     fi
