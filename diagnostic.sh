@@ -443,7 +443,7 @@ regenerate_config() {
     if [ -f ".env" ]; then
         sed -i "s/XRAY_REALITY_PRIVKEY=.*/XRAY_REALITY_PRIVKEY=$PRIVATE_KEY/" .env
         sed -i "s/XRAY_REALITY_PUBKEY=.*/XRAY_REALITY_PUBKEY=$PUBLIC_KEY/" .env
-        sed -i "s/XRAY_REALITY_SHORT_IDS=.*/XRAY_REALITY_SHORT_IDS=,$SHORT_ID/" .env
+        sed -i "s/XRAY_REALITY_SHORT_IDS=.*/XRAY_REALITY_SHORT_IDS='[\"\", \"$SHORT_ID\"]'/" .env
         log_success ".env файл обновлен"
     fi
 

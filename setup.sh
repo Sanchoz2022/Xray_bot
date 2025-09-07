@@ -297,7 +297,7 @@ generate_reality_keys() {
     # Сохранение в переменные для использования
     export XRAY_REALITY_PRIVKEY="$PRIVATE_KEY"
     export XRAY_REALITY_PUBKEY="$PUBLIC_KEY"
-    export XRAY_REALITY_SHORT_IDS=",$SHORT_ID"
+    export XRAY_REALITY_SHORT_IDS='["", "'$SHORT_ID'"]'
 }
 
 # Создание .env файла
@@ -381,11 +381,17 @@ create_xray_config() {
     },
     "inbounds": [
         {
+            "listen": "::",
             "port": 443,
             "protocol": "vless",
             "settings": {
                 "clients": [],
-                "decryption": "none"
+                "decryption": "none",
+                "fallbacks": [
+                    {
+                        "dest": "www.google.com:443"
+                    }
+                ]
             },
             "streamSettings": {
                 "network": "tcp",
@@ -395,14 +401,16 @@ create_xray_config() {
                     "dest": "www.google.com:443",
                     "xver": 0,
                     "serverNames": [
-                        "www.google.com"
+                        "www.google.com",
+                        "google.com"
                     ],
                     "privateKey": "$XRAY_REALITY_PRIVKEY",
                     "minClientVer": "",
                     "maxClientVer": "",
                     "maxTimeDiff": 0,
                     "shortIds": [
-                        "${XRAY_REALITY_SHORT_IDS#,}"
+                        "",
+                        "$SHORT_ID"
                     ]
                 }
             },
@@ -850,7 +858,7 @@ main() {
     echo -e "${YELLOW}Информация о сгенерированных ключах:${NC}"
     echo "Private Key: $XRAY_REALITY_PRIVKEY"
     echo "Public Key: $XRAY_REALITY_PUBKEY"
-    echo "Short ID: ${XRAY_REALITY_SHORT_IDS#,}"
+    echo "Short ID: $SHORT_ID"
     echo ""
 
     echo -e "${GREEN}Сервер готов к работе!${NC}"
