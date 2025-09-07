@@ -328,12 +328,18 @@ test_reality_connection() {
 
             # Тест с правильным SNI
             log_info "Тест с SNI www.google.com:"
-            if echo "Q" | timeout 10 openssl s_client -connect $SERVER_IP:443 -servername www.google.com 2>/dev/null | grep -q "subject=CN=www.google.com"; then
+            SNI_RESULT=$(echo "Q" | timeout 10 openssl s_client -connect $SERVER_IP:443 -servername www.google.com 2>/dev/null | grep -E "(subject|Verification)")
+            
+            if echo "$SNI_RESULT" | grep -q "subject=CN = www.google.com" && echo "$SNI_RESULT" | grep -q "Verification: OK"; then
                 log_success "✓ Reality работает корректно с SNI"
+                log_success "✓ Сертификат Google успешно маскируется"
+            elif echo "$SNI_RESULT" | grep -q "subject=CN = www.google.com"; then
+                log_success "✓ Reality работает корректно (маскировка под Google)"
+                log_info "Сертификат Google корректно отображается"
             else
                 log_warning "⚠ Reality может работать некорректно с SNI"
                 echo "Результат теста:"
-                echo "Q" | timeout 10 openssl s_client -connect $SERVER_IP:443 -servername www.google.com 2>/dev/null | grep -E "(subject|verify|Verification)" || log_info "Нет вывода от теста"
+                echo "$SNI_RESULT"
             fi
         else
             log_warning "SERVER_IP не настроен для теста"
