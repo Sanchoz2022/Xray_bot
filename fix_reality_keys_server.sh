@@ -89,10 +89,54 @@ echo "Found short IDs: $SHORT_IDS"
 echo
 echo "3. Generating public key..."
 if [ -f "/usr/local/bin/xray" ]; then
-    PUBLIC_KEY=$(echo "$PRIVATE_KEY" | /usr/local/bin/xray x25519 -i 2>/dev/null | grep -o '[A-Za-z0-9_-]\{43\}')
+    # Try different methods to generate public key
+    PUBLIC_KEY=""
+    
+    # Method 1: Standard x25519 with -i flag
+    PUBLIC_KEY=$(echo "$PRIVATE_KEY" | /usr/local/bin/xray x25519 -i 2>/dev/null | tail -1 | tr -d '\n\r')
+    
+    # Method 2: If that fails, try without -i flag
+    if [ -z "$PUBLIC_KEY" ]; then
+        PUBLIC_KEY=$(/usr/local/bin/xray x25519 -i "$PRIVATE_KEY" 2>/dev/null | tail -1 | tr -d '\n\r')
+    fi
+    
+    # Method 3: Try generating new keys if extraction fails
+    if [ -z "$PUBLIC_KEY" ]; then
+        echo "Generating new Reality keys..."
+        KEY_OUTPUT=$(/usr/local/bin/xray x25519 2>/dev/null)
+        PRIVATE_KEY=$(echo "$KEY_OUTPUT" | grep -i "private" | cut -d':' -f2 | tr -d ' \n\r')
+        PUBLIC_KEY=$(echo "$KEY_OUTPUT" | grep -i "public" | cut -d':' -f2 | tr -d ' \n\r')
+        
+        if [ ! -z "$PRIVATE_KEY" ] && [ ! -z "$PUBLIC_KEY" ]; then
+            echo "Generated new keys:"
+            echo "  Private: $PRIVATE_KEY"
+            echo "  Public: $PUBLIC_KEY"
+            
+            # Update server config with new private key
+            python3 -c "
+import json
+try:
+    with open('$SERVER_CONFIG', 'r') as f:
+        config = json.load(f)
+    
+    for inbound in config.get('inbounds', []):
+        if inbound.get('protocol') == 'vless':
+            reality = inbound.get('streamSettings', {}).get('realitySettings', {})
+            if 'privateKey' in reality:
+                reality['privateKey'] = '$PRIVATE_KEY'
+                break
+    
+    with open('$SERVER_CONFIG', 'w') as f:
+        json.dump(config, f, indent=2)
+    print('Updated server config with new private key')
+except Exception as e:
+    print(f'Failed to update server config: {e}')
+"
+        fi
+    fi
     
     if [ ! -z "$PUBLIC_KEY" ]; then
-        echo "Generated public key: $PUBLIC_KEY"
+        echo "Using public key: $PUBLIC_KEY"
     else
         echo -e "${RED}✗${NC} Failed to generate public key"
         exit 1
