@@ -411,6 +411,10 @@ regenerate_config() {
     systemctl stop xray || true
     systemctl stop xray-bot || true
 
+    # Проверка версии Xray
+    XRAY_VERSION=$(xray -version | head -1 | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+' | head -1)
+    log_info "Версия Xray: $XRAY_VERSION"
+    
     # Генерация новых ключей
     log_info "Генерация новых Reality ключей..."
     REALITY_OUTPUT=$(xray x25519 2>&1)
@@ -447,20 +451,184 @@ regenerate_config() {
         log_success ".env файл обновлен"
     fi
 
-    # Обновление конфигурации Xray
-    if [ -f "/usr/local/etc/xray/config.json" ]; then
-        sed -i "s/\"privateKey\": \".*\"/\"privateKey\": \"$PRIVATE_KEY\"/" /usr/local/etc/xray/config.json
-        sed -i "s/\"shortIds\": \[.*\]/\"shortIds\": [\"\", \"$SHORT_ID\"]/" /usr/local/etc/xray/config.json
-        log_success "Конфигурация Xray обновлена"
+    # Создание улучшенной конфигурации Xray с рекомендациями
+    log_info "Создание оптимизированной конфигурации..."
+    cat > /usr/local/etc/xray/config.json << EOL
+{
+    "log": {
+        "loglevel": "warning",
+        "access": "/var/log/xray/access.log",
+        "error": "/var/log/xray/error.log"
+    },
+    "api": {
+        "tag": "api",
+        "services": ["HandlerService", "LoggerService", "StatsService"]
+    },
+    "stats": {},
+    "policy": {
+        "levels": {
+            "0": {
+                "statsUserUplink": true,
+                "statsUserDownlink": true
+            }
+        },
+        "system": {
+            "statsInboundUplink": true,
+            "statsInboundDownlink": true,
+            "statsOutboundUplink": true,
+            "statsOutboundDownlink": true
+        }
+    },
+    "inbounds": [
+        {
+            "listen": "::",
+            "port": 443,
+            "protocol": "vless",
+            "settings": {
+                "clients": [],
+                "decryption": "none",
+                "fallbacks": [
+                    {
+                        "dest": "www.google.com:443"
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "security": "reality",
+                "realitySettings": {
+                    "show": false,
+                    "dest": "www.google.com:443",
+                    "xver": 0,
+                    "serverNames": [
+                        "www.google.com",
+                        "google.com"
+                    ],
+                    "privateKey": "$PRIVATE_KEY",
+                    "minClientVer": "",
+                    "maxClientVer": "",
+                    "maxTimeDiff": 0,
+                    "shortIds": [
+                        "",
+                        "$SHORT_ID"
+                    ]
+                }
+            },
+            "sniffing": {
+                "enabled": true,
+                "destOverride": [
+                    "http",
+                    "tls"
+                ]
+            },
+            "tag": "inbound-443"
+        },
+        {
+            "listen": "::",
+            "port": 8443,
+            "protocol": "vless",
+            "settings": {
+                "clients": [],
+                "decryption": "none",
+                "fallbacks": [
+                    {
+                        "dest": "www.google.com:443"
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "security": "reality",
+                "realitySettings": {
+                    "show": false,
+                    "dest": "www.google.com:443",
+                    "xver": 0,
+                    "serverNames": [
+                        "www.google.com",
+                        "google.com"
+                    ],
+                    "privateKey": "$PRIVATE_KEY",
+                    "minClientVer": "",
+                    "maxClientVer": "",
+                    "maxTimeDiff": 0,
+                    "shortIds": [
+                        "",
+                        "$SHORT_ID"
+                    ]
+                }
+            },
+            "sniffing": {
+                "enabled": true,
+                "destOverride": [
+                    "http",
+                    "tls"
+                ]
+            },
+            "tag": "inbound-8443"
+        },
+        {
+            "port": 50051,
+            "listen": "127.0.0.1",
+            "protocol": "dokodemo-door",
+            "settings": {
+                "address": "127.0.0.1"
+            },
+            "tag": "api"
+        }
+    ],
+    "outbounds": [
+        {
+            "protocol": "freedom",
+            "settings": {
+                "domainStrategy": "UseIPv4"
+            },
+            "tag": "direct"
+        },
+        {
+            "protocol": "blackhole",
+            "settings": {
+                "response": {
+                    "type": "http"
+                }
+            },
+            "tag": "blocked"
+        }
+    ],
+    "routing": {
+        "domainStrategy": "IPIfNonMatch",
+        "rules": [
+            {
+                "type": "field",
+                "inboundTag": [
+                    "api"
+                ],
+                "outboundTag": "api"
+            },
+            {
+                "type": "field",
+                "protocol": [
+                    "bittorrent"
+                ],
+                "outboundTag": "blocked"
+            }
+        ]
+    }
+}
+EOL
 
-        # Валидация
-        if xray -test -config /usr/local/etc/xray/config.json; then
-            log_success "Новая конфигурация корректна"
-        else
-            log_error "Ошибка в новой конфигурации!"
-            return 1
-        fi
+    # Валидация
+    log_info "Проверка конфигурации..."
+    if xray -test -config /usr/local/etc/xray/config.json; then
+        log_success "Новая конфигурация корректна"
+    else
+        log_error "Ошибка в новой конфигурации!"
+        xray -test -config /usr/local/etc/xray/config.json
+        return 1
     fi
+
+    # Открытие дополнительного порта в firewall
+    log_info "Настройка firewall для порта 8443..."
+    ufw allow 8443/tcp || true
 
     # Запуск сервисов
     systemctl start xray
@@ -470,10 +638,14 @@ regenerate_config() {
         log_success "Xray перезапущен с новой конфигурацией"
     else
         log_error "Не удалось запустить Xray с новой конфигурацией"
+        journalctl -u xray --no-pager -n 10
         return 1
     fi
 
     log_success "Конфигурация успешно обновлена!"
+    log_info "Доступные порты: 443, 8443"
+    log_info "Используется TCP протокол для лучшей совместимости"
+    log_info "Short IDs: пустая строка + $SHORT_ID"
 }
 
 # Главное меню

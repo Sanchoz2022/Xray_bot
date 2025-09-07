@@ -239,10 +239,8 @@ install_xray() {
         return 0
     fi
 
-    log_info "Скачивание и установка Xray..."
-
-    # Установка через официальный скрипт
-    bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install
+    # Install Xray using official script with latest version
+    bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" -- install
 
     if ! command_exists xray; then
         log_error "Не удалось установить Xray"
@@ -319,7 +317,7 @@ SERVER_IP=$EXTERNAL_IP
 SERVER_DOMAIN=www.google.com
 
 # Xray Settings
-XRAY_REALITY_DEST=www.google.com:443
+XRAY_REALITY_DEST=www.googl
 XRAY_REALITY_PRIVKEY=$XRAY_REALITY_PRIVKEY
 XRAY_REALITY_PUBKEY=$XRAY_REALITY_PUBKEY
 XRAY_REALITY_SHORT_IDS=$XRAY_REALITY_SHORT_IDS
