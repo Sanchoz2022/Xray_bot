@@ -324,9 +324,14 @@ test_reality_connection() {
 
             # Тест без SNI (должен показать ошибку invalid2.invalid)
             log_info "Тест без SNI:"
-            echo "Q" | timeout 10 openssl s_client -connect $SERVER_IP:443 2>/dev/null | grep -E "(subject|verify|Verification)" || log_warning "Тест без SNI не дал ожидаемого результата"
+            NO_SNI_RESULT=$(echo "Q" | timeout 10 openssl s_client -connect $SERVER_IP:443 2>/dev/null | grep -E "(subject|verify|Verification)")
+            if echo "$NO_SNI_RESULT" | grep -q "invalid2.invalid"; then
+                log_success "✓ Reality корректно скрывает сервер без SNI"
+            else
+                log_warning "Результат без SNI: $NO_SNI_RESULT"
+            fi
 
-            # Тест с правильным SNI
+            # Тест с различными SNI
             log_info "Тест с SNI www.google.com:"
             SNI_RESULT=$(echo "Q" | timeout 10 openssl s_client -connect $SERVER_IP:443 -servername www.google.com 2>/dev/null | grep -E "(subject|Verification)")
             
@@ -340,6 +345,15 @@ test_reality_connection() {
                 log_warning "⚠ Reality может работать некорректно с SNI"
                 echo "Результат теста:"
                 echo "$SNI_RESULT"
+            fi
+            
+            # Дополнительный тест с YouTube SNI
+            log_info "Тест с SNI www.youtube.com:"
+            YOUTUBE_RESULT=$(echo "Q" | timeout 10 openssl s_client -connect $SERVER_IP:443 -servername www.youtube.com 2>/dev/null | grep -E "(subject|Verification)")
+            if echo "$YOUTUBE_RESULT" | grep -q "subject=CN = \\*.youtube.com\|subject=CN = www.youtube.com"; then
+                log_success "✓ YouTube SNI также работает корректно"
+            else
+                log_info "YouTube SNI результат: $YOUTUBE_RESULT"
             fi
         else
             log_warning "SERVER_IP не настроен для теста"
@@ -508,7 +522,9 @@ regenerate_config() {
                     "xver": 0,
                     "serverNames": [
                         "www.google.com",
-                        "google.com"
+                        "google.com",
+                        "www.youtube.com",
+                        "play.google.com"
                     ],
                     "privateKey": "$PRIVATE_KEY",
                     "minClientVer": "",
@@ -551,7 +567,9 @@ regenerate_config() {
                     "xver": 0,
                     "serverNames": [
                         "www.google.com",
-                        "google.com"
+                        "google.com",
+                        "www.youtube.com",
+                        "play.google.com"
                     ],
                     "privateKey": "$PRIVATE_KEY",
                     "minClientVer": "",
