@@ -9,10 +9,9 @@ import sys
 def get_public_key_from_private(private_key):
     """Generate public key from private key using xray x25519 command."""
     try:
-        # Use xray x25519 -i to generate public key from private key
+        # Use xray x25519 -i with private key as argument
         result = subprocess.run(
-            ["/usr/local/bin/xray", "x25519", "-i"],
-            input=private_key,
+            ["/usr/local/bin/xray", "x25519", "-i", private_key],
             capture_output=True,
             text=True
         )
