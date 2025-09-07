@@ -42,22 +42,46 @@ class Settings(BaseSettings):
     XRAY_API_TAG: str = 'api'
     
     # Xray Reality settings
+    XRAY_PORT: int = int(os.getenv('XRAY_PORT', '443'))
     XRAY_REALITY_PRIVKEY: Optional[str] = os.getenv('XRAY_REALITY_PRIVKEY', '')
     XRAY_REALITY_PUBKEY: Optional[str] = os.getenv('XRAY_REALITY_PUBKEY', '')
+    XRAY_REALITY_PORT: int = int(os.getenv('XRAY_REALITY_PORT', '443'))
+    XRAY_REALITY_SERVER_NAME: str = os.getenv('XRAY_REALITY_SERVER_NAME', 'www.google.com')
     
     # Parse XRAY_REALITY_SHORT_IDS directly from environment
     @property
     def XRAY_REALITY_SHORT_IDS(self) -> List[str]:
-        short_ids_str = os.getenv('XRAY_REALITY_SHORT_IDS', '00000000')
+        short_ids_str = os.getenv('XRAY_REALITY_SHORT_IDS', '["00000000"]')
         if not short_ids_str:
             return ['00000000']
         
-        # Handle single value or comma-separated values
+        # Handle JSON array, comma-separated values, or single value
         try:
+            # First try to parse as JSON array
+            if short_ids_str.strip().startswith('[') and short_ids_str.strip().endswith(']'):
+                parsed = json.loads(short_ids_str)
+                if isinstance(parsed, list):
+                    return [str(id).strip() for id in parsed if str(id).strip()]
+            
+            # Fallback to comma-separated values
             if ',' in short_ids_str:
                 return [id.strip() for id in short_ids_str.split(',') if id.strip()]
             else:
                 return [short_ids_str.strip()]
+        except json.JSONDecodeError:
+            # Try to extract values from malformed JSON-like string
+            try:
+                # Handle cases like '["","f81bd29d3685d224"]' with quotes around the array
+                cleaned = short_ids_str.strip().strip('"\'')
+                if cleaned.startswith('[') and cleaned.endswith(']'):
+                    parsed = json.loads(cleaned)
+                    if isinstance(parsed, list):
+                        return [str(id).strip() for id in parsed if str(id).strip()]
+            except:
+                pass
+            
+            # Final fallback - return default
+            return ['00000000']
         except Exception:
             return ['00000000']
     

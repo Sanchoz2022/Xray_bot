@@ -362,27 +362,38 @@ class ServerManager:
     def get_reality_config(self, email: str, user_id: str) -> Dict[str, Any]:
         """Generate a complete VLESS Reality configuration for a user."""
         try:
+            # Validate required settings
             if not settings.XRAY_REALITY_SHORT_IDS:
                 logger.error("No Reality short IDs configured")
                 return {}
             
+            if not settings.XRAY_REALITY_PUBKEY:
+                logger.error("No Reality public key configured")
+                return {}
+            
             # Use a non-empty short ID (skip empty ones)
             short_id = ""
+            logger.debug(f"Available short IDs: {settings.XRAY_REALITY_SHORT_IDS}")
+            
             for sid in settings.XRAY_REALITY_SHORT_IDS:
                 if sid and sid.strip():  # Use first non-empty short_id
                     short_id = sid.strip()
+                    logger.debug(f"Selected short ID: {short_id}")
                     break
             
             if not short_id:
-                logger.error("No valid short ID found in configuration")
+                logger.error(f"No valid short ID found in configuration: {settings.XRAY_REALITY_SHORT_IDS}")
                 return {}
+            
+            # Extract SNI from XRAY_REALITY_DEST
+            sni = settings.XRAY_REALITY_DEST.split(':')[0] if settings.XRAY_REALITY_DEST else 'www.google.com'
             
             # Generate complete VLESS Reality config
             config = {
                 "v": "2",
                 "ps": f"Xray Reality - {email}",
-                "add": getattr(settings, 'SERVER_IP', '127.0.0.1'),
-                "port": getattr(settings, 'XRAY_PORT', 443),
+                "add": settings.SERVER_IP or '127.0.0.1',
+                "port": settings.XRAY_PORT,
                 "id": user_id,
                 "aid": "0",
                 "scy": "auto",
@@ -391,7 +402,7 @@ class ServerManager:
                 "host": "",
                 "path": "",
                 "tls": "reality",
-                "sni": getattr(settings, 'XRAY_REALITY_DEST', 'www.google.com').split(':')[0],
+                "sni": sni,
                 "alpn": "",
                 "fp": "chrome",
                 "pbk": settings.XRAY_REALITY_PUBKEY,
@@ -400,10 +411,11 @@ class ServerManager:
                 "flow": "xtls-rprx-vision"
             }
             
+            logger.debug(f"Generated Reality config for {email}: port={config['port']}, sni={config['sni']}, sid={config['sid']}")
             return config
             
         except Exception as e:
-            logger.error(f"Error generating Reality config: {e}")
+            logger.error(f"Error generating Reality config for {email}: {e}")
             return {}
     
     def generate_vless_url(self, email: str, user_id: str) -> str:
