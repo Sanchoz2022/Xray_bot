@@ -1,692 +1,120 @@
-+0300 2025-09-07 10:27:03 ERROR outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:27:03 ERROR [2576388852 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:27:03 ERROR [2576388852 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:27:04 ERROR [918411922 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:27:04 ERROR [918411922 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:27:05 ERROR [2842795436 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:27:05 ERROR [2842795436 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:27:06 ERROR [1754228047 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:27:06 ERROR [1754228047 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:27:06 ERROR [352521178 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:27:06 ERROR [352521178 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:27:07 ERROR [3566965382 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:27:07 ERROR [3566965382 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:27:08 ERROR [156810317 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:27:08 ERROR [156810317 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:27:09 ERROR [2882146563 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:27:09 ERROR [2882146563 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:27:09 ERROR [2324179793 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:27:09 ERROR [2324179793 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:27:09 ERROR [3936011989 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:27:09 ERROR [3936011989 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:27:09 ERROR [276259242 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:27:09 ERROR [276259242 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:27:10 ERROR [278975019 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:27:10 ERROR [278975019 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:27:11 ERROR [3302832989 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:27:11 ERROR [3302832989 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:27:12 ERROR [402368193 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:27:12 ERROR [402368193 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:27:12 ERROR [3385828655 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:27:12 WARN outbound/urltest[auto]: TCP URLTest Outbound auto (Xray Reality - user_1@xray.com § 0) failed to connect for 15 times==> test proxies again!
-+0300 2025-09-07 10:27:12 ERROR outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:27:12 ERROR [3385828655 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:27:13 ERROR [1132745774 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:27:13 ERROR [1132745774 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:27:13 ERROR [2362874845 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:27:13 ERROR [2362874845 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:27:13 ERROR [226171522 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:27:13 ERROR [226171522 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:27:13 ERROR [1056073277 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:27:13 ERROR [1056073277 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:27:13 ERROR [1496544788 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:27:13 ERROR [1496544788 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:27:14 ERROR [1067723930 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:27:14 ERROR [1067723930 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:27:15 ERROR [1279577944 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:27:15 ERROR [1279577944 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:27:23 ERROR [2743367014 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:27:23 ERROR [2743367014 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:27:23 ERROR [2250327571 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:27:23 ERROR [2250327571 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:27:38 ERROR [2829531794 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:27:38 ERROR [2829531794 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:27:38 ERROR [1735752696 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:27:38 ERROR [1735752696 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:27:39 ERROR [2843000330 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:27:39 ERROR [2843000330 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:27:39 ERROR [714065116 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:27:39 ERROR [714065116 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:27:51 ERROR [2475610111 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:27:51 ERROR [2475610111 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:27:51 ERROR [2433655527 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:27:51 WARN outbound/urltest[auto]: TCP URLTest Outbound auto (Xray Reality - user_1@xray.com § 0) failed to connect for 15 times==> test proxies again!
-+0300 2025-09-07 10:27:51 ERROR outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:27:51 ERROR [2433655527 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:27:53 ERROR [1342261103 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:27:53 ERROR [1342261103 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:27:53 ERROR [1059776403 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:27:53 ERROR [1059776403 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:28:00 ERROR [2512986473 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:28:00 ERROR [2512986473 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:28:01 ERROR [2349912738 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:28:01 ERROR [2349912738 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:28:02 ERROR [3831205920 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:28:02 ERROR [3831205920 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:28:03 ERROR [2963759383 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:28:03 ERROR [2963759383 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:28:03 ERROR [726132957 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:28:03 ERROR [726132957 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:28:04 ERROR [1575324398 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:28:04 ERROR [1575324398 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:28:05 ERROR [570205303 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:28:05 ERROR [570205303 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:28:06 ERROR [499131416 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:28:06 ERROR [499131416 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:28:06 ERROR [3112149375 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:28:06 ERROR [3112149375 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:28:07 ERROR [2767206046 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:28:07 ERROR [2767206046 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:28:08 ERROR [1837413336 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:28:08 ERROR [1837413336 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:28:09 ERROR [2506281505 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:28:09 ERROR [2506281505 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:28:09 ERROR [13155138 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:28:09 WARN outbound/urltest[auto]: TCP URLTest Outbound auto (Xray Reality - user_1@xray.com § 0) failed to connect for 15 times==> test proxies again!
-+0300 2025-09-07 10:28:09 ERROR outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:28:09 ERROR [13155138 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:28:09 ERROR [1767762886 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:28:09 ERROR [1767762886 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:28:09 ERROR [1105991713 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:28:09 ERROR [1105991713 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:28:10 ERROR [2964287200 2ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:28:10 ERROR [2964287200 2ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:28:11 ERROR [2086974654 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:28:11 ERROR [2086974654 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:28:12 ERROR [2036488104 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:28:12 ERROR [2036488104 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:28:13 ERROR [3874971680 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:28:13 ERROR [3874971680 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:28:13 ERROR [3124807254 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:28:13 ERROR [3124807254 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:03 ERROR outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:03 ERROR [2609573208 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:03 ERROR [2609573208 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:04 ERROR [1917503875 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:04 ERROR [1917503875 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:05 ERROR [4057136745 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:05 ERROR [4057136745 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:06 ERROR [3738415107 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:06 ERROR [3738415107 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:06 ERROR [2281322894 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:06 ERROR [2281322894 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:07 ERROR [3596672358 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:07 ERROR [3596672358 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:08 ERROR [4174674482 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:08 ERROR [4174674482 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:09 ERROR [1992846282 2ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:09 ERROR [1992846282 2ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:09 ERROR [3659551025 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:09 ERROR [3659551025 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:09 ERROR [245269229 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:09 ERROR [245269229 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:09 ERROR [851205075 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:09 ERROR [851205075 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:10 ERROR [2429979509 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:10 ERROR [2429979509 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:11 ERROR [511121249 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:11 ERROR [511121249 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:12 ERROR [2170920839 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:12 ERROR [2170920839 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:12 ERROR [1108481620 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:12 WARN outbound/urltest[auto]: TCP URLTest Outbound auto (Xray Reality - user_1@xray.com § 0) failed to connect for 15 times==> test proxies again!
-+0300 2025-09-07 10:41:12 ERROR outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:12 ERROR [1108481620 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:13 ERROR [2359251795 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:13 ERROR [2359251795 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:14 ERROR [1181731818 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:14 ERROR [1181731818 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:15 ERROR [1731045929 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:15 ERROR [1731045929 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:23 ERROR [4053141843 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:23 ERROR [4053141843 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:23 ERROR [4023211063 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:23 ERROR [4023211063 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:23 ERROR [648476863 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:23 ERROR [648476863 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:23 ERROR [28720790 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:23 ERROR [28720790 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:33 ERROR outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:33 ERROR [378355452 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:33 ERROR [378355452 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:34 ERROR [2015778673 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:34 ERROR [2015778673 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:35 ERROR [2618411106 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:35 ERROR [2618411106 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:36 ERROR [1597042724 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:36 ERROR [1597042724 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:36 ERROR [2824109119 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:36 ERROR [2824109119 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:37 ERROR [71591698 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:37 ERROR [71591698 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:38 ERROR [1102033932 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:38 ERROR [1102033932 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:38 ERROR [996973998 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:38 ERROR [996973998 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:38 ERROR [1796194912 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:38 ERROR [1796194912 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:39 ERROR [3733921018 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:39 ERROR [3733921018 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:39 ERROR [1282431383 2ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:39 ERROR [1282431383 2ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:39 ERROR [3606117280 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:39 ERROR [3606117280 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:39 ERROR [2866550875 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:39 ERROR [2866550875 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:40 ERROR [3173308762 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:40 ERROR [3173308762 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:41 ERROR [1984109306 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:41 WARN outbound/urltest[auto]: TCP URLTest Outbound auto (Xray Reality - user_1@xray.com § 0) failed to connect for 15 times==> test proxies again!
-+0300 2025-09-07 10:41:41 ERROR outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:41 ERROR [1984109306 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:42 ERROR [1118052318 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:42 ERROR [1118052318 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:42 ERROR [3738698058 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:42 ERROR [3738698058 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:43 ERROR [1530480851 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:43 ERROR [1530480851 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:44 ERROR [2877498026 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:44 ERROR [2877498026 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:45 ERROR [1625162649 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:45 ERROR [1625162649 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:51 ERROR [2116001846 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:51 ERROR [2116001846 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:51 ERROR [3584145234 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:51 ERROR [3584145234 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:53 ERROR [1245903883 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:53 ERROR [1245903883 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:41:53 ERROR [3687144004 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:41:53 ERROR [3687144004 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:42:09 ERROR [2508150750 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:42:09 ERROR [2508150750 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:42:09 ERROR [485692300 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:42:09 ERROR [485692300 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:42:23 ERROR [1345392063 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:42:23 ERROR [1345392063 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:42:23 ERROR [462995901 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:42:23 ERROR [462995901 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:42:23 ERROR [2952313843 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:42:23 ERROR [2952313843 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:42:23 ERROR [1966751585 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:42:23 WARN outbound/urltest[auto]: TCP URLTest Outbound auto (Xray Reality - user_1@xray.com § 0) failed to connect for 15 times==> test proxies again!
-+0300 2025-09-07 10:42:23 ERROR outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:42:23 ERROR [1966751585 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:42:38 ERROR [1956497949 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:42:38 ERROR [1956497949 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:42:38 ERROR [1875934272 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:42:38 ERROR [1875934272 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:42:39 ERROR [1142828750 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:42:39 ERROR [1142828750 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:42:39 ERROR [3999726195 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:42:39 ERROR [3999726195 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:42:51 ERROR [2615305647 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:42:51 ERROR [2615305647 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:42:51 ERROR [2633784950 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:42:51 ERROR [2633784950 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:42:53 ERROR [1217803179 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:42:53 ERROR [1217803179 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:42:53 ERROR [2847090071 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:42:53 ERROR [2847090071 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:43:09 ERROR [1083847537 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:09 ERROR [1083847537 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:43:09 ERROR [3510691041 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:09 ERROR [3510691041 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:43:23 ERROR [1102598720 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:23 ERROR [1102598720 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:43:23 ERROR [2382664615 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:23 ERROR [2382664615 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:43:23 ERROR [2644527762 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:23 ERROR [2644527762 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:43:23 ERROR [1987343409 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:23 ERROR [1987343409 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:43:38 ERROR [774210151 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:38 WARN outbound/urltest[auto]: TCP URLTest Outbound auto (Xray Reality - user_1@xray.com § 0) failed to connect for 15 times==> test proxies again!
-+0300 2025-09-07 10:43:38 ERROR outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:38 ERROR [774210151 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:43:38 ERROR [1279473925 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:38 ERROR [1279473925 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:43:39 ERROR [1498157645 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:39 ERROR [1498157645 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:43:39 ERROR [115088129 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:39 ERROR [115088129 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:43:50 ERROR [3701752394 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:50 ERROR [2913755508 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:50 ERROR [3701752394 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:43:50 ERROR [2913755508 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:43:51 ERROR [3677702954 301ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:51 ERROR [3677702954 301ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:43:51 ERROR [3809905987 301ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:51 ERROR [3809905987 301ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:43:51 ERROR [1363552355 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:51 ERROR [3081283805 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:51 ERROR [3081283805 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:43:51 ERROR [1363552355 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:43:51 ERROR [2662576259 302ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:51 ERROR [2662576259 302ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:43:51 ERROR [3785052607 301ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:51 ERROR [3785052607 301ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:43:51 ERROR [301431097 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:51 ERROR [301431097 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:43:51 ERROR [151202773 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:51 ERROR [151202773 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:43:51 ERROR [3547288817 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:51 ERROR [3547288817 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:43:51 ERROR [3944680375 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:51 WARN outbound/urltest[auto]: TCP URLTest Outbound auto (Xray Reality - user_1@xray.com § 0) failed to connect for 15 times==> test proxies again!
-+0300 2025-09-07 10:43:51 ERROR outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:51 ERROR [3944680375 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:43:51 ERROR [1455151636 300ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:51 ERROR [1455151636 300ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:43:51 ERROR [438881227 301ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:51 ERROR [438881227 301ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:43:52 ERROR [349734498 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:52 ERROR [349734498 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:43:52 ERROR [371287972 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:52 ERROR [371287972 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:43:52 ERROR [131433898 301ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:52 ERROR [131433898 301ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:43:52 ERROR [1643817251 301ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:52 ERROR [1643817251 301ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:43:53 ERROR [635341206 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:53 ERROR [635341206 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:43:53 ERROR [2584566030 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:53 ERROR [2584566030 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:43:55 ERROR [944754961 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:55 ERROR [944754961 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:43:55 ERROR [44864252 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:55 ERROR [44864252 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:43:55 ERROR [3089954315 301ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:55 ERROR [3089954315 301ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:43:55 ERROR [1483859635 301ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:55 ERROR [1483859635 301ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:43:59 ERROR [205150005 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:59 ERROR [205150005 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:43:59 ERROR [3972376740 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:59 ERROR [3972376740 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:43:59 ERROR [326800250 301ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:59 WARN outbound/urltest[auto]: TCP URLTest Outbound auto (Xray Reality - user_1@xray.com § 0) failed to connect for 15 times==> test proxies again!
-+0300 2025-09-07 10:43:59 ERROR [2792861425 301ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:59 ERROR [2792861425 301ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:43:59 ERROR outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:43:59 ERROR [326800250 301ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:44:08 ERROR [891323814 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:44:08 ERROR [891323814 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:44:08 ERROR [841684066 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:44:08 ERROR [841684066 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:44:08 ERROR [3255045645 301ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:44:08 ERROR [3255045645 301ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:44:08 ERROR [147005802 301ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:44:08 ERROR [147005802 301ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:44:09 ERROR [1653921336 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:44:09 ERROR [1653921336 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:44:09 ERROR [3237085447 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:44:09 ERROR [3237085447 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:44:23 ERROR [4043002086 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:44:23 ERROR [4043002086 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:44:23 ERROR [3055683150 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:44:23 ERROR [3055683150 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:44:23 ERROR [4117877404 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:44:23 ERROR [4117877404 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:44:23 ERROR [1559788031 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:44:23 ERROR [1559788031 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:44:24 ERROR [314259074 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:44:24 ERROR [314259074 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:44:24 ERROR [112423419 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:44:24 ERROR [112423419 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:44:24 ERROR [2877079249 301ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:44:24 ERROR [2877079249 301ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:44:24 ERROR [882577527 301ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:44:24 ERROR [882577527 301ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:44:38 ERROR [3221109122 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:44:38 WARN outbound/urltest[auto]: TCP URLTest Outbound auto (Xray Reality - user_1@xray.com § 0) failed to connect for 15 times==> test proxies again!
-+0300 2025-09-07 10:44:38 ERROR outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:44:38 ERROR [3221109122 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:44:38 ERROR [2711378028 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:44:38 ERROR [2711378028 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:44:39 ERROR [2993218088 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:44:39 ERROR [2993218088 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:44:39 ERROR [3216522081 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:44:39 ERROR [3216522081 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:44:51 ERROR [1263731666 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:44:51 ERROR [1263731666 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:44:51 ERROR [4047874877 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:44:51 ERROR [4047874877 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:44:53 ERROR [3355990554 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:44:53 ERROR [3355990554 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:44:53 ERROR [3823286614 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:44:53 ERROR [3823286614 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:44:56 ERROR [1529915210 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:44:56 ERROR [1529915210 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:44:56 ERROR [938891251 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:44:56 ERROR [938891251 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:44:56 ERROR [2854296033 301ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:44:56 ERROR [2854296033 301ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:44:56 ERROR [1183327388 301ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:44:56 ERROR [1183327388 301ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:45:09 ERROR [2056613422 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:45:09 ERROR [2056613422 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:45:09 ERROR [208824184 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:45:09 ERROR [208824184 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:45:23 ERROR [466266193 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:45:23 ERROR [466266193 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:45:23 ERROR [3432399052 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:45:23 WARN outbound/urltest[auto]: TCP URLTest Outbound auto (Xray Reality - user_1@xray.com § 0) failed to connect for 15 times==> test proxies again!
-+0300 2025-09-07 10:45:23 ERROR outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:45:23 ERROR [3432399052 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:45:23 ERROR [4150191159 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:45:23 ERROR [4150191159 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:45:23 ERROR [899349728 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:45:23 ERROR [899349728 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:45:38 ERROR [1776034111 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:45:38 ERROR [1776034111 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:45:38 ERROR [2045423492 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:45:38 ERROR [2045423492 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:45:39 ERROR [675891536 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:45:39 ERROR [675891536 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:45:39 ERROR [3304775661 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:45:39 ERROR [3304775661 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:45:51 ERROR [3890002522 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:45:51 ERROR [3890002522 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:45:51 ERROR [2861004641 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:45:51 ERROR [2861004641 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:45:53 ERROR [4160267343 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:45:53 ERROR [4160267343 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:45:53 ERROR [492454767 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:45:53 ERROR [492454767 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:46:00 ERROR [789764909 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:46:00 ERROR [789764909 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:46:00 ERROR [1487994874 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:46:00 ERROR [1487994874 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:46:00 ERROR [594192199 301ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:46:00 ERROR [594192199 301ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:46:00 ERROR [1145621102 301ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:46:00 ERROR [1145621102 301ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:46:09 ERROR [1514363952 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:46:09 WARN outbound/urltest[auto]: TCP URLTest Outbound auto (Xray Reality - user_1@xray.com § 0) failed to connect for 15 times==> test proxies again!
-+0300 2025-09-07 10:46:09 ERROR outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:46:09 ERROR [1514363952 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:46:09 ERROR [2514785058 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:46:09 ERROR [2514785058 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:46:23 ERROR [3467332624 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:46:23 ERROR [3467332624 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:46:23 ERROR [4286926741 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:46:23 ERROR [4286926741 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:46:23 ERROR [2726559125 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:46:23 ERROR [2726559125 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 10:46:23 ERROR [3132024499 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 10:46:23 ERROR [3132024499 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:34:06 ERROR outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:34:06 ERROR [3692112556 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:34:06 ERROR [3692112556 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:34:07 ERROR [1512900892 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:34:07 ERROR [1512900892 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:34:08 ERROR [2479997130 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:34:08 ERROR [2479997130 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:34:09 ERROR [1466510496 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:34:09 ERROR [1466510496 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:34:09 ERROR [4278947278 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:34:09 ERROR [4278947278 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:34:09 ERROR [1868724930 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:34:09 ERROR [1868724930 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:34:09 ERROR [910379360 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:34:09 ERROR [910379360 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:34:10 ERROR [2059524863 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:34:10 ERROR [2059524863 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:34:10 ERROR [1735786517 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:34:10 ERROR [1735786517 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:34:10 ERROR [3900199871 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:34:10 ERROR [3900199871 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:34:11 ERROR [3503601869 2ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:34:11 ERROR [3503601869 2ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:34:12 ERROR [1000665575 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:34:12 ERROR [1000665575 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:34:12 ERROR [367383403 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:34:12 ERROR [367383403 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:34:13 ERROR [4014090760 2ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:34:13 ERROR [4014090760 2ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:34:14 ERROR [3225612333 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:34:14 WARN outbound/urltest[auto]: TCP URLTest Outbound auto (Xray Reality - user_1@xray.com § 0) failed to connect for 15 times==> test proxies again!
-+0300 2025-09-07 11:34:14 ERROR outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:34:14 ERROR [3225612333 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:34:15 ERROR [134734085 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:34:15 ERROR [134734085 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:34:15 ERROR [3254515270 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:34:15 ERROR [3254515270 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:34:16 ERROR [2492225351 2ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:34:16 ERROR [2492225351 2ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:34:17 ERROR [1602803603 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:34:17 ERROR [1602803603 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:34:18 ERROR [2270237688 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:34:18 ERROR [2270237688 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:44:20 ERROR outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:44:20 ERROR [3015998724 5ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:44:20 ERROR [3015998724 5ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:44:21 ERROR [2686776195 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:44:21 ERROR [2686776195 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:44:22 ERROR [2138038228 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:44:22 ERROR [2138038228 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:44:23 ERROR [3059436632 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:44:23 ERROR [3059436632 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:44:23 ERROR [375597888 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:44:23 ERROR [375597888 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:44:23 ERROR [611192830 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:44:23 ERROR [611192830 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:44:23 ERROR [1885967864 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:44:23 ERROR [1885967864 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:44:23 ERROR [4242404223 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:44:23 ERROR [4242404223 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:44:23 ERROR [89952375 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:44:23 ERROR [89952375 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:44:24 ERROR [216127197 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:44:24 ERROR [216127197 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:44:25 ERROR [1395050694 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:44:25 ERROR [1395050694 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:44:26 ERROR [1697929920 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:44:26 ERROR [1697929920 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:44:26 ERROR [4037766229 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:44:26 ERROR [4037766229 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:44:27 ERROR [3726988426 2ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:44:27 ERROR [3726988426 2ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:44:28 ERROR [3460445690 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:44:28 WARN outbound/urltest[auto]: TCP URLTest Outbound auto (Xray Reality - user_1@xray.com § 0) failed to connect for 15 times==> test proxies again!
-+0300 2025-09-07 11:44:28 ERROR outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:44:28 ERROR [3460445690 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:44:29 ERROR [3291354142 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:44:29 ERROR [3291354142 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:44:29 ERROR [66127734 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:44:29 ERROR [66127734 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:44:30 ERROR [1152126645 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:44:30 ERROR [1152126645 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:44:31 ERROR [3994093842 2ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:44:31 ERROR [3994093842 2ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:44:32 ERROR [4216782334 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:44:32 ERROR [4216782334 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:44:38 ERROR [3790321528 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:44:38 ERROR [3790321528 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:44:38 ERROR [2758847568 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:44:38 ERROR [2758847568 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:44:39 ERROR [3615655729 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:44:39 ERROR [3615655729 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:44:39 ERROR [2602356172 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:44:39 ERROR [2602356172 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:44:51 ERROR [3706978256 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:44:51 ERROR [3706978256 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:44:51 ERROR [1659445910 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:44:51 ERROR [1659445910 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:44:53 ERROR [1142354974 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:44:53 ERROR [1142354974 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:44:53 ERROR [3881711606 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:44:53 ERROR [3881711606 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:45:09 ERROR [1969654731 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:45:09 ERROR [1969654731 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:45:09 ERROR [4169637353 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:45:09 WARN outbound/urltest[auto]: TCP URLTest Outbound auto (Xray Reality - user_1@xray.com § 0) failed to connect for 15 times==> test proxies again!
-+0300 2025-09-07 11:45:09 ERROR outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:45:09 ERROR [4169637353 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:51:22 ERROR outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:51:22 ERROR [3893637611 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:51:22 ERROR [3893637611 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:51:23 ERROR [3898401042 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:51:23 ERROR [3898401042 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:51:23 ERROR [2465670034 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:51:23 ERROR [2465670034 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:51:23 ERROR [2234163298 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:51:23 ERROR [2234163298 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:51:23 ERROR [3273545705 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:51:23 ERROR [3273545705 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:51:23 ERROR [925060670 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:51:23 ERROR [925060670 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:51:24 ERROR [3946190301 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:51:24 ERROR [3946190301 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:51:25 ERROR [98261982 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:51:25 ERROR [98261982 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:51:25 ERROR [705825158 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:51:25 ERROR [705825158 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:51:26 ERROR [2098518953 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:51:26 ERROR [2098518953 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:51:27 ERROR [257387163 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:51:27 ERROR [257387163 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:51:28 ERROR [2399641323 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:51:28 ERROR [2399641323 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:51:28 ERROR [2996041100 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:51:28 ERROR [2996041100 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:51:29 ERROR [835174970 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:51:29 ERROR [835174970 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:51:30 ERROR [1529980875 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:51:30 WARN outbound/urltest[auto]: TCP URLTest Outbound auto (Xray Reality - user_1@xray.com § 0) failed to connect for 15 times==> test proxies again!
-+0300 2025-09-07 11:51:30 ERROR outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:51:30 ERROR [1529980875 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:51:31 ERROR [812891042 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:51:31 ERROR [812891042 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 11:51:31 ERROR [2371291388 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 11:51:31 ERROR [2371291388 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:32 ERROR outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:32 ERROR [1431952243 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:32 ERROR [1431952243 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:33 ERROR [2033268525 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:33 ERROR [2033268525 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:34 ERROR [1658640419 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:34 ERROR [1658640419 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:35 ERROR [1543198995 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:35 ERROR [1543198995 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:35 ERROR [323457788 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:35 ERROR [323457788 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:36 ERROR [2280345355 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:36 ERROR [2280345355 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:37 ERROR [73374799 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:37 ERROR [73374799 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:38 ERROR [3368951182 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:38 ERROR [3368951182 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:38 ERROR [657721635 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:38 ERROR [657721635 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:38 ERROR [677747742 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:38 ERROR [677747742 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:38 ERROR [2133473477 2ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:38 ERROR [2133473477 3ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:39 ERROR [3843654034 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:39 ERROR [3843654034 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:39 ERROR [2734269496 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:39 ERROR [2734269496 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:39 ERROR [3741095356 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:39 ERROR [3741095356 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:40 ERROR [3651703174 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:40 WARN outbound/urltest[auto]: TCP URLTest Outbound auto (Xray Reality - user_1@xray.com § 0) failed to connect for 15 times==> test proxies again!
-+0300 2025-09-07 12:10:40 ERROR outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:40 ERROR [3651703174 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:41 ERROR outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:41 ERROR [2985381280 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:41 ERROR [2985381280 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:41 ERROR [1673974404 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:41 ERROR [1673974404 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:42 ERROR [491341651 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:42 ERROR [491341651 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:43 ERROR [1597839159 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:43 ERROR [1597839159 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:44 ERROR [2542010544 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:44 ERROR [2542010544 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:49 ERROR [3989411189 3ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:49 ERROR [3989411189 3ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:50 ERROR [1116950813 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:50 ERROR [1116950813 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:51 ERROR [3481487586 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:51 ERROR [3481487586 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:51 ERROR [1621516141 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:51 ERROR [1621516141 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:51 ERROR [1090511443 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:51 ERROR [1090511443 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:51 ERROR [308775408 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:51 ERROR [308775408 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:51 ERROR [2000910711 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:51 ERROR [2000910711 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:52 ERROR [3683948270 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:52 ERROR [3683948270 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:52 ERROR [3826381174 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:52 ERROR [3826381174 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:53 ERROR [3681692479 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:53 WARN outbound/urltest[auto]: TCP URLTest Outbound auto (Xray Reality - user_1@xray.com § 0) failed to connect for 15 times==> test proxies again!
-+0300 2025-09-07 12:10:53 ERROR outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:53 ERROR [3681692479 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:53 ERROR [937659914 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:53 ERROR [937659914 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:53 ERROR [4274764358 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:53 ERROR [4274764358 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:54 ERROR [1485441570 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:54 ERROR [1485441570 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:55 ERROR [202285430 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:55 ERROR [202285430 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:55 ERROR [473031892 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:55 ERROR [473031892 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:56 ERROR [779622974 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:56 ERROR [779622974 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:57 ERROR [1131535644 2ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:57 ERROR [1131535644 2ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:58 ERROR [2231730151 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:58 ERROR [2231730151 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:58 ERROR [2653642672 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:58 ERROR [2653642672 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:10:59 ERROR [3327950724 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:10:59 ERROR [3327950724 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:11:00 ERROR [3104493585 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:11:00 ERROR [3104493585 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:11:01 ERROR [1529995492 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:11:01 ERROR [1529995492 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:11:09 ERROR [2943626530 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:11:09 ERROR [2943626530 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:11:09 ERROR [2337355933 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:11:09 ERROR [2337355933 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:11:12 ERROR [1088931234 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:11:12 WARN outbound/urltest[auto]: TCP URLTest Outbound auto (Xray Reality - user_1@xray.com § 0) failed to connect for 15 times==> test proxies again!
-+0300 2025-09-07 12:11:12 ERROR [2716228421 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:11:12 ERROR [2716228421 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:11:12 ERROR outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:11:12 ERROR [1088931234 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:11:12 ERROR [1256398381 301ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:11:12 ERROR [916950043 301ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:11:12 ERROR [1256398381 301ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:11:12 ERROR [916950043 301ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:11:12 ERROR [4027943160 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:11:12 ERROR [4027943160 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:11:12 ERROR [3751745139 1ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:11:12 ERROR [3751745139 1ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:11:12 ERROR [1070904648 301ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:11:12 ERROR [2623895601 302ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:11:12 ERROR [2623895601 302ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:11:12 ERROR [1070904648 301ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:11:12 ERROR [3267764830 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:11:12 ERROR [3267764830 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:11:12 ERROR [2496589051 0ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:11:12 ERROR [2496589051 0ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:11:13 ERROR [2624086328 301ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:11:13 ERROR [2624086328 301ms] outbound/urltest[auto]: EOF
-+0300 2025-09-07 12:11:13 ERROR [2645160517 301ms] outbound/vless[Xray Reality - user_1@xray.com § 0]: Xray Reality - user_1@xray.com § 0decode short_id: encoding/hex: invalid byte: U+005B '['
-+0300 2025-09-07 12:11:13 ERROR [2645160517 301ms] outbound/urltest[auto]: EOF
++0300 2025-09-07 12:21:21 ERROR [3195527520 143ms] outbound/urltest[auto]: reality verification failed
++0300 2025-09-07 12:21:21 ERROR [3195527520 143ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:59336: reality verification failed
++0300 2025-09-07 12:21:22 ERROR [2871931915 90ms] outbound/urltest[auto]: reality verification failed
++0300 2025-09-07 12:21:22 ERROR [2871931915 90ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:59350: reality verification failed
++0300 2025-09-07 12:21:23 ERROR [1840737005 88ms] outbound/urltest[auto]: reality verification failed
++0300 2025-09-07 12:21:23 ERROR [1840737005 89ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:59358: reality verification failed
++0300 2025-09-07 12:21:24 ERROR [1507190336 87ms] outbound/urltest[auto]: reality verification failed
++0300 2025-09-07 12:21:24 ERROR [1507190336 87ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:59372: reality verification failed
++0300 2025-09-07 12:21:24 ERROR [3455345903 87ms] outbound/urltest[auto]: reality verification failed
++0300 2025-09-07 12:21:24 ERROR [3455345903 87ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:59380: reality verification failed
++0300 2025-09-07 12:21:25 ERROR [2083620038 89ms] outbound/urltest[auto]: reality verification failed
++0300 2025-09-07 12:21:25 ERROR [2083620038 90ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:45604: reality verification failed
++0300 2025-09-07 12:21:26 ERROR [1488827022 91ms] outbound/urltest[auto]: reality verification failed
++0300 2025-09-07 12:21:26 ERROR [1488827022 91ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:45610: reality verification failed
++0300 2025-09-07 12:21:26 ERROR [2834315583 87ms] outbound/urltest[auto]: reality verification failed
++0300 2025-09-07 12:21:26 ERROR [2834315583 87ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:45626: reality verification failed
++0300 2025-09-07 13:07:37 ERROR [2129794274 5ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:07:37 ERROR [2129794274 5ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:41598: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:07:38 ERROR [380410685 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:07:38 ERROR [380410685 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:41606: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:07:39 ERROR [1457226382 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:07:39 ERROR [1457226382 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:41612: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:07:40 ERROR [1367427225 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:07:40 ERROR [1367427225 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:41622: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:07:40 ERROR [3358466825 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:07:40 ERROR [3358466825 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:41632: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:07:41 ERROR [1846553561 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:07:41 ERROR [1846553561 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:41638: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:07:42 ERROR [3644864005 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:07:42 ERROR [3644864005 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:41640: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:07:43 ERROR [753116316 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:07:43 ERROR [753116316 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:41648: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:07:43 ERROR [64378855 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:07:43 ERROR [64378855 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:41652: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:07:44 ERROR [2080990284 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:07:44 ERROR [2080990284 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:41664: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:07:45 ERROR [3023223220 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:07:45 ERROR [3023223220 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:34556: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:07:46 ERROR [2757744707 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:07:46 ERROR [2757744707 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:34570: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:07:46 ERROR [168910128 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:07:46 ERROR [168910128 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:34574: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:07:47 ERROR [777418298 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:07:47 ERROR [777418298 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:34582: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:07:48 WARN outbound/urltest[auto]: TCP URLTest Outbound auto (Xray Reality - user_1@xray.com § 0) failed to connect for 15 times==> test proxies again!
++0300 2025-09-07 13:07:48 ERROR [2126679601 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:07:48 ERROR [2126679601 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:34588: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:07:49 ERROR [23806887 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:07:49 ERROR [23806887 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:34602: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:07:49 ERROR [4168400339 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:07:49 ERROR [4168400339 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:34616: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:07:49 ERROR [3309132249 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:07:49 ERROR [3309132249 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:34618: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:07:57 ERROR [2569292923 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:07:57 ERROR [2569292923 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:40668: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:07:57 ERROR [517932257 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:07:57 ERROR [517932257 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:40670: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:08:01 ERROR [4141155818 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:08:01 ERROR [4141155818 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:40674: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:08:01 ERROR [1462071789 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:08:01 ERROR [1462071789 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:40690: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:08:01 ERROR [3869570772 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:08:01 ERROR [3869570772 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:40700: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:08:01 ERROR [90579665 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:08:01 ERROR [90579665 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:40708: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:08:01 ERROR [885691432 0ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:08:01 ERROR [885691432 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:40716: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:08:02 ERROR [3845367351 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:08:02 ERROR [3845367351 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:40732: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:08:03 ERROR [2855084030 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:08:03 ERROR [2855084030 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:40736: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:08:04 ERROR [2710901742 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:08:04 ERROR [2710901742 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:40752: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:08:04 ERROR [596090615 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:08:04 ERROR [596090615 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:40764: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:26 ERROR [1699395153 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:26 ERROR [1699395153 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:44216: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:27 ERROR [2760444197 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:27 ERROR [2760444197 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:44226: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:28 ERROR [3867909033 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:28 ERROR [3867909033 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:44228: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:29 ERROR [2182876590 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:29 ERROR [2182876590 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:44230: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:29 ERROR [4106710674 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:29 ERROR [4106710674 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:44236: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:30 ERROR [3375130425 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:30 ERROR [3375130425 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:44244: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:30 ERROR [4022804052 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:30 ERROR [4022804052 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:44246: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:30 ERROR [1727864487 0ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:30 ERROR [1727864487 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:44248: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:30 ERROR [1911147908 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:30 ERROR [1911147908 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:44262: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:30 ERROR [2182611463 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:30 ERROR [2182611463 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:44274: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:31 ERROR [3360531347 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:31 ERROR [3360531347 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:44282: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:31 ERROR [2191619643 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:31 ERROR [2191619643 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:44284: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:31 ERROR [754739933 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:31 ERROR [754739933 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:44288: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:32 ERROR [67952303 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:32 ERROR [67952303 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:44300: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:32 WARN outbound/urltest[auto]: TCP URLTest Outbound auto (Xray Reality - user_1@xray.com § 0) failed to connect for 15 times==> test proxies again!
++0300 2025-09-07 13:14:32 ERROR [842882872 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:32 ERROR [842882872 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:44306: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:33 ERROR [2800480400 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:33 ERROR [2800480400 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:44310: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:34 ERROR [3850869725 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:34 ERROR [3850869725 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:44320: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:35 ERROR [3974243570 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:35 ERROR [3974243570 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:42116: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:35 ERROR [4126420769 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:35 ERROR [4126420769 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:42122: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:36 ERROR [805670483 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:36 ERROR [805670483 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:42124: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:37 ERROR [1589081179 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:37 ERROR [1589081179 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:42134: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:38 ERROR [2917409168 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:14:38 ERROR [2917409168 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:42148: dial tcp 194.87.30.246:443: connect: connection refused
