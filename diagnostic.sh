@@ -501,7 +501,7 @@ regenerate_config() {
     },
     "inbounds": [
         {
-            "listen": "::",
+            "listen": "0.0.0.0",
             "port": 443,
             "protocol": "vless",
             "settings": {
@@ -546,7 +546,7 @@ regenerate_config() {
             "tag": "inbound-443"
         },
         {
-            "listen": "::",
+            "listen": "0.0.0.0",
             "port": 8443,
             "protocol": "vless",
             "settings": {

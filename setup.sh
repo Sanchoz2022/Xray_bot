@@ -302,8 +302,8 @@ generate_reality_keys() {
 create_env_file() {
     print_header "Создание файла конфигурации .env"
 
-    # Определение внешнего IP
-    EXTERNAL_IP=$(curl -s ifconfig.me || curl -s ipinfo.io/ip || echo "YOUR_SERVER_IP")
+    # Определение внешнего IPv4
+    EXTERNAL_IP=$(curl -4 -s ifconfig.me || curl -4 -s ipinfo.io/ip || echo "YOUR_SERVER_IP")
 
     # Создание .env файла
     cat > .env << EOL
@@ -317,7 +317,7 @@ SERVER_IP=$EXTERNAL_IP
 SERVER_DOMAIN=www.google.com
 
 # Xray Settings
-XRAY_REALITY_DEST=www.googl
+XRAY_REALITY_DEST=www.google.com:443
 XRAY_REALITY_PRIVKEY=$XRAY_REALITY_PRIVKEY
 XRAY_REALITY_PUBKEY=$XRAY_REALITY_PUBKEY
 XRAY_REALITY_SHORT_IDS=$XRAY_REALITY_SHORT_IDS
@@ -379,7 +379,7 @@ create_xray_config() {
     },
     "inbounds": [
         {
-            "listen": "::",
+            "listen": "0.0.0.0",
             "port": 443,
             "protocol": "vless",
             "settings": {
