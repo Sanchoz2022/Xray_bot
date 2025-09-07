@@ -144,20 +144,15 @@ class XrayManager:
         }
         
         try:
-            # Check if Xray is installed
-            result = subprocess.run(
-                ["which", "xray"],
-                capture_output=True,
-                text=True
-            )
-            
-            if result.returncode != 0:
-                status['error'] = 'Xray is not installed'
+            # Check if Xray is installed at the correct path
+            xray_path = "/usr/local/bin/xray"
+            if not os.path.exists(xray_path):
+                status['error'] = f'Xray is not installed at {xray_path}'
                 return status
             
             # Get Xray version
             result = subprocess.run(
-                ["xray", "-version"],
+                [xray_path, "-version"],
                 capture_output=True,
                 text=True
             )
@@ -166,14 +161,14 @@ class XrayManager:
                 status['version'] = result.stdout.split('\n')[0]
                 status['installed'] = True
             
-            # Check if Xray is running
+            # Check if Xray service is running
             result = subprocess.run(
                 ["/usr/bin/systemctl", "is-active", settings.XRAY_SERVICE],
                 capture_output=True,
                 text=True
             )
             
-            if result.returncode == 0:
+            if result.returncode == 0 and result.stdout.strip() == "active":
                 status['running'] = True
             
             return status
