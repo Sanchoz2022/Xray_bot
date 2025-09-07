@@ -118,3 +118,130 @@
 +0300 2025-09-07 13:14:37 ERROR [1589081179 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:42134: dial tcp 194.87.30.246:443: connect: connection refused
 +0300 2025-09-07 13:14:38 ERROR [2917409168 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
 +0300 2025-09-07 13:14:38 ERROR [2917409168 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:42148: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:01 ERROR [4206159986 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:01 ERROR [4206159986 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:58512: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:01 ERROR [1322131996 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:01 ERROR [1322131996 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:58516: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:01 ERROR [1218779968 0ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:01 ERROR [1218779968 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:58532: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:01 ERROR [199730980 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:01 ERROR [199730980 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:58544: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:01 ERROR [150102260 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:01 ERROR [150102260 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:58560: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:02 ERROR [1340268545 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:02 ERROR [1340268545 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:58574: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:03 ERROR [2529354711 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:03 ERROR [2529354711 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:58580: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:04 ERROR [644393125 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:04 ERROR [644393125 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:58584: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:04 ERROR [1749007993 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:04 ERROR [1749007993 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:58592: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:05 ERROR [2129002833 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:05 ERROR [2129002833 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:58606: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:06 ERROR [2433298768 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:06 ERROR [2433298768 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:51604: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:07 ERROR [1623286765 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:07 ERROR [1623286765 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:51620: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:07 ERROR [2465148797 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:07 ERROR [2465148797 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:51624: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:08 ERROR [1575452466 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:08 ERROR [1575452466 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:51632: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:09 WARN outbound/urltest[auto]: TCP URLTest Outbound auto (Xray Reality - user_1@xray.com § 0) failed to connect for 15 times==> test proxies again!
++0300 2025-09-07 13:59:09 ERROR [668452442 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:09 ERROR [668452442 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:51642: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:10 ERROR [2008728011 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:10 ERROR [2008728011 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:51644: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:10 ERROR [2706155237 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:10 ERROR [2706155237 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:51646: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:11 ERROR [1674497108 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:11 ERROR [1674497108 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:51648: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:12 ERROR [628569291 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:12 ERROR [628569291 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:51658: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:13 ERROR [1744019346 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 13:59:13 ERROR [1744019346 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:51672: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:23 ERROR [1241758626 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:23 ERROR [1241758626 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:36552: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:24 ERROR [4012653649 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:24 ERROR [4012653649 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:36560: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:25 ERROR [3440112806 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:25 ERROR [3440112806 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:46138: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:26 ERROR [3616256767 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:26 ERROR [3616256767 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:46152: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:26 ERROR [3125900740 2ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:26 ERROR [3125900740 2ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:46154: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:27 ERROR [817987694 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:27 ERROR [817987694 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:46170: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:28 ERROR [1520406824 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:28 ERROR [1520406824 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:46176: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:29 ERROR [634647837 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:29 ERROR [634647837 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:46182: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:29 ERROR [1182675118 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:29 ERROR [1182675118 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:46188: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:30 ERROR [657061467 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:30 ERROR [657061467 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:46196: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:30 ERROR [3993069909 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:30 ERROR [3993069909 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:46210: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:30 ERROR [1419938541 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:30 ERROR [1419938541 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:46220: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:30 ERROR [168607195 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:30 ERROR [168607195 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:46228: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:30 ERROR [4199866099 2ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:30 ERROR [4199866099 2ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:46236: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:31 WARN outbound/urltest[auto]: TCP URLTest Outbound auto (Xray Reality - user_1@xray.com § 0) failed to connect for 15 times==> test proxies again!
++0300 2025-09-07 14:05:31 ERROR [1342497348 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:31 ERROR [1342497348 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:46242: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:31 ERROR [663363029 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:31 ERROR [663363029 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:46256: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:31 ERROR [1871533938 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:31 ERROR [1871533938 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:46262: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:32 ERROR [4256411959 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:32 ERROR [4256411959 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:46264: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:32 ERROR [1787324592 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:32 ERROR [1787324592 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:46278: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:33 ERROR [3081345352 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:05:33 ERROR [3081345352 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:46294: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:28 ERROR [4072600294 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:28 ERROR [4072600294 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:58562: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:29 ERROR [3281961696 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:29 ERROR [3281961696 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:58574: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:30 ERROR [3631447681 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:30 ERROR [3631447681 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:58584: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:30 ERROR [1529599729 0ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:30 ERROR [1529599729 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:58596: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:30 ERROR [66880760 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:30 ERROR [66880760 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:58604: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:30 ERROR [864227530 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:30 ERROR [864227530 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:58608: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:30 ERROR [3715893068 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:30 ERROR [3715893068 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:58616: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:31 ERROR [305352866 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:31 ERROR [305352866 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:58632: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:31 ERROR [555217731 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:31 ERROR [555217731 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:58638: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:31 ERROR [497640743 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:31 ERROR [497640743 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:58642: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:31 ERROR [4014633266 0ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:31 ERROR [4014633266 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:58644: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:32 ERROR [464786584 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:32 ERROR [464786584 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:58648: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:33 ERROR [3507857013 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:33 ERROR [3507857013 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:58662: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:34 ERROR [2799824370 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:34 ERROR [2799824370 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:58668: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:34 WARN outbound/urltest[auto]: TCP URLTest Outbound auto (Xray Reality - user_1@xray.com § 0) failed to connect for 15 times==> test proxies again!
++0300 2025-09-07 14:07:34 ERROR [1369399096 2ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:34 ERROR [1369399096 2ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:58678: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:35 ERROR [1109474467 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:35 ERROR [1109474467 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:53342: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:36 ERROR [3519669688 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:36 ERROR [3519669688 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:53352: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:37 ERROR [2705641078 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:37 ERROR [2705641078 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:53360: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:37 ERROR [2909639279 2ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:37 ERROR [2909639279 3ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:53362: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:38 ERROR [1766216996 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:38 ERROR [1766216996 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:53376: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:39 ERROR [592049659 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:39 ERROR [592049659 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:53382: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:40 ERROR [227213468 1ms] outbound/urltest[auto]: dial tcp 194.87.30.246:443: connect: connection refused
++0300 2025-09-07 14:07:40 ERROR [227213468 1ms] inbound/mixed[mixed-in]: process connection from 127.0.0.1:53392: dial tcp 194.87.30.246:443: connect: connection refused
