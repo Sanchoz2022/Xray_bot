@@ -366,8 +366,16 @@ class ServerManager:
                 logger.error("No Reality short IDs configured")
                 return {}
             
-            # Use the first short ID
-            short_id = settings.XRAY_REALITY_SHORT_IDS[0]
+            # Use a non-empty short ID (skip empty ones)
+            short_id = ""
+            for sid in settings.XRAY_REALITY_SHORT_IDS:
+                if sid and sid.strip():  # Use first non-empty short_id
+                    short_id = sid.strip()
+                    break
+            
+            if not short_id:
+                logger.error("No valid short ID found in configuration")
+                return {}
             
             # Generate complete VLESS Reality config
             config = {
