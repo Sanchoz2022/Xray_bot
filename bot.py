@@ -689,15 +689,24 @@ async def check_xray_status():
     """Check Xray service status and restart if needed."""
     try:
         status = server_manager.get_xray_status()
+        logger.info(f"Xray status check result: {status}")
         
+        # Check for errors first
+        if status.get('error'):
+            logger.error(f"Xray status check error: {status['error']}")
+            return
+        
+        # Check if installed
+        if not status.get('installed', False):
+            logger.error("Xray is not installed")
+            return
+            
+        # Check if running
         if not status.get('running', False):
-            logger.warning("Xray service is not running, attempting to restart...")
-            if server_manager.restart_xray():
-                logger.info("Xray service restarted successfully")
-            else:
-                logger.error("Failed to restart Xray service")
+            logger.warning("Xray service is not running - manual intervention may be required")
+            logger.warning("To restart Xray manually, run: sudo systemctl restart xray")
         else:
-            logger.debug("Xray service is running normally")
+            logger.info("Xray service is running normally")
             
     except Exception as e:
         logger.error(f"Error checking Xray status: {e}", exc_info=True)
