@@ -21,8 +21,9 @@ def test_vless_generation():
     print(f"Test UUID: {test_uuid}")
     
     try:
-        # Generate VLESS URL
-        vless_url = server_manager.generate_vless_url(test_uuid)
+        # Generate VLESS URL with email and user_id
+        test_email = "test@example.com"
+        vless_url = server_manager.generate_vless_url(test_email, test_uuid)
         print(f"\nGenerated VLESS URL:")
         print(vless_url)
         
