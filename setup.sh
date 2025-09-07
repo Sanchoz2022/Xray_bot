@@ -431,7 +431,11 @@ create_xray_config() {
     mkdir -p /usr/local/etc/xray
     mkdir -p /var/log/xray
 
-    # Создание конфигурации без fallbacks (исправление проблемы)
+    # Определение внешнего IP для правильной привязки
+    EXTERNAL_IP=$(curl -4 -s ifconfig.me || curl -4 -s ipinfo.io/ip || echo "0.0.0.0")
+    log_info "Настройка Xray для прослушивания на IP: $EXTERNAL_IP"
+
+    # Создание конфигурации с правильной привязкой IP
     cat > /usr/local/etc/xray/config.json << EOL
 {
     "log": {
@@ -460,7 +464,7 @@ create_xray_config() {
     },
     "inbounds": [
         {
-            "listen": "0.0.0.0",
+            "listen": "$EXTERNAL_IP",
             "port": 443,
             "protocol": "vless",
             "settings": {
@@ -768,6 +772,74 @@ EOL
     log_success "Systemd сервис для бота создан"
 }
 
+# Синхронизация Reality ключей
+sync_reality_keys() {
+    print_header "Синхронизация Reality ключей"
+
+    local config_file="/usr/local/etc/xray/config.json"
+    local env_file=".env"
+
+    # Извлечение ключей из конфигурации Xray
+    log_info "Извлечение ключей из конфигурации Xray..."
+    
+    local server_private_key=$(python3 -c "
+import json
+try:
+    with open('$config_file', 'r') as f:
+        config = json.load(f)
+    for inbound in config.get('inbounds', []):
+        if inbound.get('protocol') == 'vless':
+            reality = inbound.get('streamSettings', {}).get('realitySettings', {})
+            if 'privateKey' in reality:
+                print(reality['privateKey'])
+                break
+except Exception as e:
+    print('')
+")
+
+    local server_short_ids=$(python3 -c "
+import json
+try:
+    with open('$config_file', 'r') as f:
+        config = json.load(f)
+    for inbound in config.get('inbounds', []):
+        if inbound.get('protocol') == 'vless':
+            reality = inbound.get('streamSettings', {}).get('realitySettings', {})
+            if 'shortIds' in reality:
+                print(json.dumps(reality['shortIds']))
+                break
+except Exception as e:
+    print('[]')
+")
+
+    if [ ! -z "$server_private_key" ]; then
+        log_info "Найден приватный ключ в конфигурации: ${server_private_key:0:20}..."
+        
+        # Генерация публичного ключа
+        local public_key=""
+        if command_exists xray; then
+            public_key=$(echo "$server_private_key" | xray x25519 -i 2>/dev/null | tail -1 | tr -d '\n\r')
+        fi
+        
+        if [ ! -z "$public_key" ]; then
+            log_success "Сгенерирован публичный ключ: ${public_key:0:20}..."
+            
+            # Обновление .env файла
+            if [ -f "$env_file" ]; then
+                sed -i "s/^XRAY_REALITY_PRIVKEY=.*/XRAY_REALITY_PRIVKEY=$server_private_key/" "$env_file"
+                sed -i "s/^XRAY_REALITY_PUBKEY=.*/XRAY_REALITY_PUBKEY=$public_key/" "$env_file"
+                sed -i "s/^XRAY_REALITY_SHORT_IDS=.*/XRAY_REALITY_SHORT_IDS=$server_short_ids/" "$env_file"
+                
+                log_success "Reality ключи синхронизированы между сервером и ботом"
+            fi
+        else
+            log_warning "Не удалось сгенерировать публичный ключ"
+        fi
+    else
+        log_warning "Приватный ключ не найден в конфигурации сервера"
+    fi
+}
+
 # Запуск сервисов
 start_services() {
     print_header "Запуск сервисов"
@@ -785,6 +857,16 @@ start_services() {
         exit 1
     fi
 
+    # Проверка правильной привязки IP
+    log_info "Проверка привязки IP..."
+    local external_ip=$(curl -4 -s ifconfig.me || curl -4 -s ipinfo.io/ip)
+    if netstat -tlnp 2>/dev/null | grep -q "$external_ip:443"; then
+        log_success "Xray слушает на правильном IP: $external_ip:443"
+    else
+        log_warning "Xray может слушать на неправильном интерфейсе"
+        netstat -tlnp 2>/dev/null | grep :443 || log_error "Порт 443 не прослушивается"
+    fi
+
     # Проверка gRPC API
     log_info "Проверка gRPC API..."
     if netstat -tlnp 2>/dev/null | grep -q ":50051"; then
@@ -792,6 +874,9 @@ start_services() {
     else
         log_warning "gRPC API не найден на порту 50051"
     fi
+
+    # Синхронизация ключей Reality
+    sync_reality_keys
 
     log_info "Сервис бота настроен, но не запущен (требуется настройка .env)"
 }
@@ -837,10 +922,21 @@ final_verification() {
         log_error "✗ Xray не запущен"
     fi
 
-    # Проверка портов
+    # Проверка портов и правильной привязки IP
     log_info "Проверка портов..."
+    local external_ip=$(curl -4 -s ifconfig.me || curl -4 -s ipinfo.io/ip || echo "unknown")
+    
     if ss -tlnp | grep -q ":443"; then
         log_success "✓ Порт 443 прослушивается"
+        
+        # Проверка правильной привязки IP
+        if ss -tlnp | grep -q "$external_ip:443"; then
+            log_success "✓ Порт 443 привязан к правильному IP ($external_ip)"
+        else
+            log_warning "⚠ Порт 443 может быть привязан к неправильному IP"
+            log_info "Текущие привязки порта 443:"
+            ss -tlnp | grep :443
+        fi
     else
         log_warning "⚠ Порт 443 не прослушивается"
     fi
@@ -932,6 +1028,14 @@ main() {
     echo "• Проверка времени: chronyc tracking"
     echo "• Проверка firewall: ufw status"
     echo "• Тест Reality: openssl s_client -connect $(grep SERVER_IP .env | cut -d= -f2):443 -servername www.google.com"
+    echo ""
+    
+    echo -e "${YELLOW}Диагностические скрипты:${NC}"
+    echo "• Полная диагностика: bash server_diagnostic.sh"
+    echo "• Исправление привязки IP: bash fix_xray_binding.sh"
+    echo "• Синхронизация ключей: bash fix_reality_keys_server.sh"
+    echo "• Исправление сервиса: bash xray_service_fix.sh"
+    echo "• Проверка клиента: bash check_server_status.sh"
     echo ""
 
     echo -e "${YELLOW}Информация о сгенерированных ключах:${NC}"
