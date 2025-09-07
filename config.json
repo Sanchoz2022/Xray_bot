@@ -25,6 +25,7 @@
     },
     "inbounds": [
         {
+            "listen": "0.0.0.0",
             "port": 443,
             "protocol": "vless",
             "settings": {
@@ -47,12 +48,13 @@
                         "www.google.com",
                         "google.com"
                     ],
-                    "privateKey": "EHQN4srWUews-il_nTEuredsLYvEchtDdjAEZxBCVWs",
+                    "privateKey": "gOL6yFxAqJ59nULXaaheXMXh3vOGIsV5-CFyL1iMuGI",
                     "minClientVer": "",
                     "maxClientVer": "",
                     "maxTimeDiff": 0,
                     "shortIds": [
-                        "00000000"
+                        "",
+                        "f81bd29d3685d224"
                     ]
                 }
             },
