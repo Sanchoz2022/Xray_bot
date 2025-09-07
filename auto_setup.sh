@@ -33,23 +33,115 @@ check_root() {
     fi
 }
 
-# Установка зависимостей
+# Установка зависимостей с обработкой конфликтов
 install_dependencies() {
     log "Установка зависимостей..."
     
+    # Проверка и ожидание завершения других процессов apt
+    while pgrep -f "apt|dpkg" > /dev/null; do
+        warn "Ожидание завершения других процессов пакетного менеджера..."
+        sleep 5
+    done
+    
+    # Исправление сломанных зависимостей
+    log "Исправление сломанных зависимостей..."
+    apt --fix-broken install -y || true
+    dpkg --configure -a || true
+    
     # Обновление системы
-    apt update && apt upgrade -y
+    apt update
     
-    # Установка необходимых пакетов
-    apt install -y curl wget unzip python3 python3-pip systemctl net-tools lsof
+    # Установка aptitude для лучшего разрешения зависимостей
+    apt install -y aptitude || true
     
-    # Установка Xray
+    # Основные пакеты с обработкой ошибок
+    local essential_packages=(
+        "curl"
+        "wget"
+        "unzip" 
+        "python3"
+        "python3-pip"
+        "net-tools"
+        "lsof"
+        "openssl"
+        "ca-certificates"
+        "gnupg"
+        "chrony"
+        "ufw"
+    )
+    
+    for package in "${essential_packages[@]}"; do
+        log "Установка $package..."
+        if apt install -y --no-install-recommends "$package"; then
+            log "✓ $package установлен"
+        elif command -v aptitude &> /dev/null && aptitude install -y "$package"; then
+            log "✓ $package установлен через aptitude"
+        else
+            warn "Не удалось установить $package, пропускаем..."
+        fi
+    done
+    
+    # Попытка исправить конфликты зависимостей
+    if ! apt upgrade -y; then
+        warn "Обнаружены конфликты зависимостей, исправляем..."
+        apt -f install -y || true
+        
+        # Принудительная установка проблемных пакетов
+        apt install -y --fix-missing libsoup2.4-1 || true
+        apt install -y --fix-missing libappstream4 || true
+        
+        # Повторная попытка обновления
+        apt upgrade -y --fix-missing || true
+    fi
+    
+    # Установка Xray с обработкой ошибок
     if ! command -v xray &> /dev/null; then
         log "Установка Xray..."
-        bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install
+        
+        # Попытка стандартной установки
+        if ! bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install; then
+            warn "Стандартная установка не удалась, пробуем ручную установку..."
+            install_xray_manual
+        fi
     else
         log "Xray уже установлен"
     fi
+}
+
+# Ручная установка Xray
+install_xray_manual() {
+    log "Ручная установка Xray..."
+    
+    local temp_dir=$(mktemp -d)
+    cd "$temp_dir"
+    
+    # Определение архитектуры
+    local arch=$(uname -m)
+    case $arch in
+        x86_64) arch="64" ;;
+        aarch64) arch="arm64-v8a" ;;
+        armv7l) arch="arm32-v7a" ;;
+        *) arch="64" ;;
+    esac
+    
+    # Загрузка Xray
+    local download_url="https://github.com/XTLS/Xray-core/releases/latest/download/Xray-linux-${arch}.zip"
+    
+    if wget -O xray.zip "$download_url" && unzip -o xray.zip; then
+        # Установка
+        install -m 755 xray /usr/local/bin/xray
+        mkdir -p /usr/local/etc/xray /var/log/xray
+        
+        if /usr/local/bin/xray version; then
+            log "✓ Xray установлен вручную"
+        else
+            error "Ошибка при установке Xray"
+        fi
+    else
+        error "Не удалось загрузить Xray"
+    fi
+    
+    cd / && rm -rf "$temp_dir"
 }
 
 # Генерация Reality ключей
