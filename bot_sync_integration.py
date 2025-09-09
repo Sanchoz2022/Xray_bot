@@ -12,8 +12,11 @@ logger = logging.getLogger(__name__)
 def sync_on_action(action_type: str):
     """Decorator to automatically sync user after bot action."""
     def decorator(func):
+        import functools
+        
+        @functools.wraps(func)
         async def wrapper(*args, **kwargs):
-            # Execute original function
+            # Execute original function first
             result = await func(*args, **kwargs)
             
             # Extract user_id from callback or message
@@ -27,8 +30,9 @@ def sync_on_action(action_type: str):
             if user_id:
                 try:
                     await sync_service.sync_user_on_action(user_id, action_type)
+                    logger.info(f"✅ Sync completed for user {user_id} on {action_type}")
                 except Exception as e:
-                    logger.error(f"Sync failed for user {user_id} on {action_type}: {e}")
+                    logger.error(f"❌ Sync failed for user {user_id} on {action_type}: {e}")
             
             return result
         return wrapper
