@@ -20,6 +20,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from config import settings
 from db import db, User, UserKey, Subscription, get_db_session, async_session_maker
 from server_manager import server_manager, ServerManager
+from bot_sync_integration import sync_on_action
+from sync_service import sync_service
 
 # Initialize server manager
 server_manager = ServerManager()
@@ -192,6 +194,7 @@ async def cmd_start(message: Message):
     await message.answer(text, reply_markup=keyboard)
 
 @dp.callback_query(F.data == "check_subscription")
+@sync_on_action('create')
 async def check_subscription_callback(callback: CallbackQuery):
     """Handle subscription check callback."""
     user = callback.from_user
@@ -231,6 +234,9 @@ async def check_subscription_callback(callback: CallbackQuery):
                     await callback.answer("❌ Ошибка при настройке VPN. Пожалуйста, попробуйте позже.", show_alert=True)
                     return
                 
+                # Log successful user creation
+                logger.info(f"New user {user.id} created with UUID: {user_uuid}")
+                
                 # Create new key in database
                 key = UserKey(
                     user_id=db_user.id,
@@ -241,6 +247,9 @@ async def check_subscription_callback(callback: CallbackQuery):
                 )
                 session.add(key)
                 await session.commit()
+                
+                # Log successful key creation
+                logger.info(f"User key created for user {user.id}, expires: {key.expires_at}")
             
             # Generate VLESS Reality URL
             vless_url = server_manager.generate_vless_url(f"user_{user.id}@xray.com", key.uuid)
@@ -422,6 +431,7 @@ async def stats_callback(callback: CallbackQuery):
         await callback.answer("❌ Произошла ошибка при получении статистики.", show_alert=True)
 
 @dp.callback_query(F.data.startswith("renew_"))
+@sync_on_action('renew')
 async def renew_callback(callback: CallbackQuery):
     """Handle renew key callback."""
     try:
@@ -454,6 +464,9 @@ async def renew_callback(callback: CallbackQuery):
             # Remove old user from Xray
             server_manager.remove_vless_user(f"user_{user.id}@xray.com")
             
+            # Log sync action
+            logger.info(f"User {user.id} key renewal initiated")
+            
             # Generate new UUID
             new_uuid = str(uuid.uuid4())
             
@@ -461,6 +474,9 @@ async def renew_callback(callback: CallbackQuery):
             if not server_manager.add_vless_user(f"user_{user.id}@xray.com", new_uuid):
                 await callback.answer("❌ Ошибка при обновлении ключа.", show_alert=True)
                 return
+            
+            # Log successful sync
+            logger.info(f"User {user.id} key renewed successfully with UUID: {new_uuid}")
             
             # Update key in database
             key.uuid = new_uuid
@@ -612,10 +628,59 @@ async def cmd_admin(message: Message):
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text="👥 Пользователи", callback_data="admin_users")],
         [InlineKeyboardButton(text="📊 Статистика", callback_data="admin_stats")],
-        [InlineKeyboardButton(text="⚙️ Настройки сервера", callback_data="admin_server")]
+        [InlineKeyboardButton(text="⚙️ Настройки сервера", callback_data="admin_server")],
+        [InlineKeyboardButton(text="🔄 Синхронизация UUID", callback_data="admin_sync_uuids")]
     ])
     
     await message.answer("👨‍💻 *Панель администратора*", reply_markup=keyboard, parse_mode="Markdown")
+
+@dp.callback_query(F.data == "admin_users")
+async def admin_users_callback(callback: CallbackQuery):
+    """Handle admin users management callback."""
+    if callback.from_user.id not in settings.ADMIN_IDS:
+        await callback.answer("❌ У вас нет прав администратора.", show_alert=True)
+        return
+    
+    # Create users management keyboard
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="🔄 Синхронизировать UUID", callback_data="admin_sync_uuids")],
+        [InlineKeyboardButton(text="🗑️ Удалить пользователя", callback_data="admin_delete_user")],
+        [InlineKeyboardButton(text="📊 Статистика пользователей", callback_data="admin_user_stats")],
+        [InlineKeyboardButton(text="🔙 Назад", callback_data="admin_main")]
+    ])
+    
+    await callback.message.edit_text(
+        "👥 *Управление пользователями*\n\n"
+        "Выберите действие:",
+        reply_markup=keyboard,
+        parse_mode="Markdown"
+    )
+
+@dp.callback_query(F.data == "admin_sync_uuids")
+async def admin_sync_uuids_callback(callback: CallbackQuery):
+    """Handle manual UUID synchronization."""
+    if callback.from_user.id not in settings.ADMIN_IDS:
+        await callback.answer("❌ У вас нет прав администратора.", show_alert=True)
+        return
+    
+    try:
+        await callback.answer("🔄 Запуск синхронизации...")
+        
+        # Run full sync
+        stats = await sync_service.full_sync()
+        
+        result_text = (
+            "✅ *Синхронизация завершена*\n\n"
+            f"➕ Добавлено: {stats['added']}\n"
+            f"➖ Удалено: {stats['removed']}\n"
+            f"❌ Ошибок: {stats['errors']}"
+        )
+        
+        await callback.message.reply(result_text, parse_mode="Markdown")
+        
+    except Exception as e:
+        logger.error(f"Error in manual sync: {e}")
+        await callback.message.reply("❌ Ошибка при синхронизации UUID")
 
 @dp.callback_query(F.data == "admin_stats")
 async def admin_stats_callback(callback: CallbackQuery):
@@ -729,6 +794,15 @@ def setup_scheduler():
         'interval',
         minutes=5,
         id='check_xray_status',
+        replace_existing=True
+    )
+    
+    # Full UUID synchronization every 5 minutes
+    scheduler.add_job(
+        sync_service.full_sync,
+        'interval',
+        minutes=5,
+        id='uuid_full_sync',
         replace_existing=True
     )
 
