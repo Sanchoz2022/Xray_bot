@@ -402,8 +402,7 @@ class ServerManager:
                 "fp": "chrome",
                 "pbk": settings.XRAY_REALITY_PUBKEY,
                 "sid": short_id,
-                "spx": "",
-                "flow": "xtls-rprx-vision"
+                "spx": ""
             }
             
             logger.debug(f"Generated Reality config for {email}: port={config['port']}, sni={config['sni']}, sid={config['sid']}")
@@ -420,10 +419,15 @@ class ServerManager:
             if not config:
                 return ""
             
-            # Build VLESS URL
+            # Validate UUID format (must be 36 characters)
+            if len(config['id']) != 36:
+                logger.error(f"Invalid UUID length: {len(config['id'])} (expected 36)")
+                return ""
+            
+            # Build VLESS URL without flow parameter
             vless_url = (
                 f"vless://{config['id']}@{config['add']}:{config['port']}"
-                f"?encryption=none&flow={config['flow']}&security={config['tls']}"
+                f"?encryption=none&security={config['tls']}"
                 f"&sni={config['sni']}&fp={config['fp']}&pbk={config['pbk']}"
                 f"&sid={config['sid']}&type={config['net']}"
                 f"#{config['ps']}"
