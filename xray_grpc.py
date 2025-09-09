@@ -163,8 +163,7 @@ class XrayClient:
             "fp": "chrome",
             "pbk": settings.XRAY_REALITY_PUBKEY,
             "sid": short_id,
-            "spx": "",
-            "flow": "xtls-rprx-vision"
+            "spx": ""
         }
         
         return config
